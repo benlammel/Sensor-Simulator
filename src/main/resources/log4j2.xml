@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="debug">
+
+	<Properties>
+		<Property name="gui-log-all">logs/gui-log.txt</Property>
+		<Property name="communication-log-all">logs/communication-log.txt</Property>
+	</Properties>
+	
+	<Appenders>
+        <Console name="appender-Console-all" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %logger{36};%msg%n" />
+        </Console>
+ 
+        <!-- the appenders for gui-log -->
+        <File name="appender-gui-all" fileName="${gui-log-all}" append="true">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %logger{36};%msg%n" />
+        </File>
+ 
+        <!-- the appenders for communication-log -->
+        <File name="appender-communication-all" fileName="${communication-log-all}" append="true">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %logger{36};%msg%n" />
+        </File>
+    </Appenders>
+    
+    <Loggers>
+        <!-- Every configuration must have a root logger. If one is not configured the default root LoggerConfig is ERROR with Console appender attached. -->
+        <Root level="DEBUG">
+            <AppenderRef ref="appender-Console-all" />
+        </Root>
+ 
+        <!-- gui-logger -->
+        <Logger name="it.unicam.sensorsimulator.logging.GUI" additivity="TRUE" level="ALL">
+            <AppenderRef ref="appender-gui-all" level="ALL" />
+        </Logger>
+ 
+        <!-- communication-logger -->
+        <Logger name="it.unicam.sensorsimulator.logging.Communication" additivity="TRUE" level="ALL">
+            <AppenderRef ref="appender-communication-all" level="ALL" />
+        </Logger>
+    </Loggers>
+    
+    
+
+<!--
+	<Appenders>
+		<Console name="console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level - %msg%n" />
+		</Console>
+		<File name="guilogfile" fileName="gui_log.txt" immediateFlush="false"
+			append="false">
+			<PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level - %msg%n" />
+		</File>
+	</Appenders>
+	<Loggers>
+		<Root level="trace">
+			<AppenderRef ref="guilogfile" />
+			<AppenderRef ref="console" />
+		</Root>
+	</Loggers>-->
+</Configuration>
