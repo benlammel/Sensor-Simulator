@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.unicam.sensorsimulator</groupId>
 	<artifactId>SensorSimulator</artifactId>
-	<name>SensorSimulator</name>
+	<name>Sensor-Simulator</name>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
