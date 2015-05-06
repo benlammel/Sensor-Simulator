@@ -7,6 +7,7 @@ import it.unicam.sensorsimulator.interfaces.SimulationEnvironmentServices;
 import it.unicam.sensorsimulator.interfaces.SimulationRunInterface;
 import it.unicam.sensorsimulator.logging.LogFileHandler;
 import it.unicam.sensorsimulator.plugin.basestation.BaseStationPlugin;
+import it.unicam.sensorsimulator.plugin.heed.HeedPlugin;
 import it.unicam.sensorsimulator.ui.ApplicationFrame;
 import it.unicam.sensorsimulator.ui.dialogs.DialogMessages;
 import it.unicam.sensorsimulator.ui.dialogs.GeneralDialogHandler;
@@ -33,6 +34,7 @@ public class PluginHandler implements SimulationEnvironmentServices {
 		log = LogFileHandler.getInstance();
 //		initPlugins();
 		
+		registerPlugin(new HeedPlugin());
 		registerPlugin(new BaseStationPlugin());
 	}
 	
