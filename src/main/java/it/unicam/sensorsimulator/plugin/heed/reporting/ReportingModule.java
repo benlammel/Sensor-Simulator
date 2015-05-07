@@ -1,11 +1,11 @@
 package it.unicam.sensorsimulator.plugin.heed.reporting;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-import it.unicam.sensorsimulator.plugin.basestation.BaseStationPlugin;
-import it.unicam.sensorsimulator.plugin.basestation.reporting.graphic.NetworkGraphic;
 import it.unicam.sensorsimulator.plugin.heed.HeedPlugin;
+import it.unicam.sensorsimulator.plugin.heed.reporting.graphic.NetworkGraphic;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
@@ -36,9 +36,12 @@ public class ReportingModule extends BorderPane {
 		
 	}
 
-	public void publish(HashMap<Integer, Set<Integer>> measurement1) {
-//		mainContent.getChildren().add(new NetworkGraphic(measurement1))
-		mainContent.getChildren().add(new NetworkGraphic(measurement1));
-	}
+//	public void publish(HashMap<Integer, Set<Integer>> measurement1) {
+////		mainContent.getChildren().add(new NetworkGraphic(measurement1))
+//		mainContent.getChildren().add(new NetworkGraphic(measurement1));
+//	}
 
+	public void publish(Integer clusterHead, ArrayList<Integer> clusterClients) {
+		mainContent.getChildren().add(new NetworkGraphic(clusterHead, clusterClients));
+	}
 }

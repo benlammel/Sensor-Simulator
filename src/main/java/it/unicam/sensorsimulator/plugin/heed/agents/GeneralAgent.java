@@ -1,12 +1,16 @@
 package it.unicam.sensorsimulator.plugin.heed.agents;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Random;
 
 import it.unicam.sensorsimulator.interfaces.GeneralAgentInterface;
 import it.unicam.sensorsimulator.interfaces.LogFileWriterInterface;
 import it.unicam.sensorsimulator.interfaces.LogFileWriterInterface.LogLevels;
-import it.unicam.sensorsimulator.plugin.heed.agents.behaviours.HeedClusteringBehaviour;
+import it.unicam.sensorsimulator.plugin.heed.agents.behaviours.HeedBehaviour;
+import it.unicam.sensorsimulator.plugin.heed.messages.MessageTypes;
 import it.unicam.sensorsimulator.plugin.heed.messages.MessageTypes.MessageHandling;
 import jade.core.AID;
 import jade.core.Agent;
@@ -20,24 +24,33 @@ public class GeneralAgent extends Agent {
 	private AID simulationCoordinatorAID;
 	private HashMap<String, Integer> sentMessageCounter;
 	private HashMap<String, Integer> receivedMessageCounter;
-	private HashMap<Integer, GeneralAgentInterface> connectionView;
+	private boolean isConnectedToClusterHead = false;
+	private int clusterHead;
+	private ArrayList<Integer> myClusterAgents;
 
 	protected void setup(){
 		initAndSetArguments();
 		log.logAgentAction(LogLevels.INFO, getAID().getLocalName() +" is up and waits");
+		myClusterAgents = new ArrayList<Integer>();
 		
 //		addBehaviour(new ReceiveNeighborsListBehaviour(this));
-		addBehaviour(new HeedClusteringBehaviour(this));
+//		addBehaviour(new HeedClusteringBehaviour(this, generateTickNumber()));
+		addBehaviour(new HeedBehaviour(this, generateTickNumber()));
 		
 	}
 	
+	private int generateTickNumber() {
+		Random r = new Random();
+		int Low = 300;
+		int High = 1000;
+		return r.nextInt(High-Low) + Low;
+	}
+
 	private void initAndSetArguments() {
 		Object [] args = getArguments();
 		log = (LogFileWriterInterface) args[0];
 		config = (AgentConfiguration) args[1];
 		nList = (HashMap<Integer, GeneralAgentInterface>) args[2];
-		this.connectionView = new HashMap<Integer, GeneralAgentInterface>(nList);
-		System.out.println(getAID().getLocalName() +" :: " +nList.keySet());
 	}
 
 	public HashMap<Integer, GeneralAgentInterface> getNeighborList() {
@@ -46,11 +59,6 @@ public class GeneralAgent extends Agent {
 		}
 		return nList;
 	}
-
-//	public void setNeighborList(HashMap<Integer, GeneralAgentInterface> nList) {
-//		this.nList = nList;
-//		this.connectionView = new HashMap<Integer, GeneralAgentInterface>(nList);
-//	}
 
 	public void setSimulationCoordinatorAID(AID sender) {
 		this.simulationCoordinatorAID = sender;
@@ -99,10 +107,6 @@ public class GeneralAgent extends Agent {
 		return config;
 	}
 
-	public HashMap<Integer, GeneralAgentInterface> getConnectionView() {
-		return connectionView;
-	}
-
 	public AID getSimulationCoordinatorAID() {
 		return simulationCoordinatorAID;
 	}
@@ -117,5 +121,42 @@ public class GeneralAgent extends Agent {
 
 	public double getEResidual() {
 		return 3000;
+	}
+
+	public int convertAgentAIDToInteger(AID aid) {
+		return Integer.parseInt(aid.getLocalName());
+	}
+
+	public void setClusterHead(int agentID) {
+		clusterHead = agentID;
+	}
+
+	public void addToMyCluster(int agentID) {
+		myClusterAgents.add(agentID);
+		sendReportMessage(MessageTypes.M1);
+	}
+
+	private void sendReportMessage(String messageType) {
+		ACLMessage message = new ACLMessage(ACLMessage.INFORM);
+		message.setConversationId(messageType);
+		try {
+			message.setContentObject(myClusterAgents);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		message.addReceiver(getSimulationCoordinatorAID());
+		sendMessage(message);		
+	}
+
+	public LogFileWriterInterface getLog() {
+		return log;
+	}
+
+	public void setConnected(boolean b) {
+		isConnectedToClusterHead = b;
+	}
+
+	public boolean isConnected() {
+		return isConnectedToClusterHead;
 	}
 }

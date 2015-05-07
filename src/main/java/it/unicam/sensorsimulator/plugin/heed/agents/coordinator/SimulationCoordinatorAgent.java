@@ -16,6 +16,7 @@ import it.unicam.sensorsimulator.interfaces.SimulationCoordinatorAgentInterface;
 import it.unicam.sensorsimulator.interfaces.LogFileWriterInterface.LogLevels;
 import it.unicam.sensorsimulator.plugin.heed.agents.GeneralAgent;
 import it.unicam.sensorsimulator.plugin.heed.agents.coordinator.behaviours.HeedProtocolBehaviour;
+import it.unicam.sensorsimulator.plugin.heed.agents.coordinator.behaviours.ReceiveMeasurementResults;
 import it.unicam.sensorsimulator.plugin.heed.messages.MessageTypes.MessageHandling;
 import it.unicam.sensorsimulator.plugin.heed.reporting.ReportingModule;
 import it.unicam.sensorsimulator.plugin.heed.simulation.SimulationRunFile;
@@ -37,7 +38,7 @@ public class SimulationCoordinatorAgent extends Agent implements SimulationCoord
 			loadAgents();
 			startAgents();
 			addBehaviour(new HeedProtocolBehaviour(this));
-//			addBehaviour(new ReceiveMeasurementResults(this));
+			addBehaviour(new ReceiveMeasurementResults(this));
 		} catch (StaleProxyException e) {
 			e.printStackTrace();
 		}

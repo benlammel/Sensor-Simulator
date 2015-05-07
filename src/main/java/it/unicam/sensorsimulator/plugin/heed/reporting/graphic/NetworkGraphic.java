@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Paint;
 import java.awt.Stroke;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -25,13 +26,39 @@ public class NetworkGraphic extends SwingNode {
 
 	private Graph<Integer, String> g;
 	private Layout<Integer, String> layout;
+	
+	public NetworkGraphic() {
+		g = new SparseMultigraph<Integer, String>();
+	}
+	
+	public NetworkGraphic(Integer clusterHead, ArrayList<Integer> clusterClients) {
+		this();
+		
+		//generate nodes
+		g.addVertex(clusterHead);
+		for (Integer entry : clusterClients) {
+			System.out.println("addVertex " +clusterClients);
+			g.addVertex(entry);
+		}
+		
+		//generate edges
+		for (Integer entry : clusterClients) {
+			System.out.println("clusterClients " +clusterClients);
+			g.addEdge(
+					Integer.toString(clusterHead) + "-"
+							+ Integer.toString(entry), clusterHead,	entry);
+		}
+	}
 
 	public NetworkGraphic(HashMap<Integer, Set<Integer>> measurement1) {
+		this();
 		
-		g = new SparseMultigraph<Integer, String>();
 		generateVertext(measurement1);
 		generateEdges(measurement1);
+		generateGraphicComponent();
+	}
 
+	private void generateGraphicComponent() {
 		layout = new KKLayout<Integer, String>(g);
 		layout.setSize(new Dimension(600, 400));
 		BasicVisualizationServer<Integer, String> vv = new BasicVisualizationServer<Integer, String>(
@@ -57,6 +84,8 @@ public class NetworkGraphic extends SwingNode {
 		vv.getRenderer().getVertexLabelRenderer().setPosition(Position.CNTR);
 		this.setContent(vv);
 	}
+
+	
 
 	private void generateEdges(HashMap<Integer, Set<Integer>> measurement1) {
 		for (Entry<Integer, Set<Integer>> entry : measurement1.entrySet()) {
