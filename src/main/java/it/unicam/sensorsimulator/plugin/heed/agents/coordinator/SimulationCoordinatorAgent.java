@@ -150,4 +150,8 @@ public class SimulationCoordinatorAgent extends Agent implements SimulationCoord
 	public ReportingModule getReportingHandler() {
 		return reportingHandler;
 	}
+
+	public int convertAIDToInteger(AID aid) {
+		return Integer.parseInt(aid.getLocalName());
+	}
 }

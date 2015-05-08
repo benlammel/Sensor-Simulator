@@ -1,6 +1,7 @@
 package it.unicam.sensorsimulator.plugin.heed.agents;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -24,8 +25,7 @@ public class GeneralAgent extends Agent {
 	private AID simulationCoordinatorAID;
 	private HashMap<String, Integer> sentMessageCounter;
 	private HashMap<String, Integer> receivedMessageCounter;
-	private boolean isConnectedToClusterHead = false;
-	private int clusterHead;
+	private int clusterHead = 0;
 	private ArrayList<Integer> myClusterAgents;
 
 	protected void setup(){
@@ -133,30 +133,22 @@ public class GeneralAgent extends Agent {
 
 	public void addToMyCluster(int agentID) {
 		myClusterAgents.add(agentID);
-		sendReportMessage(MessageTypes.M1);
+		System.out.println(getAgentConfiguration().getAgentID() +" added " +agentID +" :: " +myClusterAgents.toString());
 	}
-
-	private void sendReportMessage(String messageType) {
-		ACLMessage message = new ACLMessage(ACLMessage.INFORM);
-		message.setConversationId(messageType);
-		try {
-			message.setContentObject(myClusterAgents);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		message.addReceiver(getSimulationCoordinatorAID());
-		sendMessage(message);		
+	
+	public ArrayList<Integer> getMyClusterView() {
+		return myClusterAgents;
 	}
 
 	public LogFileWriterInterface getLog() {
 		return log;
 	}
 
-	public void setConnected(boolean b) {
-		isConnectedToClusterHead = b;
-	}
-
 	public boolean isConnected() {
-		return isConnectedToClusterHead;
+		if(clusterHead!=0){
+			return true;
+		}else{
+			return false;
+		}
 	}
 }

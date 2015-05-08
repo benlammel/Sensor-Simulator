@@ -7,9 +7,7 @@ import java.awt.Paint;
 import java.awt.Stroke;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.apache.commons.collections15.Transformer;
 
@@ -24,46 +22,21 @@ import javafx.embed.swing.SwingNode;
 
 public class NetworkGraphic extends SwingNode {
 
+	private int taskID;
 	private Graph<Integer, String> g;
 	private Layout<Integer, String> layout;
-	
-	public NetworkGraphic() {
+
+	public NetworkGraphic(int taskID, int pictureWidth, int pictureHeight, HashMap<Integer, ArrayList<Integer>> networkView) {
+		this.taskID = taskID;
 		g = new SparseMultigraph<Integer, String>();
-	}
-	
-	public NetworkGraphic(Integer clusterHead, ArrayList<Integer> clusterClients) {
-		this();
+		generateVertexts(networkView);
+		generateEdges(networkView);
 		
-		//generate nodes
-		g.addVertex(clusterHead);
-		for (Integer entry : clusterClients) {
-			System.out.println("addVertex " +clusterClients);
-			g.addVertex(entry);
-		}
-		
-		//generate edges
-		for (Integer entry : clusterClients) {
-			System.out.println("clusterClients " +clusterClients);
-			g.addEdge(
-					Integer.toString(clusterHead) + "-"
-							+ Integer.toString(entry), clusterHead,	entry);
-		}
-	}
-
-	public NetworkGraphic(HashMap<Integer, Set<Integer>> measurement1) {
-		this();
-		
-		generateVertext(measurement1);
-		generateEdges(measurement1);
-		generateGraphicComponent();
-	}
-
-	private void generateGraphicComponent() {
 		layout = new KKLayout<Integer, String>(g);
-		layout.setSize(new Dimension(600, 400));
+		layout.setSize(new Dimension(pictureWidth, pictureHeight));
 		BasicVisualizationServer<Integer, String> vv = new BasicVisualizationServer<Integer, String>(
 				layout);
-		vv.setPreferredSize(new Dimension(550, 450));
+		vv.setPreferredSize(new Dimension(pictureWidth, pictureHeight));
 		Transformer<Integer, Paint> vertexPaint = new Transformer<Integer, Paint>() {
 			public Paint transform(Integer i) {
 				return Color.GREEN;
@@ -85,31 +58,30 @@ public class NetworkGraphic extends SwingNode {
 		this.setContent(vv);
 	}
 
-	
-
-	private void generateEdges(HashMap<Integer, Set<Integer>> measurement1) {
-		for (Entry<Integer, Set<Integer>> entry : measurement1.entrySet()) {
-
-			Iterator<Integer> i = entry.getValue().iterator();
-			while (i.hasNext()) {
-				
-				Integer value = i.next();
-				if(!entry.getKey().equals(value)){
-					System.out.println("addEdge " +entry.getKey() +"-" +value);
-
-					g.addEdge(
-							Integer.toString(entry.getKey()) + "-"
-									+ Integer.toString(value), entry.getKey(),
-							value);
+	private void generateEdges(HashMap<Integer, ArrayList<Integer>> networkView) {
+		for(Entry<Integer, ArrayList<Integer>> cluster : networkView.entrySet()){
+			System.out.println("grrr" +cluster.getKey() + "-"+ cluster.getValue());
+			if(!cluster.getValue().isEmpty()){
+				for(Integer clusterMembers : cluster.getValue()){
+					g.addEdge(Integer.toString(cluster.getKey()) + "-"+ Integer.toString(clusterMembers), cluster.getKey(), clusterMembers);
+					System.out.println("generateEdges" +cluster.getKey() + "-"+ Integer.toString(clusterMembers));
 				}
 			}
 		}
 	}
 
-	private void generateVertext(HashMap<Integer, Set<Integer>> measurement1) {
-		for (Entry<Integer, Set<Integer>> entry : measurement1.entrySet()) {
-			g.addVertex(entry.getKey());
-			System.out.println("addVertex " +entry.getKey());
+	private void generateVertexts(
+			HashMap<Integer, ArrayList<Integer>> networkView) {
+		for(Entry<Integer, ArrayList<Integer>> cluster : networkView.entrySet()){
+			g.addVertex(cluster.getKey());
+			System.out.println("addVertex" +cluster.getKey());
+			if(!cluster.getValue().isEmpty()){
+				for(Integer clusterMembers : cluster.getValue()){
+					g.addVertex(clusterMembers);
+					System.out.println("addVertex" +clusterMembers);
+
+				}
+			}
 		}
 	}
 }

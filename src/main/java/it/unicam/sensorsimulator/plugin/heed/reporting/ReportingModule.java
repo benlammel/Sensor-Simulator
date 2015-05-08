@@ -1,47 +1,27 @@
 package it.unicam.sensorsimulator.plugin.heed.reporting;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
 
 import it.unicam.sensorsimulator.plugin.heed.HeedPlugin;
-import it.unicam.sensorsimulator.plugin.heed.reporting.graphic.NetworkGraphic;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.control.Accordion;
 
-public class ReportingModule extends BorderPane {
+public class ReportingModule extends Accordion {
 	
 	private HeedPlugin heedPlugin;
-	private ScrollPane spLeft;
-	private ScrollPane spCenter;
 	
-	private ReportMenu reportMenu;
-	private ReportMainContent mainContent;
-	
+	private ProtocolReportHandler protocol;
+
 	public ReportingModule(HeedPlugin heedPlugin){
 		this.heedPlugin = heedPlugin;
-		this.mainContent = new ReportMainContent();
-		spLeft = new ScrollPane();
-		spCenter = new ScrollPane();
+		protocol = new ProtocolReportHandler();
 		
-		this.setCenter(spCenter);
-		reportMenu = new ReportMenu(this);
-		
-//		spLeft.setContent(reportMenu);
-		spCenter.setContent(mainContent);
+		this.getPanes().add(protocol);
+        this.setExpandedPane(protocol);
 		
 	}
 
-//	public void publish(HashMap<Integer, Set<Integer>> measurement1) {
-////		mainContent.getChildren().add(new NetworkGraphic(measurement1))
-//		mainContent.getChildren().add(new NetworkGraphic(measurement1));
-//	}
-
-	public void publish(Integer clusterHead, ArrayList<Integer> clusterClients) {
-		mainContent.getChildren().add(new NetworkGraphic(clusterHead, clusterClients));
+	public void addProtocolMeasurement(int clusterHead,
+			ArrayList<Integer> clusterMembers) {
+		protocol.updateNetworkView(clusterHead, clusterMembers);
 	}
 }

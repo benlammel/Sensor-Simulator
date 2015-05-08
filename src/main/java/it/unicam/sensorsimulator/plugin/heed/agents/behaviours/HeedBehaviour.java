@@ -21,7 +21,6 @@ public class HeedBehaviour extends TickerBehaviour {
 
 	private GeneralAgent agent;
 	
-	
 	private HashMap<Integer, HeedMessage> listOfClusterHeads;
 	
 	private double cProb = 0;
@@ -60,6 +59,7 @@ public class HeedBehaviour extends TickerBehaviour {
 				break;
 			case MessageTypes.JOIN_CLUSTER:
 				processJoinMessage(msg);
+				break;
 			default:
 				agent.putBack(msg);
 				agent.receiveMessageCounter(msg, MessageHandling.DECREASE);
@@ -70,11 +70,12 @@ public class HeedBehaviour extends TickerBehaviour {
 		if(initializationTriggerReceived && !agent.isConnected()){
 			runRepeatHeedPart();
 		}
-		
 	}
 	
 	private void processJoinMessage(ACLMessage msg) {
+		System.out.println(agent.getAgentConfiguration().getAgentID() +" : process join message from :" +msg.getSender());
 		agent.addToMyCluster(agent.convertAgentAIDToInteger(msg.getSender()));
+		measurementCluster();
 	}
 	
 	private void progressCHMessage(ACLMessage msg) {
@@ -87,9 +88,30 @@ public class HeedBehaviour extends TickerBehaviour {
 		calculateIndividualCostsAndBroadcast(
 				MessageTypes.CLUSTER_HEAD_MESSAGE,
 				ClusterHeadType.FINALCH);
+		sendToCoordinator(MessageTypes.CLUSTER_HEAD_MESSAGE);
 	}
 	}
 	
+	private void sendToCoordinator(String messageType) {
+		switch(messageType){
+		case MessageTypes.CLUSTER_HEAD_MESSAGE:
+			measurementCluster();
+			break;
+		}
+	}
+
+	private void measurementCluster() {
+		ACLMessage message = new ACLMessage(ACLMessage.INFORM);
+		message.setConversationId(MessageTypes.MEASUREMENT_PROTOCOL);
+		try {
+			message.setContentObject(agent.getMyClusterView());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		message.addReceiver(agent.getSimulationCoordinatorAID());
+		agent.sendMessage(message);
+	}
+
 	private void checkForFinalClusterHeadsAndJoin() {
 		int clusterHeadID = 0;
 		double clusterHeadCosts = Double.POSITIVE_INFINITY;
@@ -117,6 +139,7 @@ public class HeedBehaviour extends TickerBehaviour {
 			calculateIndividualCostsAndBroadcast(
 					MessageTypes.CLUSTER_HEAD_MESSAGE,
 					ClusterHeadType.FINALCH);
+			measurementCluster();
 		}
 	}
 	
@@ -128,7 +151,7 @@ public class HeedBehaviour extends TickerBehaviour {
 	}
 
 	private void runRepeatHeedPart() {
-		track("**********runRepeatHeedPart");
+//		track("**********runRepeatHeedPart");
 		if (!listOfClusterHeads.isEmpty()) {
 			int clusterHeadID = -1;
 			double clusterHeadCosts = Double.POSITIVE_INFINITY;
@@ -146,6 +169,7 @@ public class HeedBehaviour extends TickerBehaviour {
 						calculateIndividualCostsAndBroadcast(
 								MessageTypes.CLUSTER_HEAD_MESSAGE,
 								ClusterHeadType.FINALCH);
+						measurementCluster();
 						setFinalClusterHead(agent.getAgentConfiguration().getAgentID());
 					} else {
 						track("runRepeatHeedPart: else");
@@ -173,7 +197,6 @@ public class HeedBehaviour extends TickerBehaviour {
 		track("setFinalClusterHead " +agentID);
 		isFinalCH = true;
 		agent.setClusterHead(agentID);
-		agent.setConnected(true);
 	}
 
 	private void calculateCHProb() {
@@ -249,7 +272,6 @@ public class HeedBehaviour extends TickerBehaviour {
 	
 	private void track(String where) {
 		StringBuilder builder = new StringBuilder();
-//		builder.append(this.getClass().getName());
 		builder.append(where +" ;ID;");
 		builder.append(agent.getAgentConfiguration().getAgentID());
 		builder.append(";isFinal;");
@@ -264,12 +286,7 @@ public class HeedBehaviour extends TickerBehaviour {
 		builder.append(listOfClusterHeads.keySet().toString());
 		builder.append(";chPrevious;");
 		builder.append(chPrevious);
-//		builder.append(";LAYOUTY;");
-//		builder.append(getLayoutY());
+
 		agent.getLog().logAgentAction(LogLevels.INFO, builder.toString());
-		
 	}
-
-	
-
 }
