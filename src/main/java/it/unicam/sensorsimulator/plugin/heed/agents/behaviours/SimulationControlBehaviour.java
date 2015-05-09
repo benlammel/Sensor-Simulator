@@ -2,7 +2,6 @@ package it.unicam.sensorsimulator.plugin.heed.agents.behaviours;
 
 import it.unicam.sensorsimulator.plugin.heed.agents.GeneralAgent;
 import it.unicam.sensorsimulator.plugin.heed.messages.MessageTypes;
-import it.unicam.sensorsimulator.plugin.heed.messages.MessageTypes.MessageHandling;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 

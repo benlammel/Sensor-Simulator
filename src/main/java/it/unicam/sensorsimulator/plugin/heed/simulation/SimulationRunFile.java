@@ -1,6 +1,5 @@
 package it.unicam.sensorsimulator.plugin.heed.simulation;
 
-import it.unicam.sensorsimulator.interfaces.GeneralAgentInterface;
 import it.unicam.sensorsimulator.interfaces.SimulationRunInterface;
 import it.unicam.sensorsimulator.plugin.heed.agents.AgentConfiguration;
 
@@ -23,11 +22,11 @@ public class SimulationRunFile implements SimulationRunInterface {
 	
 	@XmlElementWrapper(name = "agentlist")
 	@XmlElement(name = "agent", type=AgentConfiguration.class)
-	private ArrayList<GeneralAgentInterface> agentList;
+	private ArrayList<AgentConfiguration> agentList;
 	private int numberOfClusters;
 	
 	public SimulationRunFile() {
-		this.agentList = new ArrayList<GeneralAgentInterface>();
+		this.agentList = new ArrayList<AgentConfiguration>();
 		this.setNumberOfRuns(1);
 	}
 
@@ -72,7 +71,7 @@ public class SimulationRunFile implements SimulationRunInterface {
 	}
 
 	@Override
-	public ArrayList<GeneralAgentInterface> getAgentList() {
+	public ArrayList<AgentConfiguration> getAgentList() {
 		return agentList;
 	}
 

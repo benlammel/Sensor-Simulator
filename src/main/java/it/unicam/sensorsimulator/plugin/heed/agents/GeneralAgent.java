@@ -1,12 +1,9 @@
 package it.unicam.sensorsimulator.plugin.heed.agents;
 
-import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
-import java.util.Set;
 
 import it.unicam.sensorsimulator.interfaces.GeneralAgentInterface;
 import it.unicam.sensorsimulator.interfaces.LogFileWriterInterface;
@@ -30,15 +27,15 @@ public class GeneralAgent extends Agent {
 	private int clusterHead = 0;
 	private ArrayList<Integer> myClusterAgents;
 	private boolean isClusterHead = false;
+	private double eMax;
+	private double eResidential;
+	private double pMin;
 
 	protected void setup(){
 		initAndSetArguments();
 		log.logAgentAction(LogLevels.INFO, getAID().getLocalName() +" is up and waits");
 		myClusterAgents = new ArrayList<Integer>();
 
-////		addBehaviour(new ReceiveNeighborsListBehaviour(this));
-////		addBehaviour(new HeedClusteringBehaviour(this, generateTickNumber()));
-		
 		addBehaviour(new HeedBehaviour(this, generateTickNumber()));
 		addBehaviour(new SimulationControlBehaviour(this));
 		
@@ -56,6 +53,27 @@ public class GeneralAgent extends Agent {
 		log = (LogFileWriterInterface) args[0];
 		config = (AgentConfiguration) args[1];
 		nList = (HashMap<Integer, GeneralAgentInterface>) args[2];
+		
+		setAndApplyConfig();
+	}
+
+	private void setAndApplyConfig() {
+		log.logAgentAction(LogLevels.INFO, config.toString());
+		this.setEMax(config.geteMax());
+		this.setEResidential(config.geteResidential());
+		this.setpMin(config.getpMin());
+	}
+
+	private void setpMin(double pMin) {
+		this.pMin = pMin;	
+	}
+
+	private void setEResidential(double eResidential) {
+		this.eResidential = eResidential;		
+	}
+
+	private void setEMax(double eMax) {
+		this.eMax = eMax;
 	}
 
 	public HashMap<Integer, GeneralAgentInterface> getNeighborList() {
@@ -116,13 +134,17 @@ public class GeneralAgent extends Agent {
 	public AID convertAgentIDToAID(int agentID) {
 		return new AID(Integer.toString(agentID), AID.ISLOCALNAME);
 	}
-
-	public double getEMax() {
-		return 5000;
+	
+	public double getpMin() {
+		return pMin;
 	}
 
-	public double getEResidual() {
-		return 3000;
+	public double geteMax() {
+		return eMax;
+	}
+
+	public double geteResidual() {
+		return eResidential;
 	}
 
 	public int convertAgentAIDToInteger(AID aid) {

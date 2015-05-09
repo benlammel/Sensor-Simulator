@@ -23,7 +23,7 @@ public class HeedBehaviour extends TickerBehaviour {
 	
 	private double cProb = 0;
 	private double chProb = 0;
-	private double pMin = 0;
+//	private double pMin = 0;
 	private boolean isFinalCH = false;
 	
 	private boolean initializationTriggerReceived = false;
@@ -195,9 +195,7 @@ public class HeedBehaviour extends TickerBehaviour {
 
 	private void calculateCHProb() {
 		cProb = 5.0 / 100.0;
-		pMin = 1.0 / Math.pow(10.0, 4.0);
-		chProb = Math.max(cProb * agent.getEResidual() / agent.getEMax(), pMin);
-//		chProb = Math.random();
+		chProb = Math.max(cProb * agent.geteResidual() / agent.geteMax(), agent.getpMin());
 
 		track("calculateCHProb");
 	}
@@ -281,7 +279,7 @@ public class HeedBehaviour extends TickerBehaviour {
 		builder.append(";chprob;");
 		builder.append(chProb);
 		builder.append(";pmin;");
-		builder.append(pMin);
+		builder.append(agent.getpMin());
 		builder.append(";listOfClusterHeads;");
 		builder.append(listOfClusterHeads.keySet().toString());
 		builder.append(";chPrevious;");

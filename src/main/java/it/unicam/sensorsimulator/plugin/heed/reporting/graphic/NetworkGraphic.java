@@ -12,11 +12,21 @@ import java.util.Set;
 
 import org.apache.commons.collections15.Transformer;
 
+import edu.uci.ics.jung.algorithms.layout.FRLayout;
 import edu.uci.ics.jung.algorithms.layout.KKLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
+import edu.uci.ics.jung.algorithms.layout.TreeLayout;
+import edu.uci.ics.jung.graph.DelegateForest;
+import edu.uci.ics.jung.graph.DirectedSparseGraph;
+import edu.uci.ics.jung.graph.DirectedSparseMultigraph;
+import edu.uci.ics.jung.graph.Forest;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
+import edu.uci.ics.jung.graph.util.EdgeType;
 import edu.uci.ics.jung.visualization.BasicVisualizationServer;
+import edu.uci.ics.jung.visualization.DefaultVisualizationModel;
+import edu.uci.ics.jung.visualization.VisualizationModel;
+import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 import javafx.embed.swing.SwingNode;
@@ -29,15 +39,21 @@ public class NetworkGraphic extends SwingNode {
 
 	public NetworkGraphic(int taskID, int pictureWidth, int pictureHeight, Set<Integer> nodesList, HashMap<Integer, ArrayList<Integer>> networkView) {
 		this.taskID = taskID;
-		g = new SparseMultigraph<Integer, String>();
+		g = new DirectedSparseMultigraph<Integer, String>();
 		generateVertexts(nodesList);
 		generateEdges(networkView);
 		
-		layout = new KKLayout<Integer, String>(g);
+		Dimension preferredSize = new Dimension(600, 600);
+		
+		layout = new FRLayout<Integer, String>(g);
 		layout.setSize(new Dimension(pictureWidth, pictureHeight));
-		BasicVisualizationServer<Integer, String> vv = new BasicVisualizationServer<Integer, String>(
-				layout);
-		vv.setPreferredSize(new Dimension(pictureWidth, pictureHeight));
+		final VisualizationModel<Integer, String> visualizationModel = 	new DefaultVisualizationModel<Integer, String>(layout, preferredSize);
+		BasicVisualizationServer<Integer, String> vv = new VisualizationViewer<Integer, String>(visualizationModel, preferredSize);
+		
+		float dash[] = { 10.0f };
+		final Stroke edgeStroke = new BasicStroke(1.0f, BasicStroke.CAP_BUTT,
+				BasicStroke.JOIN_MITER, 10.0f, dash, 0.0f);
+		
 		Transformer<Integer, Paint> vertexPaint = new Transformer<Integer, Paint>() {
 			public Paint transform(Integer i) {
 				if(networkView.containsKey(i)){
@@ -48,9 +64,6 @@ public class NetworkGraphic extends SwingNode {
 				
 			}
 		};
-		float dash[] = { 10.0f };
-		final Stroke edgeStroke = new BasicStroke(1.0f, BasicStroke.CAP_BUTT,
-				BasicStroke.JOIN_MITER, 10.0f, dash, 0.0f);
 		Transformer<String, Stroke> edgeStrokeTransformer = new Transformer<String, Stroke>() {
 			public Stroke transform(String s) {
 				return edgeStroke;
@@ -69,7 +82,7 @@ public class NetworkGraphic extends SwingNode {
 //			System.out.println("grrr" +cluster.getKey() + "-"+ cluster.getValue());
 			if(!cluster.getValue().isEmpty()){
 				for(Integer clusterMembers : cluster.getValue()){
-					g.addEdge(Integer.toString(cluster.getKey()) + "-"+ Integer.toString(clusterMembers), cluster.getKey(), clusterMembers);
+					g.addEdge(Integer.toString(cluster.getKey()) + "-"+ Integer.toString(clusterMembers), cluster.getKey(), clusterMembers, EdgeType.DIRECTED);
 //					System.out.println("generateEdges" +cluster.getKey() + "-"+ Integer.toString(clusterMembers));
 				}
 			}

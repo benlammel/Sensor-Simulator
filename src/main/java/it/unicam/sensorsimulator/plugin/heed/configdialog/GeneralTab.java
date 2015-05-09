@@ -24,11 +24,6 @@ public class GeneralTab extends Tab {
 	private Text txtNoOfRuns;
 	private IntegerProperty sliderNoOfRunsValue = new SimpleIntegerProperty(1);
 	
-	/* Cluster */
-	private Slider sliderNoOfClusters;
-	private Text txtNoOfClusters;
-	private IntegerProperty sliderNoOfClustersValue = new SimpleIntegerProperty(1);
-
 	public GeneralTab(HeedPluginConfigDialog heedPluginConfigDialog) {
 		this.heedPluginConfigDialog = heedPluginConfigDialog;
 		this.setText("General");
@@ -56,26 +51,12 @@ public class GeneralTab extends Tab {
 		grid.add(ckInspector, 0, 3);
 
 		grid.add(new Label("Number of clusters: "), 0, 4);
-		grid.add(setupNoOfClusters(), 1, 4);
-		grid.add(txtNoOfClusters, 2, 4);
+		grid.add(new Label("Number of clusters: "), 1, 4);
+		grid.add(new Label("Number of clusters: "), 2, 4);
 		
 		this.setContent(grid);
 	}
 	
-	private Node setupNoOfClusters() {
-		sliderNoOfClusters = new Slider(1, 1, heedPluginConfigDialog.getNumberOfClusters());
-		sliderNoOfClusters.setShowTickLabels(true);
-		sliderNoOfClusters.setShowTickMarks(true);
-		sliderNoOfClusters.setMajorTickUnit(1);
-
-		txtNoOfClusters = new Text("1");
-		sliderNoOfClusters.valueProperty().bindBidirectional(
-				sliderNoOfClustersValue);
-		txtNoOfClusters.textProperty().bind(sliderNoOfClustersValue.asString());
-
-		return sliderNoOfClusters;
-	}
-
 	private Slider setupNoOfRuns() {
 		sliderNoOfRuns = new Slider(1, 10, heedPluginConfigDialog.getNumberOfRuns());
 		sliderNoOfRuns.setShowTickLabels(true);
@@ -91,11 +72,6 @@ public class GeneralTab extends Tab {
 
 	public int getNumberOfRuns() {
 		return (int)sliderNoOfRuns.getValue();
-	}
-
-	public void refreshContent() {
-		System.out.println("************ " +heedPluginConfigDialog.getNumberOfAgents());
-		sliderNoOfClusters.setMax(heedPluginConfigDialog.getNumberOfAgents());
 	}
 
 }
