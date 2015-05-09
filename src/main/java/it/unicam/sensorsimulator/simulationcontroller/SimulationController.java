@@ -12,7 +12,7 @@ import it.unicam.sensorsimulator.persistence.Folder;
 import it.unicam.sensorsimulator.simulationcontroller.xml.SerializationTools;
 import it.unicam.sensorsimulator.ui.SimulationEnvironmentMode;
 
-public class SimulationController implements SimulationControllerInterface {
+public class SimulationController {
 	
 	private StartEnvironment startEnvironment;
 	private MultiAgentEngineControllerInterface masController;
@@ -50,4 +50,9 @@ public class SimulationController implements SimulationControllerInterface {
 	public Parent getReportingPane() {
 		return startEnvironment.getApplicationFrame().getPluginHandler().getReportingPane();
 	}
+
+	public void abortOngoingSimulation() {
+		masController.abortOngoingSimulation();
+	}
+
 }

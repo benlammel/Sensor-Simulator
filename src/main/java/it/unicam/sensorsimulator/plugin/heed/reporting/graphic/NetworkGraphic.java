@@ -8,6 +8,7 @@ import java.awt.Stroke;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.commons.collections15.Transformer;
 
@@ -26,10 +27,10 @@ public class NetworkGraphic extends SwingNode {
 	private Graph<Integer, String> g;
 	private Layout<Integer, String> layout;
 
-	public NetworkGraphic(int taskID, int pictureWidth, int pictureHeight, HashMap<Integer, ArrayList<Integer>> networkView) {
+	public NetworkGraphic(int taskID, int pictureWidth, int pictureHeight, Set<Integer> nodesList, HashMap<Integer, ArrayList<Integer>> networkView) {
 		this.taskID = taskID;
 		g = new SparseMultigraph<Integer, String>();
-		generateVertexts(networkView);
+		generateVertexts(nodesList);
 		generateEdges(networkView);
 		
 		layout = new KKLayout<Integer, String>(g);
@@ -39,7 +40,12 @@ public class NetworkGraphic extends SwingNode {
 		vv.setPreferredSize(new Dimension(pictureWidth, pictureHeight));
 		Transformer<Integer, Paint> vertexPaint = new Transformer<Integer, Paint>() {
 			public Paint transform(Integer i) {
-				return Color.GREEN;
+				if(networkView.containsKey(i)){
+					return Color.LIGHT_GRAY;
+				}else{
+					return Color.GREEN;
+				}
+				
 			}
 		};
 		float dash[] = { 10.0f };
@@ -60,28 +66,23 @@ public class NetworkGraphic extends SwingNode {
 
 	private void generateEdges(HashMap<Integer, ArrayList<Integer>> networkView) {
 		for(Entry<Integer, ArrayList<Integer>> cluster : networkView.entrySet()){
-			System.out.println("grrr" +cluster.getKey() + "-"+ cluster.getValue());
+//			System.out.println("grrr" +cluster.getKey() + "-"+ cluster.getValue());
 			if(!cluster.getValue().isEmpty()){
 				for(Integer clusterMembers : cluster.getValue()){
 					g.addEdge(Integer.toString(cluster.getKey()) + "-"+ Integer.toString(clusterMembers), cluster.getKey(), clusterMembers);
-					System.out.println("generateEdges" +cluster.getKey() + "-"+ Integer.toString(clusterMembers));
+//					System.out.println("generateEdges" +cluster.getKey() + "-"+ Integer.toString(clusterMembers));
 				}
 			}
 		}
 	}
 
-	private void generateVertexts(
-			HashMap<Integer, ArrayList<Integer>> networkView) {
-		for(Entry<Integer, ArrayList<Integer>> cluster : networkView.entrySet()){
-			g.addVertex(cluster.getKey());
-			System.out.println("addVertex" +cluster.getKey());
-			if(!cluster.getValue().isEmpty()){
-				for(Integer clusterMembers : cluster.getValue()){
-					g.addVertex(clusterMembers);
-					System.out.println("addVertex" +clusterMembers);
-
-				}
-			}
+	private void generateVertexts(Set<Integer> nodesList) {
+		for(Integer node : nodesList){
+			g.addVertex(node);
 		}
+	}
+
+	public int getTaskID() {
+		return taskID;
 	}
 }

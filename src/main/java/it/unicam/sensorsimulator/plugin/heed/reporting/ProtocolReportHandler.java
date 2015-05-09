@@ -4,13 +4,11 @@ import it.unicam.sensorsimulator.plugin.heed.reporting.graphic.NetworkGraphic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TitledPane;
@@ -20,7 +18,7 @@ import javafx.scene.text.Text;
 public class ProtocolReportHandler extends TitledPane {
 	
 	private HashMap<Integer, ArrayList<Integer>> networkView;
-	private ArrayList<NetworkGraphic> networkEvolutionSteps;
+	private HashMap<Integer, NetworkGraphic> networkEvolutionSteps;
 	
 	private final int pictureWidth = 600;
 	private final int pictureHeight = 400;
@@ -29,11 +27,12 @@ public class ProtocolReportHandler extends TitledPane {
 	
 	private BorderPane layout;
 	private Spinner<Integer> spinner;
+	private Set<Integer> nodesList;
 		
 	public ProtocolReportHandler(){
 		this.setText("Protocol");
 		networkView =  new HashMap<Integer, ArrayList<Integer>>();
-		networkEvolutionSteps = new ArrayList<NetworkGraphic>();
+		networkEvolutionSteps = new HashMap<Integer, NetworkGraphic>();
 		
 		layout = new BorderPane();
 		layout.setCenter(new Text("noting to show yet"));
@@ -72,7 +71,9 @@ public class ProtocolReportHandler extends TitledPane {
 	}
 	
 	private void displayPicture(int newValue) {
-		layout.setCenter(networkEvolutionSteps.get(newValue));
+		if(networkEvolutionSteps.containsKey(newValue)){
+			layout.setCenter(networkEvolutionSteps.get(newValue));
+		}
 	}
 
 	private void updateSpinner() {
@@ -87,21 +88,24 @@ public class ProtocolReportHandler extends TitledPane {
 	public void updateNetworkView(int clusterHead,
 			ArrayList<Integer> clusterMembers) {
 		networkView.put(clusterHead, clusterMembers);
-		System.out.println(networkView);
 		generateAndUpdateEvolutionPicture();
 	}
 
 	private void generateAndUpdateEvolutionPicture() {
 		
-		GraphicGenerationTask task = new GraphicGenerationTask(taskID++, pictureWidth, pictureHeight, networkView);
+		GraphicGenerationTask task = new GraphicGenerationTask(taskID++, pictureWidth, pictureHeight, nodesList, networkView);
 		task.run();
 		try {
-			networkEvolutionSteps.add(task.get());
+			networkEvolutionSteps.put(task.get().getTaskID(), task.get());
 			updateSpinner();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void setNodes(Set<Integer> keySet) {
+		nodesList = keySet;
 	}
 }

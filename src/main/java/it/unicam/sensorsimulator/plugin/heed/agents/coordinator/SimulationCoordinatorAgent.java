@@ -3,7 +3,6 @@ package it.unicam.sensorsimulator.plugin.heed.agents.coordinator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
-
 import jade.core.AID;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
@@ -49,6 +48,7 @@ public class SimulationCoordinatorAgent extends Agent implements SimulationCoord
 		for(GeneralAgentInterface agent : simRunFile.getAgentList()){
 			agentNetworkList.put(agent.getAgentID(), agent);
 		}
+		getReportingHandler().addNodes(agentNetworkList.keySet());
 	}
 
 	private void startAgents() throws StaleProxyException {
@@ -67,7 +67,8 @@ public class SimulationCoordinatorAgent extends Agent implements SimulationCoord
 			Object[] args = new Object[3];
 			args[0] = log;
 			args[1] = agent;
-			args[2] = calculateNeighborsList(agent.getAgentID());
+//			args[2] = calculateNeighborsList(agent.getAgentID());
+			args[2] = agentNetworkList;
 			
 			agentList.put(agent.getAgentID(), container.createNewAgent(name, GeneralAgent.class.getCanonicalName(), args));
 			log.logCoordinatorAction(LogLevels.INFO, "Agent " +agent.getAgentID() + " has been created");
@@ -102,10 +103,6 @@ public class SimulationCoordinatorAgent extends Agent implements SimulationCoord
 		log = (LogFileWriterInterface) args[0];
         simRunFile = (SimulationRunFile) args[1];
         reportingHandler = (ReportingModule) args[2];
-	}
-	
-	public HashMap<Integer, GeneralAgentInterface> getAgentList() {
-		return agentNetworkList;
 	}
 
 	public void sendMessage(ACLMessage message) {
@@ -153,5 +150,9 @@ public class SimulationCoordinatorAgent extends Agent implements SimulationCoord
 
 	public int convertAIDToInteger(AID aid) {
 		return Integer.parseInt(aid.getLocalName());
+	}
+
+	public HashMap<Integer, AgentController> getAgentControllerList() {
+		return agentList;
 	}
 }

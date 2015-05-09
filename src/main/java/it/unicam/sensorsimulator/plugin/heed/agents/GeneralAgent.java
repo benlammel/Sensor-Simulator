@@ -6,11 +6,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.Set;
 
 import it.unicam.sensorsimulator.interfaces.GeneralAgentInterface;
 import it.unicam.sensorsimulator.interfaces.LogFileWriterInterface;
 import it.unicam.sensorsimulator.interfaces.LogFileWriterInterface.LogLevels;
 import it.unicam.sensorsimulator.plugin.heed.agents.behaviours.HeedBehaviour;
+import it.unicam.sensorsimulator.plugin.heed.agents.behaviours.SimulationControlBehaviour;
 import it.unicam.sensorsimulator.plugin.heed.messages.MessageTypes;
 import it.unicam.sensorsimulator.plugin.heed.messages.MessageTypes.MessageHandling;
 import jade.core.AID;
@@ -27,15 +29,18 @@ public class GeneralAgent extends Agent {
 	private HashMap<String, Integer> receivedMessageCounter;
 	private int clusterHead = 0;
 	private ArrayList<Integer> myClusterAgents;
+	private boolean isClusterHead = false;
 
 	protected void setup(){
 		initAndSetArguments();
 		log.logAgentAction(LogLevels.INFO, getAID().getLocalName() +" is up and waits");
 		myClusterAgents = new ArrayList<Integer>();
+
+////		addBehaviour(new ReceiveNeighborsListBehaviour(this));
+////		addBehaviour(new HeedClusteringBehaviour(this, generateTickNumber()));
 		
-//		addBehaviour(new ReceiveNeighborsListBehaviour(this));
-//		addBehaviour(new HeedClusteringBehaviour(this, generateTickNumber()));
 		addBehaviour(new HeedBehaviour(this, generateTickNumber()));
+		addBehaviour(new SimulationControlBehaviour(this));
 		
 	}
 	
@@ -54,9 +59,6 @@ public class GeneralAgent extends Agent {
 	}
 
 	public HashMap<Integer, GeneralAgentInterface> getNeighborList() {
-		if(nList == null){
-			nList = new HashMap<Integer, GeneralAgentInterface>();
-		}
 		return nList;
 	}
 
@@ -127,13 +129,9 @@ public class GeneralAgent extends Agent {
 		return Integer.parseInt(aid.getLocalName());
 	}
 
-	public void setClusterHead(int agentID) {
-		clusterHead = agentID;
-	}
-
 	public void addToMyCluster(int agentID) {
 		myClusterAgents.add(agentID);
-		System.out.println(getAgentConfiguration().getAgentID() +" added " +agentID +" :: " +myClusterAgents.toString());
+		this.log.logAgentAction(LogLevels.INFO, getAgentConfiguration().getAgentID() +" added " +agentID +" :: " +myClusterAgents.toString());
 	}
 	
 	public ArrayList<Integer> getMyClusterView() {
@@ -144,8 +142,28 @@ public class GeneralAgent extends Agent {
 		return log;
 	}
 
-	public boolean isConnected() {
+	public boolean isConnectedToAClusterHead() {
 		if(clusterHead!=0){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public void setMyClusterHead(int clusterHeadID) {
+		clusterHead  = clusterHeadID;
+		ACLMessage message = new ACLMessage(ACLMessage.INFORM);
+		message.setConversationId(MessageTypes.MEASUREMENT_CLUSTER_FORMING_END);
+		message.addReceiver(getSimulationCoordinatorAID());
+		sendMessage(message);
+	}
+
+	public void isClusterHead(boolean b) {
+		isClusterHead  = b;
+	}
+
+	public boolean isConnectedToClusterHeadOrIsClusterHead() {
+		if(isClusterHead || clusterHead!=0){
 			return true;
 		}else{
 			return false;

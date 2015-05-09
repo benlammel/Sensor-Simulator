@@ -8,4 +8,6 @@ public interface MultiAgentEngineControllerInterface {
 
 	public void performSimulation(SimulationRunInterface simulationRun) throws Exception;
 
+	public void abortOngoingSimulation();
+
 }

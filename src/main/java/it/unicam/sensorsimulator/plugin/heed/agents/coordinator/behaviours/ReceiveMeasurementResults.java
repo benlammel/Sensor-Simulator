@@ -24,42 +24,38 @@ public class ReceiveMeasurementResults extends CyclicBehaviour {
 	public void action() {
 		ACLMessage msg = simulationCoordinatorAgent.receive();
 		if (msg != null) {
-			simulationCoordinatorAgent.receiveMessageCounter(msg,
-					MessageHandling.INCREASE);
+			
 			switch (msg.getConversationId()) {
-			case MessageTypes.MEASUREMENT_PROTOCOL:
-				handleProtocolMeasurements(msg);
+			case MessageTypes.MEASUREMENT_CLUSTERFORMING_PROTOCOL:
+				simulationCoordinatorAgent.receiveMessageCounter(msg, MessageHandling.INCREASE);
+				handleClusterFormingProtocol(msg);
+				break;
+			case MessageTypes.MEASUREMENT_CLUSTER_FORMING_END:
+				simulationCoordinatorAgent.receiveMessageCounter(msg, MessageHandling.INCREASE);
+				handleClusterFormingEnd(msg);
 				break;
 			default:
 				simulationCoordinatorAgent.putBack(msg);
-				simulationCoordinatorAgent.receiveMessageCounter(msg,
-						MessageHandling.DECREASE);
+//				simulationCoordinatorAgent.receiveMessageCounter(msg,MessageHandling.DECREASE);
 				break;
 			}
 		}
 	}
 	
-	private void handleProtocolMeasurements(ACLMessage msg) {
+	private void handleClusterFormingEnd(ACLMessage msg) {
+		ACLMessage message = new ACLMessage(ACLMessage.INFORM);
+		message.setConversationId(MessageTypes.SIMULATION_CONTROLS_END);
+		message.addReceiver(msg.getSender());
+		simulationCoordinatorAgent.sendMessage(message);
+	}
+
+	private void handleClusterFormingProtocol(ACLMessage msg) {
 		ArrayList<Integer> clusterMembers = null;
 		try {
 			 clusterMembers = (ArrayList<Integer>) msg.getContentObject();
-			 System.out.println(")))))))))))))))))))))))))))handleProtocolMeasurements" +clusterMembers);
 			 simulationCoordinatorAgent.getReportingHandler().addProtocolMeasurement(simulationCoordinatorAgent.convertAIDToInteger(msg.getSender()), clusterMembers);
 		} catch (UnreadableException e) {
 			e.printStackTrace();
 		}
-		
 	}
-	
-
-//	private void handleM1(ACLMessage msg) {
-//		ArrayList<Integer> results = null;
-//		try {
-//			 results = (ArrayList<Integer>) msg.getContentObject();
-//			 System.out.println(results);
-//			 simulationCoordinatorAgent.getReportingHandler().publish(convertAIDToInteger(msg.getSender()), results);
-//		} catch (UnreadableException e) {
-//			e.printStackTrace();
-//		}
-//	}
 }

@@ -113,6 +113,7 @@ public class ApplicationFrame extends BorderPane {
 			showStartDialog();
 			break;
 		case STOPSIMULATION:
+			startEnvironment.getSimulationController().abortOngoingSimulation();
 			break;
 		case ADDAGENT:
 			drawPanel.addAgent();

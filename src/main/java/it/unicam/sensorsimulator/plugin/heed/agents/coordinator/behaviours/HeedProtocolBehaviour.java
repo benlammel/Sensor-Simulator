@@ -32,6 +32,7 @@ public class HeedProtocolBehaviour extends CyclicBehaviour {
 			switch(msg.getConversationId()){
 			case MessageTypes.START_INIZIALIZATION:
 				break;
+				
 			default:
 				simulationCoordinatorAgent.putBack(msg);
 				simulationCoordinatorAgent.receiveMessageCounter(msg, MessageHandling.DECREASE);
@@ -41,7 +42,7 @@ public class HeedProtocolBehaviour extends CyclicBehaviour {
 	}
 
 	private void sendInizializationTrigger() {
-		for(Entry<Integer, GeneralAgentInterface> agent : simulationCoordinatorAgent.getAgentList().entrySet()){
+		for(Entry<Integer, GeneralAgentInterface> agent : simulationCoordinatorAgent.getAgentNetworkList().entrySet()){
 			sendMessageInizalizationTriggerToAgent(new AID(Integer.toString(agent.getKey()), AID.ISLOCALNAME));
 		}
 		inizalizationTriggerSent = true;

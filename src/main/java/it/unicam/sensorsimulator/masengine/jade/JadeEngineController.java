@@ -26,6 +26,13 @@ public class JadeEngineController implements
 	private ArrayList<AgentController> agentRunController;
 	private SimulationController simulationController;
 	
+	private AgentController simulationCoordinatorAgent = null;
+	private AgentController snifferController;
+	private AgentController rmaController;
+	private AgentController inspectorController;
+	
+	private SimulationRunInterface currentRunFile;
+	
 	public JadeEngineController(SimulationController simulationController) {
 		this.simulationController = simulationController;
 		mainContainer = getJadeRunTime().createMainContainer(
@@ -55,14 +62,15 @@ public class JadeEngineController implements
 	}
 
 	private void setupCoordinatorAgentAndRun(SimulationRunInterface simulationRun) throws StaleProxyException {
+		currentRunFile = simulationRun;
 		Object[] args = new Object[3];
 		args[0] = LogFileHandler.getInstance();
 		args[1] = simulationRun;
 		args[2] = simulationController.getReportingPane();
 			
-		AgentController a = agentContainer.createNewAgent("SimulationCoordinator", loadCoordinatorClass().getCanonicalName(), args);
-		agentRunController.add(a);
-		a.start();
+		simulationCoordinatorAgent = agentContainer.createNewAgent("SimulationCoordinator", loadCoordinatorClass().getCanonicalName(), args);
+		agentRunController.add(simulationCoordinatorAgent);
+		simulationCoordinatorAgent.start();
 	}
 
 	private Class<?> loadCoordinatorClass() {
@@ -71,7 +79,8 @@ public class JadeEngineController implements
 
 	private void startInspectorAgent(boolean value) throws StaleProxyException {
 		if (value) {
-			agentContainer.createNewAgent(JadePlatformAgents.INSPECTOR.getName(), Introspector.class.getCanonicalName(), null).start();
+			inspectorController = agentContainer.createNewAgent(JadePlatformAgents.INSPECTOR.getName(), Introspector.class.getCanonicalName(), null);
+			inspectorController.start();
 		}
 	}
 
@@ -80,15 +89,29 @@ public class JadeEngineController implements
 			Object[] args = new Object[1];
 			args[0] = "ID*";
 
-			agentContainer.createNewAgent(JadePlatformAgents.SNIFFER.getName(),
-					Sniffer.class.getCanonicalName(), args).start();
+			snifferController = agentContainer.createNewAgent(JadePlatformAgents.SNIFFER.getName(),
+					Sniffer.class.getCanonicalName(), args);
+			snifferController.start();
 		}
 	}
 
 	private void startRMA(boolean value) throws StaleProxyException {
 		if (value) {
-			agentContainer.createNewAgent(JadePlatformAgents.RMA.getName(),
-					rma.class.getCanonicalName(), null).start();
+			rmaController = agentContainer.createNewAgent(JadePlatformAgents.RMA.getName(),
+					rma.class.getCanonicalName(), null);
+			rmaController.start();
+			
+		}
+	}
+
+	@Override
+	public void abortOngoingSimulation() {	
+		try {
+			agentContainer.kill();
+			agentContainer = getJadeRunTime().createAgentContainer(
+					new ProfileImpl(null, CONTAINER_PORT, null));
+		} catch (StaleProxyException e) {
+			e.printStackTrace();
 		}
 	}
 }
