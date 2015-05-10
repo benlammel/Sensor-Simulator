@@ -1,6 +1,7 @@
 package it.unicam.sensorsimulator.ui.panels;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import it.unicam.sensorsimulator.interfaces.GeneralAgentInterface;
 import it.unicam.sensorsimulator.interfaces.SimulationRunInterface;
@@ -67,5 +68,21 @@ public class DrawPanel extends Pane {
 			}
 		}
 		return agentList;
+	}
+
+	public void generateRandomAgents(int numberOfAgents) {
+		clearPanel();
+		int radius = 20;
+		for(int i = 0; i<numberOfAgents; i++){
+			addAgent(new GUIAgent(applicationFrame, ++agentID,radius, generateRandomNumber(radius, applicationFrame.getWidth()-radius),
+					generateRandomNumber(radius, applicationFrame.getHeight()-radius-70)));
+		}
+	}
+
+	private int generateRandomNumber(double lowVal, double highVal) {
+		Random r = new Random();
+		int low = (int) lowVal;
+		int high = (int) highVal;
+		return r.nextInt(high-low) + low;
 	}
 }

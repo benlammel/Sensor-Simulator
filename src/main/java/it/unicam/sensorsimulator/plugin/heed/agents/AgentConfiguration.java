@@ -16,6 +16,7 @@ public class AgentConfiguration implements GeneralAgentInterface, Serializable {
 	private double eMax;
 	private double eResidential;
 	private double pMin;
+	private AgentTypes agentType;
 	
 	public AgentConfiguration() {
 	}
@@ -116,5 +117,14 @@ public class AgentConfiguration implements GeneralAgentInterface, Serializable {
 		builder.append(";p min;");
 		builder.append(getpMin());
 		return builder.toString();
+	}
+
+	public AgentTypes getAgentType() {
+		return agentType;
+	}
+	
+	@XmlAttribute
+	public void setAgentType(AgentTypes type) {
+		this.agentType = type;
 	}
 }

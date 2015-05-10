@@ -41,7 +41,6 @@ public class ApplicationFrame extends BorderPane {
 	
 	public ApplicationFrame(StartEnvironment startEnvironment){
 		this.startEnvironment = startEnvironment;
-//		simulationController = startEnvironment.getSimulationController();
 		generalDialogHandler = new GeneralDialogHandler();
 		pluginHandler = new PluginHandler(this, generalDialogHandler);
 		log = LogFileHandler.getInstance();
@@ -76,8 +75,6 @@ public class ApplicationFrame extends BorderPane {
 			break;
 		case RUNNINGSIMULATION:
 			break;
-		default:
-			break;
 		}
 	}
 	
@@ -103,10 +100,9 @@ public class ApplicationFrame extends BorderPane {
 		case LOADFILE:
 			loadFromFile();
 			break;
-		case PAUSESIMULATION:
-			break;
 		case SAVEFILE:
 			fileChooser.setTitle("Save Resource File");
+			pluginHandler.getCurrentPlugin().refreshSettingsDialogContent();
 			SerializationTools.saveToXML(fileChooser.showSaveDialog(startEnvironment.getScene()), pluginHandler.generateAndReturnSimulationRunFile());
 			break;
 		case STARTSIMULATION:
@@ -117,6 +113,9 @@ public class ApplicationFrame extends BorderPane {
 			break;
 		case ADDAGENT:
 			drawPanel.addAgent();
+			break;
+		case RANDOMAGENTGENERATION:
+			drawPanel.generateRandomAgents(generalDialogHandler.showIntegerInputDialog(DialogMessages.RANDOMAGENTMESSAGE));
 			break;
 		default:
 			break;
@@ -142,7 +141,7 @@ public class ApplicationFrame extends BorderPane {
 				log.catching(e);
 				generalDialogHandler.showDialog(DialogMessages.ERRORSTARTINGSIMULATION, e);
 			}
-			 }		
+			 }
 	}
 
 	private void openXMLFileHandling(File file, Class<?> parseClass) {

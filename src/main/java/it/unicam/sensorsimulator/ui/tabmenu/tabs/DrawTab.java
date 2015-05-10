@@ -55,12 +55,12 @@ public class DrawTab extends Tab {
 				createColorPicker(),
 				new Separator(),
 				new ToolbarButton(TabButtons.STARTSIMULATION, applicationFrame),
-				new ToolbarButton(TabButtons.PAUSESIMULATION, applicationFrame),
 				new ToolbarButton(TabButtons.STOPSIMULATION, applicationFrame),
 				new Separator(),
 				cboPlugins,
 				new Separator(),
-				new ToolbarButton(TabButtons.ADDAGENT, applicationFrame));
+				new ToolbarButton(TabButtons.ADDAGENT, applicationFrame),
+				new ToolbarButton(TabButtons.RANDOMAGENTGENERATION, applicationFrame));
 		return toolbar;
 	}
 

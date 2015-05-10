@@ -3,11 +3,13 @@ package it.unicam.sensorsimulator.plugin.heed.configdialog;
 import it.unicam.sensorsimulator.interfaces.GeneralAgentInterface;
 import it.unicam.sensorsimulator.interfaces.SimulationRunInterface;
 import it.unicam.sensorsimulator.plugin.heed.agents.AgentConfiguration;
+import it.unicam.sensorsimulator.plugin.heed.agents.AgentTypes;
 import it.unicam.sensorsimulator.plugin.heed.simulation.SimulationRunFile;
 
 import java.util.ArrayList;
 
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,9 +19,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.Callback;
+import javafx.util.converter.DefaultStringConverter;
 import javafx.util.converter.NumberStringConverter;
 
 public class NodeTab extends Tab {
@@ -56,6 +60,23 @@ public class NodeTab extends Tab {
 		columns.add(nodeID);
 		
 		nodeType = new TableColumn("Type");
+		nodeType.setCellFactory(ComboBoxTableCell.<AgentConfiguration, AgentTypes>forTableColumn(AgentTypes.values()));
+		nodeType.setCellValueFactory(new Callback<CellDataFeatures<AgentConfiguration, AgentTypes>, ObservableValue<AgentTypes>>() {
+		     public ObservableValue<AgentTypes> call(CellDataFeatures<AgentConfiguration, AgentTypes> p) {
+		         return new SimpleObjectProperty(p.getValue().getAgentType());
+		     }
+		  });
+		nodeType.setOnEditCommit(
+			    new EventHandler<CellEditEvent<AgentConfiguration, AgentTypes>>() {
+			        @Override
+			        public void handle(CellEditEvent<AgentConfiguration, AgentTypes> t) {
+			            ((AgentConfiguration) t.getTableView().getItems().get(
+			                t.getTablePosition().getRow())
+			                ).setAgentType(t.getNewValue());
+			        }
+			    }
+			);
+		
 		columns.add(nodeType);
 		
 		eMax = new TableColumn<AgentConfiguration,Double>("E Max");
@@ -139,6 +160,9 @@ public class NodeTab extends Tab {
 	}
 
 	private void setStandardValues(AgentConfiguration agent) {
+		if(agent.getAgentType()==null){
+			agent.setAgentType(AgentTypes.TEMPERATURE);
+		}
 		if(agent.getpMin()==0.0){
 			agent.setpMin(pMinStandardValue);
 		}

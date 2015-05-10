@@ -3,10 +3,14 @@ package it.unicam.sensorsimulator.ui.dialogs;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Optional;
+
+import org.controlsfx.dialog.Dialogs;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
@@ -58,6 +62,27 @@ public class GeneralDialogHandler {
 
 		alert.showAndWait();
 		
+	}
+
+	public int showIntegerInputDialog(DialogMessages dialog) {
+		int value = 120;
+		TextInputDialog tInputDialog = new TextInputDialog(Integer.toString(value));
+		tInputDialog.setTitle("Input");
+		tInputDialog.setHeaderText(dialog.getHeader());
+		tInputDialog.setContentText(dialog.getMessage());
+		
+		Optional<String> result = tInputDialog.showAndWait();
+		if (result.isPresent()){
+			try	{
+			   value = Integer.parseInt(result.get());
+			   if(value<=1){
+				   value = 120;
+			   }
+			}catch (NumberFormatException e){
+			   value = 120;
+			}
+		}
+		return value;
 	}
 
 }

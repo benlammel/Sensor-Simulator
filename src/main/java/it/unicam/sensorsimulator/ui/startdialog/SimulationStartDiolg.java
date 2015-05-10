@@ -23,6 +23,7 @@ public class SimulationStartDiolg extends Dialog<ButtonType> {
 	private DrawPanel drawPanel;
 	private PluginHandler pluginHandler;
 	private ButtonType btnOK;
+	private ButtonType btnAPPLY;
 	private BorderPane pane;
 	
 	public SimulationStartDiolg(ApplicationFrame applicationFrame, DrawPanel drawPanel, PluginHandler pluginHandler) {
@@ -36,13 +37,14 @@ public class SimulationStartDiolg extends Dialog<ButtonType> {
 		getDialogPane().setContent(pane);
 		this.setResizable(true);
 
-		getDialogPane().getButtonTypes().addAll(btnOK, ButtonType.CANCEL);
+		getDialogPane().getButtonTypes().addAll(btnAPPLY, btnOK, ButtonType.CANCEL);
 	}
 
 	private void initDialog() {
 		setTitle("Simulation Settings");
 		setHeaderText("Simulation Settings");
 		btnOK = new ButtonType("Start Simulation", ButtonData.OK_DONE);
+		btnAPPLY = new ButtonType("Apply", ButtonData.APPLY);
 	}
 
 	public ButtonType getStartButton() {
