@@ -3,6 +3,7 @@ package it.unicam.sensorsimulator.plugin.heed.agents.coordinator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
+
 import jade.core.AID;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
@@ -14,10 +15,12 @@ import it.unicam.sensorsimulator.interfaces.LogFileWriterInterface;
 import it.unicam.sensorsimulator.interfaces.SimulationCoordinatorAgentInterface;
 import it.unicam.sensorsimulator.interfaces.LogFileWriterInterface.LogLevels;
 import it.unicam.sensorsimulator.plugin.heed.agents.GeneralAgent;
-import it.unicam.sensorsimulator.plugin.heed.agents.coordinator.behaviours.HeedProtocolBehaviour;
 import it.unicam.sensorsimulator.plugin.heed.agents.coordinator.behaviours.ReceiveMeasurementResults;
+import it.unicam.sensorsimulator.plugin.heed.messages.MessageTypes;
 import it.unicam.sensorsimulator.plugin.heed.messages.MessageTypes.MessageHandling;
+import it.unicam.sensorsimulator.plugin.heed.reporting.AgentStatistic;
 import it.unicam.sensorsimulator.plugin.heed.reporting.ReportingModule;
+import it.unicam.sensorsimulator.plugin.heed.reporting.RunResults;
 import it.unicam.sensorsimulator.plugin.heed.simulation.SimulationRunFile;
 
 public class SimulationCoordinatorAgent extends Agent implements SimulationCoordinatorAgentInterface {
@@ -30,19 +33,35 @@ public class SimulationCoordinatorAgent extends Agent implements SimulationCoord
 	private HashMap<String, Integer> receivedMessageCounter;
 	private ReportingModule reportingHandler;
 	
+	private int run = 0;
+	private RunResults runResults;
+	private HashMap<Integer, RunResults> runResultList;
+	
 	protected void setup(){
+		runResultList = new HashMap<Integer, RunResults>();
+		runResults = new RunResults(run);
+
 		initAndSetArguments();
 		try {
 			generateNetworkList();
 			loadAgents();
 			startAgents();
-			addBehaviour(new HeedProtocolBehaviour(this));
 			addBehaviour(new ReceiveMeasurementResults(this));
+			sendInizializationTrigger();
 		} catch (StaleProxyException e) {
 			e.printStackTrace();
 		}
 	}
 	
+	private void sendInizializationTrigger() {
+		for(Entry<Integer, GeneralAgentInterface> agent : getAgentNetworkList().entrySet()){
+			ACLMessage message = new ACLMessage(ACLMessage.INFORM);
+			message.setConversationId(MessageTypes.SIMULATION_CONTROLS_START_INIZIALIZATION);
+			message.addReceiver(convertAgentIDToAID(agent.getKey()));
+			sendMessage(message);
+		}
+	}
+
 	private void generateNetworkList() {
 		agentNetworkList = new HashMap<Integer, GeneralAgentInterface>();
 		for(GeneralAgentInterface agent : simRunFile.getAgentList()){
@@ -64,11 +83,11 @@ public class SimulationCoordinatorAgent extends Agent implements SimulationCoord
 		for(GeneralAgentInterface agent : simRunFile.getAgentList()){
 			
 			String name = Integer.toString(agent.getAgentID());
-			Object[] args = new Object[3];
+			Object[] args = new Object[4];
 			args[0] = log;
 			args[1] = agent;
-//			args[2] = calculateNeighborsList(agent.getAgentID());
 			args[2] = agentNetworkList;
+			args[3] = simRunFile.getGenerateRandomCosts();
 			
 			agentList.put(agent.getAgentID(), container.createNewAgent(name, GeneralAgent.class.getCanonicalName(), args));
 			log.logCoordinatorAction(LogLevels.INFO, "Agent " +agent.getAgentID() + " has been created");
@@ -154,5 +173,54 @@ public class SimulationCoordinatorAgent extends Agent implements SimulationCoord
 
 	public HashMap<Integer, AgentController> getAgentControllerList() {
 		return agentList;
+	}
+
+	
+	
+	public void addStatistics(int agentID, AgentStatistic statisticFile) {
+		runResults.addAgentStatistics(agentID, statisticFile);
+	}
+
+	public void addClusterHead(int clusterHeadID) {
+		if(!runResults.getClusterHeadList().contains(clusterHeadID)){
+			runResults.addClusterHead(clusterHeadID);
+		}
+	}
+
+	public RunResults getRunResults() {
+		return runResults;
+	}
+
+	public SimulationRunFile getSimulationRunFile() {
+		return simRunFile;
+	}
+
+	public AID convertAgentIDToAID(int agentID) {
+		return new AID(Integer.toString(agentID), AID.ISLOCALNAME);
+	}
+
+	public void initiateNewRunOrEnd() {
+		runResults.addCoordinatorStatistics(new AgentStatistic(sentMessageCounter, receivedMessageCounter));
+		if(run==simRunFile.getNumberOfRuns()){
+			getReportingHandler().addRunResults(runResultList);
+			this.doDelete();
+		}else{
+			run++;
+			runResultList.put(runResults.getRunID(), runResults);
+			runResults = new RunResults(run);
+			resetStatistics();
+			try {
+				loadAgents();
+				startAgents();
+			} catch (StaleProxyException e) {
+				e.printStackTrace();
+			}
+			sendInizializationTrigger();
+		}
+	}
+
+	private void resetStatistics() {
+		sentMessageCounter.clear();
+		receivedMessageCounter.clear();
 	}
 }

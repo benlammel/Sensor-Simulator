@@ -29,5 +29,14 @@ public class HeedMessage implements Serializable {
 	public ClusterHeadType getClusterHeadType() {
 		return clusterHeadType;
 	}
+	
+	public String toString(){
+		if(clusterHeadType!=null){
+			return "type;" +clusterHeadType +";costs;" +cost;
+		}else{
+			return "type;-;costs;" +cost;
+		}
+		
+	}
 
 }

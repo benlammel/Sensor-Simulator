@@ -23,7 +23,7 @@ public class SimulationRunFile implements SimulationRunInterface {
 	@XmlElementWrapper(name = "agentlist")
 	@XmlElement(name = "agent", type=AgentConfiguration.class)
 	private ArrayList<AgentConfiguration> agentList;
-	private int numberOfClusters;
+	private boolean generateRandomCosts;
 	
 	public SimulationRunFile() {
 		this.agentList = new ArrayList<AgentConfiguration>();
@@ -31,6 +31,7 @@ public class SimulationRunFile implements SimulationRunInterface {
 	}
 
 	@Override
+	@XmlElement
 	public boolean getStartMASObservationUI() {
 		return startMASObservationUI;
 	}
@@ -41,6 +42,7 @@ public class SimulationRunFile implements SimulationRunInterface {
 	}
 
 	@Override
+	@XmlElement
 	public boolean getStartSnifferAgent() {
 		return startSnifferAgent;
 	}
@@ -51,6 +53,7 @@ public class SimulationRunFile implements SimulationRunInterface {
 	}
 
 	@Override
+	@XmlElement
 	public boolean getStartInspectorAgent() {
 		return startInspectorAgent;
 	}
@@ -61,6 +64,7 @@ public class SimulationRunFile implements SimulationRunInterface {
 	}
 
 	@Override
+	@XmlElement
 	public int getNumberOfRuns() {
 		return numberOfRuns;
 	}
@@ -75,15 +79,16 @@ public class SimulationRunFile implements SimulationRunInterface {
 		return agentList;
 	}
 
-	public int getNumberOfClusters() {
-		return this.numberOfClusters;
-	}
-	
-	public void setNumberOfClusters(int numberOfClusters) {
-		this.numberOfClusters = numberOfClusters;
-	}
-
 	public void addAgent(AgentConfiguration a) {
 		agentList.add(a);
+	}
+
+	@XmlElement
+	public boolean getGenerateRandomCosts() {
+		return generateRandomCosts;
+	}
+	
+	public void setGenerateRandomCosts(boolean generateRandomCosts) {
+		this.generateRandomCosts = generateRandomCosts;
 	}
 }

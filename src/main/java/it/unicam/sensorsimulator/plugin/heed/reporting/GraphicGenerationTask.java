@@ -1,5 +1,5 @@
 package it.unicam.sensorsimulator.plugin.heed.reporting;
-
+/*
 import it.unicam.sensorsimulator.plugin.heed.reporting.graphic.NetworkGraphic;
 
 import java.util.ArrayList;
@@ -30,3 +30,4 @@ public class GraphicGenerationTask extends Task<NetworkGraphic> {
 	}
 
 }
+*/

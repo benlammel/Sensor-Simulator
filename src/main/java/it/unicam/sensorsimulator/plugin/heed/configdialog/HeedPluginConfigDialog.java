@@ -40,9 +40,10 @@ public class HeedPluginConfigDialog extends BorderPane {
 
 	public SimulationRunInterface generateAndReturnSimulationRunFile() {
 		simulationRunFile.setNumberOfRuns(generalTab.getNumberOfRuns());
-		simulationRunFile.setStartInspectorAgent(false);
-		simulationRunFile.setStartMASObservationUI(true);
-		simulationRunFile.setStartSnifferAgent(false);
+		simulationRunFile.setStartInspectorAgent(generalTab.getStartInspectorAgent());
+		simulationRunFile.setStartMASObservationUI(generalTab.getStartMASObservationUI());
+		simulationRunFile.setStartSnifferAgent(generalTab.getStartSnifferAgent());
+		simulationRunFile.setGenerateRandomCosts(generalTab.getGenerateRandomCosts());
 
 		loadAgents();
 

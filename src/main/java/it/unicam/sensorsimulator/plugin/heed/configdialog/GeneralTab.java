@@ -23,6 +23,8 @@ public class GeneralTab extends Tab {
 	private Slider sliderNoOfRuns;
 	private Text txtNoOfRuns;
 	private IntegerProperty sliderNoOfRunsValue = new SimpleIntegerProperty(1);
+
+	private CheckBox ckRandomCost;
 	
 	public GeneralTab(HeedPluginConfigDialog heedPluginConfigDialog) {
 		this.heedPluginConfigDialog = heedPluginConfigDialog;
@@ -50,9 +52,10 @@ public class GeneralTab extends Tab {
 		ckInspector.setSelected(false);
 		grid.add(ckInspector, 0, 3);
 
-		grid.add(new Label("Number of clusters: "), 0, 4);
-		grid.add(new Label("Number of clusters: "), 1, 4);
-		grid.add(new Label("Number of clusters: "), 2, 4);
+		ckRandomCost = new CheckBox("Random Costs");
+		ckRandomCost.setSelected(true);
+		ckRandomCost.setDisable(true);
+		grid.add(ckRandomCost, 0, 4);
 		
 		this.setContent(grid);
 	}
@@ -72,6 +75,22 @@ public class GeneralTab extends Tab {
 
 	public int getNumberOfRuns() {
 		return (int)sliderNoOfRuns.getValue();
+	}
+
+	public boolean getStartInspectorAgent() {
+		return ckInspector.isSelected();
+	}
+
+	public boolean getStartMASObservationUI() {
+		return ckMASObservation.isSelected();
+	}
+
+	public boolean getStartSnifferAgent() {
+		return ckSniffer.isSelected();
+	}
+
+	public boolean getGenerateRandomCosts() {
+		return ckRandomCost.isSelected();
 	}
 
 }

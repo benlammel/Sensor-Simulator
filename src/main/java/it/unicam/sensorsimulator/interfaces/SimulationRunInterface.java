@@ -17,11 +17,5 @@ public interface SimulationRunInterface {
 	public void setNumberOfRuns(int value);
 
 	public ArrayList<? extends GeneralAgentInterface> getAgentList();
-	
-//	public void setSimulationCoordinatorAgent(SimulationCoordinatorAgentInterface agent);
-//	public SimulationCoordinatorAgentInterface getSimulationCoordinatorAgent();
-	
-//	public void setSimulationCoordinatorAgent(String cls);
-//	public String getSimulationCoordinatorAgent();
 
 }

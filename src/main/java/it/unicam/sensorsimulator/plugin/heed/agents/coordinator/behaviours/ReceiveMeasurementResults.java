@@ -1,11 +1,11 @@
 package it.unicam.sensorsimulator.plugin.heed.agents.coordinator.behaviours;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import it.unicam.sensorsimulator.plugin.heed.agents.coordinator.SimulationCoordinatorAgent;
 import it.unicam.sensorsimulator.plugin.heed.messages.MessageTypes;
 import it.unicam.sensorsimulator.plugin.heed.messages.MessageTypes.MessageHandling;
+import it.unicam.sensorsimulator.plugin.heed.reporting.AgentStatistic;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
@@ -13,7 +13,6 @@ import jade.lang.acl.UnreadableException;
 public class ReceiveMeasurementResults extends CyclicBehaviour {
 
 	private SimulationCoordinatorAgent simulationCoordinatorAgent;
-	private HashMap<Integer, ArrayList<Integer>> m1;
 
 	public ReceiveMeasurementResults(
 			SimulationCoordinatorAgent simulationCoordinatorAgent) {
@@ -24,7 +23,6 @@ public class ReceiveMeasurementResults extends CyclicBehaviour {
 	public void action() {
 		ACLMessage msg = simulationCoordinatorAgent.receive();
 		if (msg != null) {
-			
 			switch (msg.getConversationId()) {
 			case MessageTypes.MEASUREMENT_CLUSTERFORMING_PROTOCOL:
 				simulationCoordinatorAgent.receiveMessageCounter(msg, MessageHandling.INCREASE);
@@ -32,17 +30,59 @@ public class ReceiveMeasurementResults extends CyclicBehaviour {
 				break;
 			case MessageTypes.MEASUREMENT_CLUSTER_FORMING_END:
 				simulationCoordinatorAgent.receiveMessageCounter(msg, MessageHandling.INCREASE);
-				handleClusterFormingEnd(msg);
+				triggerSimulationEnd(msg);
+				break;
+			case MessageTypes.MEASUREMENT_AGENT_STATISTICS:
+				simulationCoordinatorAgent.receiveMessageCounter(msg, MessageHandling.INCREASE);
+				handleAgentStatistics(msg);
+				checkForSimulationEnd();
+				break;
+			case MessageTypes.MEASUREMENT_PROTOCOL_BECAME_CH:
+				simulationCoordinatorAgent.receiveMessageCounter(msg, MessageHandling.INCREASE);
+				handleBecameClusterHead(msg);
 				break;
 			default:
 				simulationCoordinatorAgent.putBack(msg);
-//				simulationCoordinatorAgent.receiveMessageCounter(msg,MessageHandling.DECREASE);
 				break;
 			}
 		}
 	}
 	
-	private void handleClusterFormingEnd(ACLMessage msg) {
+	private void checkForSimulationEnd() {
+//		System.out.println(simulationCoordinatorAgent.getRunResults().getAgentStatisticList().size() +" :: + ::" +simulationCoordinatorAgent.getRunResults().getClusterHeadList().size() +" :: = ::" +simulationCoordinatorAgent.getSimulationRunFile().getAgentList().size());
+//		System.out.println(simulationCoordinatorAgent.getRunResults().getAgentStatisticList().keySet() +" :: + ::" +simulationCoordinatorAgent.getRunResults().getClusterHeadList() +" :: = ::" +simulationCoordinatorAgent.getSimulationRunFile().getAgentList());
+		if(simulationCoordinatorAgent.getRunResults().getAgentStatisticList().size()+simulationCoordinatorAgent.getRunResults().getClusterHeadList().size() == simulationCoordinatorAgent.getSimulationRunFile().getAgentList().size()){
+			triggerSimulationEnd(simulationCoordinatorAgent.getRunResults().getClusterHeadList());
+		}
+		
+		if(simulationCoordinatorAgent.getRunResults().getAgentStatisticList().size() == simulationCoordinatorAgent.getSimulationRunFile().getAgentList().size()){
+			simulationCoordinatorAgent.initiateNewRunOrEnd();
+		}
+
+	}
+
+	private void handleBecameClusterHead(ACLMessage msg) {
+		simulationCoordinatorAgent.addClusterHead(simulationCoordinatorAgent.convertAIDToInteger(msg.getSender()));
+	}
+
+	private void handleAgentStatistics(ACLMessage msg) {
+		try {
+			simulationCoordinatorAgent.addStatistics(simulationCoordinatorAgent.convertAIDToInteger(msg.getSender()), (AgentStatistic) msg.getContentObject());
+		} catch (UnreadableException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void triggerSimulationEnd(ArrayList<Integer> clusterHeadList) {
+		for(int clusterHead : clusterHeadList){
+			ACLMessage message = new ACLMessage(ACLMessage.INFORM);
+			message.setConversationId(MessageTypes.SIMULATION_CONTROLS_END);
+			message.addReceiver(simulationCoordinatorAgent.convertAgentIDToAID(clusterHead));
+			simulationCoordinatorAgent.sendMessage(message);
+		}
+	}
+
+	private void triggerSimulationEnd(ACLMessage msg) {
 		ACLMessage message = new ACLMessage(ACLMessage.INFORM);
 		message.setConversationId(MessageTypes.SIMULATION_CONTROLS_END);
 		message.addReceiver(msg.getSender());

@@ -3,13 +3,15 @@ package it.unicam.sensorsimulator.plugin.heed.agents;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Random;
-
+import java.util.Map.Entry;
 import it.unicam.sensorsimulator.interfaces.GeneralAgentInterface;
 import it.unicam.sensorsimulator.interfaces.LogFileWriterInterface;
 import it.unicam.sensorsimulator.interfaces.LogFileWriterInterface.LogLevels;
-import it.unicam.sensorsimulator.plugin.heed.agents.behaviours.HeedBehaviour;
+import it.unicam.sensorsimulator.plugin.heed.agents.behaviours.HeedClusterHeadBehaviour;
+import it.unicam.sensorsimulator.plugin.heed.agents.behaviours.HeedProtocolBehaviour;
+import it.unicam.sensorsimulator.plugin.heed.agents.behaviours.HeedProtocolMessageHandler;
 import it.unicam.sensorsimulator.plugin.heed.agents.behaviours.SimulationControlBehaviour;
+import it.unicam.sensorsimulator.plugin.heed.messages.HeedMessage;
 import it.unicam.sensorsimulator.plugin.heed.messages.MessageTypes;
 import it.unicam.sensorsimulator.plugin.heed.messages.MessageTypes.MessageHandling;
 import jade.core.AID;
@@ -25,36 +27,42 @@ public class GeneralAgent extends Agent {
 	private HashMap<String, Integer> sentMessageCounter;
 	private HashMap<String, Integer> receivedMessageCounter;
 	private int clusterHead = 0;
-	private ArrayList<Integer> myClusterAgents;
 	private boolean isClusterHead = false;
+	
+	/* Protocol Stuff */
 	private double eMax;
 	private double eResidential;
 	private double pMin;
+	private ArrayList<Integer> myClusterAgents;
+	private HashMap<Integer, HeedMessage> listOfClusterHeads;
+	private HashMap<Integer, Double> myCostPlan;
 
 	protected void setup(){
 		initAndSetArguments();
 		log.logAgentAction(LogLevels.INFO, getAID().getLocalName() +" is up and waits");
+		listOfClusterHeads = new HashMap<Integer, HeedMessage>();
 		myClusterAgents = new ArrayList<Integer>();
-
-		addBehaviour(new HeedBehaviour(this, generateTickNumber()));
-		addBehaviour(new SimulationControlBehaviour(this));
 		
+		addBehaviour(new SimulationControlBehaviour(this));
 	}
 	
-	private int generateTickNumber() {
-		Random r = new Random();
-		int Low = 300;
-		int High = 1000;
-		return r.nextInt(High-Low) + Low;
-	}
-
 	private void initAndSetArguments() {
 		Object [] args = getArguments();
 		log = (LogFileWriterInterface) args[0];
 		config = (AgentConfiguration) args[1];
 		nList = (HashMap<Integer, GeneralAgentInterface>) args[2];
-		
+		boolean costsRandom = (boolean) args[3];
+		if(costsRandom){
+			createCostPlan();
+		}
 		setAndApplyConfig();
+	}
+
+	private void createCostPlan() {
+		myCostPlan = new HashMap<Integer, Double>();
+		for(Entry<Integer, GeneralAgentInterface> agent : nList.entrySet()){
+			myCostPlan.put(agent.getKey(), Math.random());
+		}
 	}
 
 	private void setAndApplyConfig() {
@@ -180,8 +188,16 @@ public class GeneralAgent extends Agent {
 		sendMessage(message);
 	}
 
-	public void isClusterHead(boolean b) {
+	public void setToClusterHead(boolean b) {
+		if(!isClusterHead && b){
+			addBehaviour(new HeedClusterHeadBehaviour(this));
+			track("added cluster head behaviour");
+		}
 		isClusterHead  = b;
+	}
+	
+	public boolean isClusterHead() {
+		return isClusterHead;
 	}
 
 	public boolean isConnectedToClusterHeadOrIsClusterHead() {
@@ -190,5 +206,47 @@ public class GeneralAgent extends Agent {
 		}else{
 			return false;
 		}
+	}
+
+	public void startHeedProtocol() {
+		HeedProtocolMessageHandler messageHandler = new HeedProtocolMessageHandler(this);
+		addBehaviour(messageHandler);
+		
+		HeedProtocolBehaviour heedProtocolBehaviour = new HeedProtocolBehaviour(this, 300);
+		addBehaviour(heedProtocolBehaviour);
+	}
+
+	public HashMap<Integer, HeedMessage> getListOfClusterHeads() {
+		return listOfClusterHeads;
+	}
+
+	public void addToListOfClusterHeads(int chID, HeedMessage message) {
+		listOfClusterHeads.put(chID, message);
+	}
+
+	public void track(String string) {
+		StringBuilder builder = new StringBuilder();
+		builder.append(";agentID;");
+		builder.append(this.getAgentConfiguration().getAgentID());
+		builder.append(string);
+		builder.append(";isClusterHead;");
+		builder.append(isClusterHead);
+		builder.append(";listOfClusterHeads;");
+		builder.append(listOfClusterHeads);
+		builder.append(";myClusterAgents;");
+		builder.append(myClusterAgents);
+		log.logAgentAction(LogLevels.INFO, builder.toString());
+	}
+
+	public double getCosts(int key) {
+		return myCostPlan.get(key);
+	}
+
+	public HashMap<String, Integer> getSentMessageCounter() {
+		return sentMessageCounter;
+	}
+
+	public HashMap<String, Integer> getReceivedMessageCounter() {
+		return receivedMessageCounter;
 	}
 }

@@ -1,5 +1,7 @@
 package it.unicam.sensorsimulator.plugin.heed.reporting.graphic;
 
+import it.unicam.sensorsimulator.plugin.heed.reporting.ClusterPicture;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -7,21 +9,12 @@ import java.awt.Paint;
 import java.awt.Stroke;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.Set;
-
 import org.apache.commons.collections15.Transformer;
-
 import edu.uci.ics.jung.algorithms.layout.FRLayout;
-import edu.uci.ics.jung.algorithms.layout.KKLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
-import edu.uci.ics.jung.algorithms.layout.TreeLayout;
-import edu.uci.ics.jung.graph.DelegateForest;
-import edu.uci.ics.jung.graph.DirectedSparseGraph;
 import edu.uci.ics.jung.graph.DirectedSparseMultigraph;
-import edu.uci.ics.jung.graph.Forest;
 import edu.uci.ics.jung.graph.Graph;
-import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import edu.uci.ics.jung.visualization.BasicVisualizationServer;
 import edu.uci.ics.jung.visualization.DefaultVisualizationModel;
@@ -33,20 +26,18 @@ import javafx.embed.swing.SwingNode;
 
 public class NetworkGraphic extends SwingNode {
 
-	private int taskID;
 	private Graph<Integer, String> g;
 	private Layout<Integer, String> layout;
 
-	public NetworkGraphic(int taskID, int pictureWidth, int pictureHeight, Set<Integer> nodesList, HashMap<Integer, ArrayList<Integer>> networkView) {
-		this.taskID = taskID;
+	public NetworkGraphic(int pictureWidth, int pictureHeight, Set<Integer> nodesList, ArrayList<Integer> clusterHeads, int until, HashMap<Integer, ClusterPicture> networkView) {
 		g = new DirectedSparseMultigraph<Integer, String>();
 		generateVertexts(nodesList);
-		generateEdges(networkView);
+		generateEdges(networkView, until);
 		
-		Dimension preferredSize = new Dimension(600, 600);
+		Dimension preferredSize = new Dimension(pictureWidth, pictureHeight);
 		
 		layout = new FRLayout<Integer, String>(g);
-		layout.setSize(new Dimension(pictureWidth, pictureHeight));
+		layout.setSize(preferredSize);
 		final VisualizationModel<Integer, String> visualizationModel = 	new DefaultVisualizationModel<Integer, String>(layout, preferredSize);
 		BasicVisualizationServer<Integer, String> vv = new VisualizationViewer<Integer, String>(visualizationModel, preferredSize);
 		
@@ -56,12 +47,11 @@ public class NetworkGraphic extends SwingNode {
 		
 		Transformer<Integer, Paint> vertexPaint = new Transformer<Integer, Paint>() {
 			public Paint transform(Integer i) {
-				if(networkView.containsKey(i)){
+				if(clusterHeads.contains(i)){
 					return Color.LIGHT_GRAY;
 				}else{
 					return Color.GREEN;
 				}
-				
 			}
 		};
 		Transformer<String, Stroke> edgeStrokeTransformer = new Transformer<String, Stroke>() {
@@ -77,25 +67,22 @@ public class NetworkGraphic extends SwingNode {
 		this.setContent(vv);
 	}
 
-	private void generateEdges(HashMap<Integer, ArrayList<Integer>> networkView) {
-		for(Entry<Integer, ArrayList<Integer>> cluster : networkView.entrySet()){
-//			System.out.println("grrr" +cluster.getKey() + "-"+ cluster.getValue());
-			if(!cluster.getValue().isEmpty()){
-				for(Integer clusterMembers : cluster.getValue()){
-					g.addEdge(Integer.toString(cluster.getKey()) + "-"+ Integer.toString(clusterMembers), cluster.getKey(), clusterMembers, EdgeType.DIRECTED);
-//					System.out.println("generateEdges" +cluster.getKey() + "-"+ Integer.toString(clusterMembers));
+	private void generateEdges(HashMap<Integer, ClusterPicture> networkView, int until) {
+		for(int i = 0; i<until; i++){
+			if(!networkView.get(i).getList().isEmpty()){
+				for(Integer clusterMember : networkView.get(i).getList()){
+					System.out.println("edge " +Integer.toString(networkView.get(i).getClusterHead()) + "-"+ Integer.toString(clusterMember));
+					g.addEdge(Integer.toString(networkView.get(i).getClusterHead()) + "-"+ Integer.toString(clusterMember), networkView.get(i).getClusterHead(), clusterMember, EdgeType.DIRECTED);
 				}
+				
 			}
 		}
 	}
 
 	private void generateVertexts(Set<Integer> nodesList) {
 		for(Integer node : nodesList){
+			System.out.println("node " +node);
 			g.addVertex(node);
 		}
-	}
-
-	public int getTaskID() {
-		return taskID;
 	}
 }

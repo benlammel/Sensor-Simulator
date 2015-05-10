@@ -1,5 +1,5 @@
 package it.unicam.sensorsimulator.plugin.heed.agents.behaviours;
-
+/*
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -23,7 +23,6 @@ public class HeedBehaviour extends TickerBehaviour {
 	
 	private double cProb = 0;
 	private double chProb = 0;
-//	private double pMin = 0;
 	private boolean isFinalCH = false;
 	
 	private boolean initializationTriggerReceived = false;
@@ -47,20 +46,21 @@ public class HeedBehaviour extends TickerBehaviour {
 		
 		if (msg != null) {
 			switch (msg.getConversationId()) {
-			case MessageTypes.START_INIZIALIZATION:
-				agent.receiveMessageCounter(msg, MessageHandling.INCREASE);
-				agent.setSimulationCoordinatorAID(msg.getSender());
-				initializationTriggerReceived = true;
-				break;
-//			case MessageTypes.COST_BROADCAST:
-//				agent.receiveMessageCounter(msg, MessageHandling.INCREASE);
-//				progressCostsMessage(msg);
-//				break;
 			case MessageTypes.CLUSTER_HEAD_MESSAGE:
 				if(!agent.isConnectedToClusterHeadOrIsClusterHead()){
 					agent.receiveMessageCounter(msg, MessageHandling.INCREASE);
 					progressCHMessage(msg);
 				}
+				break;
+			case MessageTypes.SIMULATION_CONTROLS_START_INIZIALIZATION:
+				agent.receiveMessageCounter(msg, MessageHandling.INCREASE);
+				agent.setSimulationCoordinatorAID(msg.getSender());
+				initializationTriggerReceived = true;
+//				computeAndBroadcastCostToNeighborhood();
+				break;
+			case MessageTypes.COST_BROADCAST:
+				agent.receiveMessageCounter(msg, MessageHandling.INCREASE);
+				progressCostsMessage(msg);
 				break;
 			default:
 				agent.putBack(msg);
@@ -92,7 +92,7 @@ public class HeedBehaviour extends TickerBehaviour {
 		if(isThisAgentFinalCH()){
 			agent.addBehaviour(new ClusterHeadBehaviour(agent));
 		}
-		agent.isClusterHead(true);
+		agent.setToClusterHead(true);
 	}
 
 	private void progressCHMessage(ACLMessage msg) {
@@ -122,7 +122,6 @@ public class HeedBehaviour extends TickerBehaviour {
 		if(clusterHeadID!=0){
 			agent.setMyClusterHead(clusterHeadID);
 			sendMessage(clusterHeadID, MessageTypes.JOIN_CLUSTER);
-//			agent.removeBehaviour(this);
 		}else{
 			track("checkForFinalClusterHeadsAndJoin: clusterhead!0");
 			calculateIndividualCostsAndBroadcast(
@@ -140,7 +139,6 @@ public class HeedBehaviour extends TickerBehaviour {
 	}
 
 	private void runRepeatHeedPart() {
-//		track("**********runRepeatHeedPart");
 		if (!listOfClusterHeads.isEmpty()) {
 			int clusterHeadID = -1;
 			double clusterHeadCosts = Double.POSITIVE_INFINITY;
@@ -162,7 +160,6 @@ public class HeedBehaviour extends TickerBehaviour {
 					} else {
 						sendTentativeMessage();
 						track("runRepeatHeedPart: chProb == 1.0 :: else");
-						
 					}
 				}
 			}
@@ -201,17 +198,21 @@ public class HeedBehaviour extends TickerBehaviour {
 	}
 	
 	private void calculateIndividualCostsAndBroadcast(String messageType, ClusterHeadType clusterHeadType) {
-		for (Entry<Integer, GeneralAgentInterface> myNeighbor : agent
-				.getNeighborList().entrySet()) {
-			if (myNeighbor.getKey() != agent.getAgentConfiguration()
-					.getAgentID()) {
-				double cost = Math.sqrt(Math.pow(agent.getAgentConfiguration()
-						.getLocationX() - myNeighbor.getValue().getLocationX(),
-						2)
-						+ Math.pow(agent.getAgentConfiguration().getLocationY()
-								- myNeighbor.getValue().getLocationY(), 2));
-				sendMessage(myNeighbor.getKey(), messageType, new HeedMessage(
-						cost, clusterHeadType));
+//		for (Entry<Integer, GeneralAgentInterface> myNeighbor : agent
+//				.getNeighborList().entrySet()) {
+//			if (myNeighbor.getKey() != agent.getAgentConfiguration()
+//					.getAgentID()) {
+//				double cost = Math.sqrt(Math.pow(agent.getAgentConfiguration()
+//						.getLocationX() - myNeighbor.getValue().getLocationX(),
+//						2)
+//						+ Math.pow(agent.getAgentConfiguration().getLocationY()
+//								- myNeighbor.getValue().getLocationY(), 2));
+//				
+//			}
+//		}
+		for (Entry<Integer, GeneralAgentInterface> myNeighbor : agent.getNeighborList().entrySet()) {
+			if (myNeighbor.getKey() != agent.getAgentConfiguration().getAgentID()) {
+			sendMessage(myNeighbor.getKey(), messageType, new HeedMessage(agent.getCosts(), clusterHeadType));
 			}
 		}
 	}
@@ -233,25 +234,9 @@ public class HeedBehaviour extends TickerBehaviour {
 	
 	private void computeAndBroadcastCostToNeighborhood() {
 		
-		for (Entry<Integer, GeneralAgentInterface> myNeighbor : agent
-				.getNeighborList().entrySet()) {
-			
-		}
-		
-		for (Entry<Integer, GeneralAgentInterface> myNeighbor : agent
-				.getNeighborList().entrySet()) {
-			if (myNeighbor.getKey() != agent.getAgentConfiguration()
-					.getAgentID()) {
-				double cost = Math.sqrt(Math.pow(agent.getAgentConfiguration()
-						.getLocationX() - myNeighbor.getValue().getLocationX(),
-						2)
-						+ Math.pow(agent.getAgentConfiguration().getLocationY()
-								- myNeighbor.getValue().getLocationY(), 2));
-				sendMessage(myNeighbor.getKey(), MessageTypes.COST_BROADCAST,
-						new HeedMessage(cost));
+		for (Entry<Integer, GeneralAgentInterface> myNeighbor : agent.getNeighborList().entrySet()) {
+				sendMessage(myNeighbor.getKey(), MessageTypes.COST_BROADCAST, new HeedMessage(agent.getCosts()));
 			}
-		}
-		initializationTriggerReceived = true;
 	}
 	
 	private void sendMessage(Integer receiver, String messageType,
@@ -264,6 +249,7 @@ public class HeedBehaviour extends TickerBehaviour {
 			e.printStackTrace();
 		}
 		message.addReceiver(agent.convertAgentIDToAID(receiver));
+		agent.getLog().logAgentAction(LogLevels.INFO, "agentid;" +agent.getAgentConfiguration().getAgentID() +";" +heedMessage.toString());
 		agent.sendMessage(message);
 	}
 	
@@ -288,3 +274,4 @@ public class HeedBehaviour extends TickerBehaviour {
 		agent.getLog().logAgentAction(LogLevels.INFO, builder.toString());
 	}
 }
+*/
