@@ -1,5 +1,6 @@
 package it.unicam.sensorsimulator.plugin.heed.agents.coordinator;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -67,7 +68,6 @@ public class SimulationCoordinatorAgent extends Agent implements SimulationCoord
 		for(GeneralAgentInterface agent : simRunFile.getAgentList()){
 			agentNetworkList.put(agent.getAgentID(), agent);
 		}
-		getReportingHandler().addNodes(agentNetworkList.keySet());
 	}
 
 	private void startAgents() throws StaleProxyException {
@@ -185,6 +185,11 @@ public class SimulationCoordinatorAgent extends Agent implements SimulationCoord
 		if(!runResults.getClusterHeadList().contains(clusterHeadID)){
 			runResults.addClusterHead(clusterHeadID);
 		}
+	}
+	
+	public void addProtocolMeasurement(int clusterHead,
+			ArrayList<Integer> clusterMembers) {
+		runResults.addProtocolMeasurement(clusterHead, clusterMembers);		
 	}
 
 	public RunResults getRunResults() {

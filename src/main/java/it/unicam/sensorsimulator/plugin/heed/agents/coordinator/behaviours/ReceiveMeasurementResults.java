@@ -49,8 +49,6 @@ public class ReceiveMeasurementResults extends CyclicBehaviour {
 	}
 	
 	private void checkForSimulationEnd() {
-//		System.out.println(simulationCoordinatorAgent.getRunResults().getAgentStatisticList().size() +" :: + ::" +simulationCoordinatorAgent.getRunResults().getClusterHeadList().size() +" :: = ::" +simulationCoordinatorAgent.getSimulationRunFile().getAgentList().size());
-//		System.out.println(simulationCoordinatorAgent.getRunResults().getAgentStatisticList().keySet() +" :: + ::" +simulationCoordinatorAgent.getRunResults().getClusterHeadList() +" :: = ::" +simulationCoordinatorAgent.getSimulationRunFile().getAgentList());
 		if(simulationCoordinatorAgent.getRunResults().getAgentStatisticList().size()+simulationCoordinatorAgent.getRunResults().getClusterHeadList().size() == simulationCoordinatorAgent.getSimulationRunFile().getAgentList().size()){
 			triggerSimulationEnd(simulationCoordinatorAgent.getRunResults().getClusterHeadList());
 		}
@@ -93,7 +91,8 @@ public class ReceiveMeasurementResults extends CyclicBehaviour {
 		ArrayList<Integer> clusterMembers = null;
 		try {
 			 clusterMembers = (ArrayList<Integer>) msg.getContentObject();
-			 simulationCoordinatorAgent.getReportingHandler().addProtocolMeasurement(simulationCoordinatorAgent.convertAIDToInteger(msg.getSender()), clusterMembers);
+//			 simulationCoordinatorAgent.getReportingHandler().addProtocolMeasurement(simulationCoordinatorAgent.convertAIDToInteger(msg.getSender()), clusterMembers);
+			 simulationCoordinatorAgent.addProtocolMeasurement(simulationCoordinatorAgent.convertAIDToInteger(msg.getSender()), clusterMembers);
 		} catch (UnreadableException e) {
 			e.printStackTrace();
 		}

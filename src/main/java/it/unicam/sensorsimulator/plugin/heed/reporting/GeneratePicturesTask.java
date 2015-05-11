@@ -23,7 +23,6 @@ public class GeneratePicturesTask extends Task<HashMap<Integer, NetworkGraphic>>
 		this.nodesList = nodesList;
 		this.networkView = networkView;
 		this.clusterHeads = new ArrayList<Integer>();
-		
 	}
 
 	@Override

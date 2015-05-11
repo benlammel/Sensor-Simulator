@@ -45,7 +45,6 @@ public class HeedClusterHeadBehaviour extends Behaviour {
 		agent.sendMessage(message);
 	}
 	
-	@Deprecated
 	private void measurementJoinCluster() {
 		ACLMessage message = new ACLMessage(ACLMessage.INFORM);
 		message.setConversationId(MessageTypes.MEASUREMENT_CLUSTERFORMING_PROTOCOL);

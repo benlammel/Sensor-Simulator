@@ -1,36 +1,65 @@
 package it.unicam.sensorsimulator.plugin.heed.reporting;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 
 import it.unicam.sensorsimulator.plugin.heed.HeedPlugin;
-import javafx.scene.control.Accordion;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.layout.BorderPane;
 
-public class ReportingModule extends Accordion {
+public class ReportingModule extends BorderPane implements EventHandler<ActionEvent> {
 	
 	private HeedPlugin heedPlugin;
+	private ReportGenerator reportGeneratorTask;
 	
-	private ProtocolReportHandler protocol;
+	private Button btnGenerateReport;
+	private ProgressBar progressBar;
 
 	public ReportingModule(HeedPlugin heedPlugin){
 		this.heedPlugin = heedPlugin;
-		protocol = new ProtocolReportHandler();
 		
-		this.getPanes().add(protocol);
-        this.setExpandedPane(protocol);
+		
+		btnGenerateReport = new Button("generate graphical report");
+		btnGenerateReport.setOnAction(this);
+		this.setCenter(btnGenerateReport);
+		
+		progressBar = new ProgressBar(0);
+		setBottom(progressBar);
+		
 	}
 
-	public void addProtocolMeasurement(int clusterHead,
-			ArrayList<Integer> clusterMembers) {
-//		protocol.updateNetworkView(clusterHead, clusterMembers);
-	}
-
-	public void addNodes(Set<Integer> keySet) {
-//		protocol.setNodes(keySet);
-	}
+//	public void addProtocolMeasurement(int clusterHead,
+//			ArrayList<Integer> clusterMembers) {
+////		protocol.updateNetworkView(clusterHead, clusterMembers);
+//	}
+//
+//	public void addNodes(Set<Integer> keySet) {
+////		protocol.setNodes(keySet);
+//	}
 
 	public void addRunResults(HashMap<Integer, RunResults> runResultList) {
-		System.out.println("Number of Runs recorded: " +runResultList.size());
+		reportGeneratorTask = new ReportGenerator(runResultList);
+		
+		
+//		System.out.println("Number of Runs recorded: " +runResultList.size());
+	}
+	
+	@Override
+	public void handle(ActionEvent event) {
+		if(event.getSource()==btnGenerateReport){
+			progressBar.progressProperty().unbind();
+	        progressBar.progressProperty().bind(reportGeneratorTask.progressProperty());
+			new Thread(reportGeneratorTask).start();
+			reportGeneratorTask.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, 
+			        new EventHandler<WorkerStateEvent>() {
+			    @Override
+			    public void handle(WorkerStateEvent t) {
+			        setCenter(reportGeneratorTask.getValue());
+			    }
+			});
+		}
 	}
 }
