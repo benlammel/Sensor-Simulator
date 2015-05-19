@@ -13,11 +13,5 @@ public interface GeneralAgentInterface {
 
 	public double getLocationY();
 	public void setLocationY(double locationY);
-	
-//	public Object[] getAgentArguments();
-//	public void setAgentArguments(Object[] args);
-//	
-//	public Class getAgentClass();
-//	public void setAgentClass(Class cls);
 
 }

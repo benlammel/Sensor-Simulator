@@ -15,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TitledPane;
@@ -32,6 +33,8 @@ public class ProtocolReportHandler extends TitledPane implements EventHandler<Ac
 	private final int pictureWidth = 600;
 	private final int pictureHeight = 400;
 	
+	private ScrollPane scoller;
+	
 	private int taskID = 0;
 	
 	private BorderPane layout;
@@ -40,6 +43,7 @@ public class ProtocolReportHandler extends TitledPane implements EventHandler<Ac
 		
 	public ProtocolReportHandler(){
 		this.setText("Protocol");
+		scoller = new ScrollPane();
 		networkView =  new HashMap<Integer, ClusterPicture>();
 //		networkEvolutionSteps = new HashMap<Integer, NetworkGraphic>();
 		

@@ -14,14 +14,14 @@ import javafx.scene.paint.Color;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.GlyphFontRegistry;
 
-public class SimulationRessourcesAndProperties {
+public class SimulationResourcesAndProperties {
 	
 	private final String APPLICATIONHEADER = "Distributed Sensor Simulation Environment";
 	private Properties properties;
 	private final String FONTAWESOMETTFFILEPATH = "fonts/fontawesome-webfont.ttf";
 	private String PROPERTIESFILENAME = "config.properties";
 	
-	public SimulationRessourcesAndProperties(){
+	public SimulationResourcesAndProperties(){
 		loadFontAwesomeResource();
 		properties = new Properties();
 		loadPropertiesFile();

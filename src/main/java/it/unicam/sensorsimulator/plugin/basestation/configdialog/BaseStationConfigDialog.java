@@ -1,6 +1,5 @@
 package it.unicam.sensorsimulator.plugin.basestation.configdialog;
 
-import javafx.scene.Node;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import it.unicam.sensorsimulator.interfaces.GeneralAgentInterface;

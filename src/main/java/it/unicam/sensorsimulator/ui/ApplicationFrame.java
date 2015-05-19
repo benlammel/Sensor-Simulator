@@ -15,7 +15,7 @@ import it.unicam.sensorsimulator.simulationcontroller.xml.SerializationTools;
 import it.unicam.sensorsimulator.ui.dialogs.DialogMessages;
 import it.unicam.sensorsimulator.ui.dialogs.GeneralDialogHandler;
 import it.unicam.sensorsimulator.ui.panels.DrawPanel;
-import it.unicam.sensorsimulator.ui.ressources.SimulationRessourcesAndProperties;
+import it.unicam.sensorsimulator.ui.ressources.SimulationResourcesAndProperties;
 import it.unicam.sensorsimulator.ui.startdialog.SimulationStartDiolg;
 import it.unicam.sensorsimulator.ui.tabmenu.TabMenu;
 import it.unicam.sensorsimulator.ui.tabmenu.tabs.TabButtons;
@@ -72,8 +72,6 @@ public class ApplicationFrame extends BorderPane {
 			break;
 		case REPORTINGTAB:
 			this.setCenter(pluginHandler.getCurrentPlugin().getReportingPane());
-			break;
-		case RUNNINGSIMULATION:
 			break;
 		}
 	}
@@ -159,7 +157,7 @@ public class ApplicationFrame extends BorderPane {
 		}
 	}
 
-	public SimulationRessourcesAndProperties getRessourcesAndProperties() {
+	public SimulationResourcesAndProperties getRessourcesAndProperties() {
 		return startEnvironment.getRessourcesAndProperties();
 	}
 

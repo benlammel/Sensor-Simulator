@@ -212,7 +212,7 @@ public class GeneralAgent extends Agent {
 		HeedProtocolMessageHandler messageHandler = new HeedProtocolMessageHandler(this);
 		addBehaviour(messageHandler);
 		
-		HeedProtocolBehaviour heedProtocolBehaviour = new HeedProtocolBehaviour(this, 300);
+		HeedProtocolBehaviour heedProtocolBehaviour = new HeedProtocolBehaviour(this, 700);
 		addBehaviour(heedProtocolBehaviour);
 	}
 

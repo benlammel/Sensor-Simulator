@@ -3,7 +3,7 @@ import it.unicam.sensorsimulator.persistence.FileTools;
 import it.unicam.sensorsimulator.persistence.Folder;
 import it.unicam.sensorsimulator.simulationcontroller.SimulationController;
 import it.unicam.sensorsimulator.ui.ApplicationFrame;
-import it.unicam.sensorsimulator.ui.ressources.SimulationRessourcesAndProperties;
+import it.unicam.sensorsimulator.ui.ressources.SimulationResourcesAndProperties;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -14,7 +14,7 @@ public class StartEnvironment extends Application {
 	
 	private ApplicationFrame applicationFrame;
 	private SimulationController simulationController;
-	private SimulationRessourcesAndProperties ressources;
+	private SimulationResourcesAndProperties ressources;
 	private Stage stage;
 
 	public static void main(String[] args) throws Exception {
@@ -25,7 +25,7 @@ public class StartEnvironment extends Application {
 	public void start(final Stage stage) throws Exception {
 		FileTools.verifyFolderStructure(Folder.values());
 		this.stage = stage;
-		ressources = new SimulationRessourcesAndProperties();
+		ressources = new SimulationResourcesAndProperties();
 		simulationController = new SimulationController(this);
 		applicationFrame = new ApplicationFrame(this);
 		
@@ -58,7 +58,7 @@ public class StartEnvironment extends Application {
 		return simulationController;
 	}
 
-	public SimulationRessourcesAndProperties getRessourcesAndProperties() {
+	public SimulationResourcesAndProperties getRessourcesAndProperties() {
 		return ressources;
 	}
 
