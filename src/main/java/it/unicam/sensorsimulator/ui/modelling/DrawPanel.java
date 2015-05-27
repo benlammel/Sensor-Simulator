@@ -1,11 +1,10 @@
-package it.unicam.sensorsimulator.ui.panels;
+package it.unicam.sensorsimulator.ui.modelling;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 import it.unicam.sensorsimulator.interfaces.GeneralAgentInterface;
 import it.unicam.sensorsimulator.interfaces.SimulationRunInterface;
-import it.unicam.sensorsimulator.ui.ApplicationFrame;
 import it.unicam.sensorsimulator.ui.agent.GUIAgent;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
@@ -13,22 +12,22 @@ import javafx.scene.paint.Color;
 
 public class DrawPanel extends Pane {
 
-	private ApplicationFrame applicationFrame;
 	private int agentID = 0;
+	private Modeller modeller;
 
-	public DrawPanel(ApplicationFrame applicationFrame) {
-		this.applicationFrame = applicationFrame;
+	public DrawPanel(Modeller modeller) {
+		this.modeller = modeller;
 		reloadColorFromConfig();
 	}
 
 	private void reloadColorFromConfig() {
 		this.setStyle("-fx-background-color: "
-				+ applicationFrame.getRessourcesAndProperties()
+				+ modeller.getRessourcesAndProperties()
 						.getDrawPanelBackgroundColorInHex());
 	}
 
 	public void setBackgroundColor(Color color) {
-		applicationFrame.getRessourcesAndProperties()
+		modeller.getRessourcesAndProperties()
 				.setDrawPanelBackgroundColor(color);
 		reloadColorFromConfig();
 	}
@@ -37,11 +36,12 @@ public class DrawPanel extends Pane {
 		if (agent.getAgentID() > agentID) {
 			agentID = agent.getAgentID();
 		}
-		this.addAgent(new GUIAgent(applicationFrame, agent.getAgentID(), agent.getAgentRadius(), agent.getLocationX(), agent.getLocationY()));
+		this.addAgent(new GUIAgent(agent.getAgentID(), modeller, agent.getAgentRadius(), agent.getLocationX(), agent.getLocationY()));
 	}
 
 	private void addAgent(GUIAgent uiElement) {
 		this.getChildren().add(uiElement);
+		modeller.setModellerMode(ModellerMode.CONTENT);
 	}
 
 	public void addAgentBatch(SimulationRunInterface simulationRun) {
@@ -54,10 +54,12 @@ public class DrawPanel extends Pane {
 	public void clearPanel() {
 		this.getChildren().clear();
 		agentID = 0;
+		modeller.setModellerMode(ModellerMode.NOCONTENT);
 	}
 
 	public void addAgent() {
-		this.addAgent(new GUIAgent(applicationFrame, ++agentID));
+		this.addAgent(new GUIAgent(++agentID, modeller));
+		modeller.setModellerMode(ModellerMode.CONTENT);
 	}
 
 	public ArrayList<GeneralAgentInterface> getListOfAgents() {
@@ -74,8 +76,8 @@ public class DrawPanel extends Pane {
 		clearPanel();
 		int radius = 20;
 		for(int i = 0; i<numberOfAgents; i++){
-			addAgent(new GUIAgent(applicationFrame, ++agentID,radius, generateRandomNumber(radius, applicationFrame.getWidth()-radius),
-					generateRandomNumber(radius, applicationFrame.getHeight()-radius-70)));
+			addAgent(new GUIAgent(++agentID, modeller, radius, generateRandomNumber(radius, modeller.getWidth()-radius),
+					generateRandomNumber(radius, modeller.getHeight()-radius-40)));
 		}
 	}
 

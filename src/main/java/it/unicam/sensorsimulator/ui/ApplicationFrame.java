@@ -1,42 +1,29 @@
 package it.unicam.sensorsimulator.ui;
 
-import jade.wrapper.StaleProxyException;
-
-import java.io.File;
-import java.util.Optional;
-
-import javax.xml.bind.JAXBException;
-
 import it.unicam.sensorsimulator.StartEnvironment;
 import it.unicam.sensorsimulator.interfaces.SimulationRunInterface;
 import it.unicam.sensorsimulator.logging.LogFileHandler;
 import it.unicam.sensorsimulator.plugin.PluginHandler;
-import it.unicam.sensorsimulator.simulationcontroller.xml.SerializationTools;
-import it.unicam.sensorsimulator.ui.dialogs.DialogMessages;
+import it.unicam.sensorsimulator.simulationcontroller.SimulationController;
 import it.unicam.sensorsimulator.ui.dialogs.GeneralDialogHandler;
-import it.unicam.sensorsimulator.ui.panels.DrawPanel;
+import it.unicam.sensorsimulator.ui.modelling.Modeller;
 import it.unicam.sensorsimulator.ui.ressources.SimulationResourcesAndProperties;
 import it.unicam.sensorsimulator.ui.startdialog.SimulationStartDiolg;
-import it.unicam.sensorsimulator.ui.tabmenu.TabMenu;
-import it.unicam.sensorsimulator.ui.tabmenu.tabs.TabButtons;
-import javafx.scene.control.ButtonType;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.FileChooser;
+import javafx.stage.Window;
 
 public class ApplicationFrame extends BorderPane {
 	
 	private StartEnvironment startEnvironment;
-//	private SimulationController simulationController;
 
-	private TabMenu tabMenu;
-	private DrawPanel drawPanel;
-	private FileChooser fileChooser;
+	private Modeller modeller;
+	
 	private SimulationEnvironmentMode mode;
 	private SimulationStartDiolg startDialogHandler;
 	private GeneralDialogHandler generalDialogHandler;
 	private PluginHandler pluginHandler;
 	
-	private SimulationRunInterface simulationRun;
+	private SimulationRunInterface simulationRunFile;
 	private LogFileHandler log;
 	
 	public ApplicationFrame(StartEnvironment startEnvironment){
@@ -44,119 +31,24 @@ public class ApplicationFrame extends BorderPane {
 		generalDialogHandler = new GeneralDialogHandler();
 		pluginHandler = new PluginHandler(this, generalDialogHandler);
 		log = LogFileHandler.getInstance();
-		initFileChooser();
 		
-		tabMenu = new TabMenu(this);
-		this.setTop(tabMenu);
+		modeller = new Modeller(this);
+		this.setCenter(modeller);
 		
-		drawPanel = new DrawPanel(this);
-		this.setCenter(drawPanel);
-		
-		startDialogHandler = new SimulationStartDiolg(this, drawPanel, pluginHandler);
-		setSimulationEnvironmentMode(SimulationEnvironmentMode.DRAWTAB);
-	}
-
-	private void initFileChooser() {
-		fileChooser = new FileChooser();
+		startDialogHandler = new SimulationStartDiolg(this, pluginHandler);
+		setSimulationEnvironmentMode(SimulationEnvironmentMode.MODELLING);
 	}
 
 	public void setSimulationEnvironmentMode(SimulationEnvironmentMode mode) {
 		this.mode = mode;
 		switch(mode){
-		case DRAWTAB:
-			this.setCenter(drawPanel);
+		case MODELLING:
 			break;
-		case SIMULATION:
-			break;
-		case ABORT:
-			break;
-		case REPORTINGTAB:
-			this.setCenter(pluginHandler.getCurrentPlugin().getReportingPane());
+		case SIMULATION_IN_PROGRESS:
 			break;
 		}
 	}
 	
-	public void setSimulationEnvironmentMode(SimulationEnvironmentMode mode, StaleProxyException e) {
-		this.mode = mode;
-		switch(mode){
-		case ABORT:
-			generalDialogHandler.showDialog(DialogMessages.ERRORSTARTINGSIMULATION, e);
-			break;
-		default:
-			break;
-		}
-	}
-
-	public DrawPanel getDrawPanel() {
-		return drawPanel;
-	}
-
-	public void buttonCommand(TabButtons action) {
-		switch(action){
-		case CLEARPANEL:
-			break;
-		case LOADFILE:
-			loadFromFile();
-			break;
-		case SAVEFILE:
-			fileChooser.setTitle("Save Resource File");
-			pluginHandler.getCurrentPlugin().refreshSettingsDialogContent();
-			SerializationTools.saveToXML(fileChooser.showSaveDialog(startEnvironment.getScene()), pluginHandler.generateAndReturnSimulationRunFile());
-			break;
-		case STARTSIMULATION:
-			showStartDialog();
-			break;
-		case STOPSIMULATION:
-			startEnvironment.getSimulationController().abortOngoingSimulation();
-			break;
-		case ADDAGENT:
-			drawPanel.addAgent();
-			break;
-		case RANDOMAGENTGENERATION:
-			drawPanel.generateRandomAgents(generalDialogHandler.showIntegerInputDialog(DialogMessages.RANDOMAGENTMESSAGE));
-			break;
-		default:
-			break;
-		}
-	}
-
-	private void loadFromFile() {
-		if(pluginHandler.getCurrentPlugin()!=null){
-			fileChooser.setTitle("Open Resource File");
-			openXMLFileHandling(fileChooser.showOpenDialog(startEnvironment.getScene()), pluginHandler.getSimulationRunFileClass());
-		}else{
-			generalDialogHandler.showDialog(DialogMessages.CHOOSEPLUGIN);
-		}
-	}
-
-	private void showStartDialog() {
-		Optional<ButtonType> result = startDialogHandler.updateAndDisplay();
-		if(result.get() == startDialogHandler.getStartButton()){
-			 try {
-				 startEnvironment.getSimulationController().performRun(pluginHandler.generateAndReturnSimulationRunFile());
-			} catch (Exception e) {
-				e.printStackTrace();
-				log.catching(e);
-				generalDialogHandler.showDialog(DialogMessages.ERRORSTARTINGSIMULATION, e);
-			}
-			 }
-	}
-
-	private void openXMLFileHandling(File file, Class<?> parseClass) {
-		if(file!=null){
-			try {
-				simulationRun = SerializationTools.loadXMLRunFile(file, parseClass);
-				if(simulationRun!=null){
-					drawPanel.addAgentBatch(simulationRun);
-					pluginHandler.updateRunFile(simulationRun);
-				}
-			} catch (JAXBException e) {
-				log.catching(e);
-				generalDialogHandler.showDialog(DialogMessages.FILEDOESNOTFITPLUGIN);
-			}
-		}
-	}
-
 	public SimulationResourcesAndProperties getRessourcesAndProperties() {
 		return startEnvironment.getRessourcesAndProperties();
 	}
@@ -169,7 +61,31 @@ public class ApplicationFrame extends BorderPane {
 		return pluginHandler;
 	}
 
-	public SimulationRunInterface getSimulationRunFile() {
-		return simulationRun;
+	public Modeller getModeller() {
+		return modeller;
+	}
+
+	public GeneralDialogHandler getGeneralDialogHandler() {
+		return generalDialogHandler;
+	}
+
+	public Window getMainScene() {
+		return startEnvironment.getScene();
+	}
+
+	public void setCurrentSimulationFile(SimulationRunInterface simulationRunFile) {
+		this.simulationRunFile = simulationRunFile;
+	}
+
+	public SimulationRunInterface getCurrentSimulationFile() {
+		return simulationRunFile;
+	}
+
+	public SimulationController getSimulationController() {
+		return startEnvironment.getSimulationController();
+	}
+
+	public SimulationStartDiolg getStartDialogHandler() {
+		return startDialogHandler;
 	}
 }

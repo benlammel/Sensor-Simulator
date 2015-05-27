@@ -8,6 +8,7 @@ import it.unicam.sensorsimulator.interfaces.SimulationRunInterface;
 import it.unicam.sensorsimulator.logging.LogFileHandler;
 import it.unicam.sensorsimulator.plugin.basestation.BaseStationPlugin;
 import it.unicam.sensorsimulator.plugin.heed.HeedPlugin;
+import it.unicam.sensorsimulator.plugin.heedv2.Heedv2Plugin;
 import it.unicam.sensorsimulator.ui.ApplicationFrame;
 import it.unicam.sensorsimulator.ui.dialogs.DialogMessages;
 import it.unicam.sensorsimulator.ui.dialogs.GeneralDialogHandler;
@@ -32,10 +33,11 @@ public class PluginHandler implements SimulationEnvironmentServices {
 		this.applicationFrame = applicationFrame;
 		this.generalDialogHandler = generalDialogHandler;
 		log = LogFileHandler.getInstance();
-//		initPlugins();
+
+		//		initPlugins();
 		
 		registerPlugin(new HeedPlugin());
-		registerPlugin(new BaseStationPlugin());
+		registerPlugin(new Heedv2Plugin());
 	}
 	
 	private void registerPlugin(PluginInterface plugin) {
@@ -76,7 +78,7 @@ public class PluginHandler implements SimulationEnvironmentServices {
 
 	@Override
 	public ArrayList<GeneralAgentInterface> getAgentList() {
-		return applicationFrame.getDrawPanel().getListOfAgents();
+		return applicationFrame.getModeller().getListOfAgents();
 	}
 
 	@Override

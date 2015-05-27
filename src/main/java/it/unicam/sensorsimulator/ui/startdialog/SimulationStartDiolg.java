@@ -1,17 +1,9 @@
 package it.unicam.sensorsimulator.ui.startdialog;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
-import it.unicam.sensorsimulator.interfaces.GeneralAgentInterface;
-import it.unicam.sensorsimulator.interfaces.LogFileWriterInterface;
-import it.unicam.sensorsimulator.interfaces.PluginInterface;
-import it.unicam.sensorsimulator.interfaces.SimulationEnvironmentServices;
-import it.unicam.sensorsimulator.interfaces.SimulationRunInterface;
-import it.unicam.sensorsimulator.logging.LogFileHandler;
 import it.unicam.sensorsimulator.plugin.PluginHandler;
 import it.unicam.sensorsimulator.ui.ApplicationFrame;
-import it.unicam.sensorsimulator.ui.panels.DrawPanel;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.ButtonBar.ButtonData;
@@ -20,15 +12,13 @@ import javafx.scene.layout.BorderPane;
 public class SimulationStartDiolg extends Dialog<ButtonType> {
 
 	private ApplicationFrame applicationFrame;
-	private DrawPanel drawPanel;
 	private PluginHandler pluginHandler;
 	private ButtonType btnOK;
 	private ButtonType btnAPPLY;
 	private BorderPane pane;
 	
-	public SimulationStartDiolg(ApplicationFrame applicationFrame, DrawPanel drawPanel, PluginHandler pluginHandler) {
+	public SimulationStartDiolg(ApplicationFrame applicationFrame, PluginHandler pluginHandler) {
 		this.applicationFrame = applicationFrame;
-		this.drawPanel = drawPanel;
 		this.pluginHandler = pluginHandler;
 		
 		pane = new BorderPane();
@@ -56,19 +46,5 @@ public class SimulationStartDiolg extends Dialog<ButtonType> {
 		pane.setCenter(pluginHandler.getCurrentPlugin().getSettingsDialogContent());
 		return super.showAndWait();
 	}
-
-	
-//	public ArrayList<GeneralAgentInterface> getAgentList(){
-//		return drawPanel.getListOfAgents();
-//	}
-//
-//	public SimulationRunInterface generateAndReturnSimulationRunFile() {
-//		return pluginHandler.getCurrentPlugin().generateAndReturnSimulationRunFile();
-//	}
-//
-//	public void updateRunFile(SimulationRunInterface simulationRunFile) {
-//		System.out.println(".... " +simulationRunFile);
-//		pluginHandler.getCurrentPlugin().updateSimulationRunFile(simulationRunFile);
-//	}
 
 }

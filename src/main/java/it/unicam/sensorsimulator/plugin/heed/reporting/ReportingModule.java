@@ -31,17 +31,13 @@ public class ReportingModule extends BorderPane implements EventHandler<ActionEv
 		
 	}
 
-//	public void addProtocolMeasurement(int clusterHead,
-//			ArrayList<Integer> clusterMembers) {
-////		protocol.updateNetworkView(clusterHead, clusterMembers);
-//	}
-//
-//	public void addNodes(Set<Integer> keySet) {
-////		protocol.setNodes(keySet);
-//	}
-
 	public void addRunResults(HashMap<Integer, RunResults> runResultList) {
 		reportGeneratorTask = new ReportGenerator(runResultList);
+		
+		
+//		reportGeneratorTask = new ReportGenerator(new TestResults());
+		
+		
 		
 		
 //		System.out.println("Number of Runs recorded: " +runResultList.size());

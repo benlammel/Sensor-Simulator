@@ -34,9 +34,9 @@ public class SimulationController {
 		masController.performSimulation(simulationRunFile);
 	}
 
-	public void setSimulationEnvironmentMode(SimulationEnvironmentMode value, StaleProxyException e) {
-		startEnvironment.getApplicationFrame().setSimulationEnvironmentMode(value, e);
-	}
+//	public void setSimulationEnvironmentMode(SimulationEnvironmentMode value, StaleProxyException e) {
+//		startEnvironment.getApplicationFrame().setSimulationEnvironmentMode(value, e);
+//	}
 
 	public void setSimulationEnvironmentMode(
 			SimulationEnvironmentMode value) {

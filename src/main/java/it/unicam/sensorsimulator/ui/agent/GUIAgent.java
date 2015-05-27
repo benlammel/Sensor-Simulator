@@ -8,8 +8,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import it.unicam.sensorsimulator.logging.LogFileHandler;
-import it.unicam.sensorsimulator.ui.ApplicationFrame;
 import it.unicam.sensorsimulator.ui.SimulationEnvironmentMode;
+import it.unicam.sensorsimulator.ui.modelling.Modeller;
 
 public class GUIAgent extends StackPane implements GUIAgentInterface {
 
@@ -23,26 +23,26 @@ public class GUIAgent extends StackPane implements GUIAgentInterface {
 	private double sceneMousePositionX, sceneMousePositionY;
 	private double objectX;
 	private double objectY;
-	private ApplicationFrame applicationFrame;
 	private LogFileHandler log;
+	private Modeller modeller;
 
-	public GUIAgent(ApplicationFrame applicationFrame, int agentID, double agentRadius, double locationX,
+	public GUIAgent(int agentID, Modeller modeller, double agentRadius, double locationX,
 			double locationY) {
-		this(applicationFrame, agentID);
+		this(agentID, modeller);
 		setAgentRadius(agentRadius);
 		relocateByCenterCoordinations(locationX, locationY);
 		log.trace(GUIAgent.class, "agent properties changed;" + getLogMessage());
 	}
 
-	public GUIAgent(ApplicationFrame applicationFrame, int agentID) {
-		this.applicationFrame = applicationFrame;
+	public GUIAgent(int agentID, Modeller modeller) {
+		this.modeller = modeller;
 		log = LogFileHandler.getInstance();
 		initElements();
 		setAgentID(agentID);
 		setAgentRadius(20);
 		relocateByCenterCoordinations(100, 100);
 
-		this.setStyle("-fx-background-color: rgba(0, 100, 100, 0.5);");
+		//this.setStyle("-fx-background-color: rgba(0, 100, 100, 0.5);");
 		getChildren().addAll(innerCircle, agentText);
 		log.trace(GUIAgent.class, "agent created;" + getLogMessage());
 	}
@@ -151,8 +151,8 @@ public class GUIAgent extends StackPane implements GUIAgentInterface {
 
 	EventHandler<MouseEvent> onMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
 		public void handle(MouseEvent t) {
-			if (!applicationFrame.getSimulationEnvironmentMode().equals(
-					SimulationEnvironmentMode.SIMULATION)) {
+			if (!modeller.getSimulationEnvironmentMode().equals(
+					SimulationEnvironmentMode.SIMULATION_IN_PROGRESS)) {
 				double offsetX = t.getSceneX() - sceneMousePositionX;
 				double offsetY = t.getSceneY() - sceneMousePositionY;
 

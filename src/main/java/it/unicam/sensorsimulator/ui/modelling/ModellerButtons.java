@@ -1,11 +1,11 @@
-package it.unicam.sensorsimulator.ui.tabmenu.tabs;
+package it.unicam.sensorsimulator.ui.modelling;
 
 import javafx.scene.Node;
 
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 
-public enum TabButtons {
+public enum ModellerButtons {
 	LOADFILE("", "load scenario from file", new Glyph("FontAwesome", FontAwesome.Glyph.FOLDER_OPEN_ALT)),
 	STARTSIMULATION("", "start simulation", new Glyph("FontAwesome", FontAwesome.Glyph.PLAY)),
 	STOPSIMULATION("", "stop simulation", new Glyph("FontAwesome", FontAwesome.Glyph.STOP)),
@@ -18,7 +18,7 @@ public enum TabButtons {
 	private String tooltip;
 	private Node graphic;
 	
-	TabButtons(String buttonText, String tooltip, Node graphic) {
+	ModellerButtons(String buttonText, String tooltip, Node graphic) {
 		this.buttonText = buttonText;
 		this.tooltip = tooltip;
 		this.graphic = graphic;
@@ -35,5 +35,4 @@ public enum TabButtons {
 	public String getTooltip() {
 		return tooltip;
 	}
-
 }

@@ -1,5 +1,5 @@
 package it.unicam.sensorsimulator.ui;
 
 public enum SimulationEnvironmentMode{
-	DRAWTAB, SIMULATION, ABORT, REPORTINGTAB;
+	MODELLING, SIMULATION_IN_PROGRESS;
 }
