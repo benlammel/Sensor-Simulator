@@ -26,8 +26,8 @@ public class ModellerToolbar extends ToolBar {
 	private ColorPicker colorPicker;
 	private LogFileHandler log;
 	
-
-	private ModellerButton btnLoadFile, btnSaveFile, btnClearPanel, btnStartSimulation, btnStopSimulation, btnAddAgent, btnRandomgeneration;
+	private ModellerButton btnLoadFile, btnSaveFile, btnClearPanel, btnStartSimulation, btnStopSimulation, btnAddAgent, btnRandomGeneration;
+	private ModellerButton btnReportViewer;
 	
 	public ModellerToolbar(Modeller modeller) {
 		log = LogFileHandler.getInstance();
@@ -41,7 +41,8 @@ public class ModellerToolbar extends ToolBar {
 		btnStartSimulation =  new ModellerButton(ModellerButtons.STARTSIMULATION, modeller);
 		btnStopSimulation =  new ModellerButton(ModellerButtons.STOPSIMULATION, modeller);
 		btnAddAgent = new ModellerButton(ModellerButtons.ADDAGENT, modeller);
-		btnRandomgeneration = new ModellerButton(ModellerButtons.RANDOMAGENTGENERATION, modeller);
+		btnRandomGeneration = new ModellerButton(ModellerButtons.RANDOMAGENTGENERATION, modeller);
+		btnReportViewer = new ModellerButton(ModellerButtons.REPORT, modeller);
 
 		getItems().addAll(btnLoadFile,
 				btnSaveFile,
@@ -52,7 +53,9 @@ public class ModellerToolbar extends ToolBar {
 				btnStopSimulation,
 				new Separator(), cboPlugins, new Separator(),
 				btnAddAgent,
-				btnRandomgeneration);
+				btnRandomGeneration,
+				new Separator(),
+				btnReportViewer);
 	}
 
 	private Node createColorPicker() {
@@ -104,7 +107,7 @@ public class ModellerToolbar extends ToolBar {
 			btnStartSimulation.setDisable(true);
 			btnStopSimulation.setDisable(true);
 			btnAddAgent.setDisable(false);
-			btnRandomgeneration.setDisable(false);
+			btnRandomGeneration.setDisable(false);
 			break;
 		case CONTENT:
 			btnLoadFile.setDisable(false);
@@ -113,7 +116,7 @@ public class ModellerToolbar extends ToolBar {
 			btnStartSimulation.setDisable(false);
 			btnStopSimulation.setDisable(true);
 			btnAddAgent.setDisable(false);
-			btnRandomgeneration.setDisable(false);
+			btnRandomGeneration.setDisable(false);
 			break;
 		default:
 			break;

@@ -16,7 +16,8 @@ import org.controlsfx.glyphfont.GlyphFontRegistry;
 
 public class SimulationResourcesAndProperties {
 	
-	private final String APPLICATIONHEADER = "Distributed Sensor Simulation Environment";
+	private final String APPLICATIONHEADER = "Sensor Simulation Environment";
+	private static final String REPORTINGVIEWERHEADER = "Reporting Viewer";
 	private Properties properties;
 	private final String FONTAWESOMETTFFILEPATH = "fonts/fontawesome-webfont.ttf";
 	private String PROPERTIESFILENAME = "config.properties";
@@ -101,6 +102,10 @@ public class SimulationResourcesAndProperties {
 
 	public String getApplicationHeader() {
 		return APPLICATIONHEADER;
+	}
+	
+	public String getReportingViewerHeader() {
+		return REPORTINGVIEWERHEADER;
 	}
 
 	public void saveToPropertiesFile() {

@@ -2,26 +2,23 @@ package it.unicam.sensorsimulator.plugin.heed.reporting;
 
 import java.util.HashMap;
 
-import it.unicam.sensorsimulator.plugin.heed.HeedPlugin;
+import it.unicam.sensorsimulator.interfaces.AbstractReportPane;
+import it.unicam.sensorsimulator.interfaces.ReportInterface;
+import it.unicam.sensorsimulator.plugin.heed.reporting.report.HeedReport;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.layout.BorderPane;
 
-public class ReportingModule extends BorderPane implements EventHandler<ActionEvent> {
+public class ReportingModule extends AbstractReportPane implements EventHandler<ActionEvent> {
 	
-	private HeedPlugin heedPlugin;
 	private ReportGenerator reportGeneratorTask;
 	
 	private Button btnGenerateReport;
 	private ProgressBar progressBar;
 
-	public ReportingModule(HeedPlugin heedPlugin){
-		this.heedPlugin = heedPlugin;
-		
-		
+	public ReportingModule(){
 		btnGenerateReport = new Button("generate graphical report");
 		btnGenerateReport.setOnAction(this);
 		this.setCenter(btnGenerateReport);
@@ -31,17 +28,9 @@ public class ReportingModule extends BorderPane implements EventHandler<ActionEv
 		
 	}
 
-	public void addRunResults(HashMap<Integer, RunResults> runResultList) {
-		reportGeneratorTask = new ReportGenerator(runResultList);
-		
-		
-//		reportGeneratorTask = new ReportGenerator(new TestResults());
-		
-		
-		
-		
-//		System.out.println("Number of Runs recorded: " +runResultList.size());
-	}
+//	public void addRunResults(HashMap<Integer, RunResults> runResultList) {
+//		reportGeneratorTask = new ReportGenerator(runResultList);
+//	}
 	
 	@Override
 	public void handle(ActionEvent event) {
@@ -57,5 +46,13 @@ public class ReportingModule extends BorderPane implements EventHandler<ActionEv
 			    }
 			});
 		}
+	}
+
+	@Override
+	public void addReport(ReportInterface report) {
+//		RunResults runResults = (RunResults) report;
+		
+		reportGeneratorTask = new ReportGenerator((HeedReport) report);
+		
 	}
 }

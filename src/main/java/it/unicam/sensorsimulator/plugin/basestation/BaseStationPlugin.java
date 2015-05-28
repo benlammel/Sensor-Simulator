@@ -1,7 +1,9 @@
 package it.unicam.sensorsimulator.plugin.basestation;
 
 import javafx.scene.Parent;
+import it.unicam.sensorsimulator.interfaces.AbstractReportPane;
 import it.unicam.sensorsimulator.interfaces.PluginInterface;
+import it.unicam.sensorsimulator.interfaces.ReportInterface;
 import it.unicam.sensorsimulator.interfaces.SimulationEnvironmentServices;
 import it.unicam.sensorsimulator.interfaces.SimulationRunInterface;
 import it.unicam.sensorsimulator.plugin.basestation.agents.coordinator.SimulationCoordinatorAgent;
@@ -13,11 +15,9 @@ public class BaseStationPlugin implements PluginInterface {
 	
 	private BaseStationConfigDialog configDialog;
 	private SimulationEnvironmentServices environmentServices;
-	private ReportingModule reportintModule;
 	
 	public BaseStationPlugin() {
 		configDialog = new BaseStationConfigDialog(this);
-		reportintModule = new ReportingModule(this);
 	}
 
 	@Override
@@ -71,12 +71,14 @@ public class BaseStationPlugin implements PluginInterface {
 	}
 
 	@Override
-	public Parent getReportingPane() {
-		return reportintModule;
+	public Class<?> getReportingPane() {
+		return ReportingModule.class;
 	}
 
 	@Override
-	public Object getReportingHandler() {
-		return reportintModule;
+	public Class<?> getReportClass() {
+		// TODO Auto-generated method stub
+		return null;
 	}
+
 }

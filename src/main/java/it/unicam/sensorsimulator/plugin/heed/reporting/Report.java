@@ -1,5 +1,6 @@
 package it.unicam.sensorsimulator.plugin.heed.reporting;
 
+import it.unicam.sensorsimulator.plugin.heed.reporting.report.HeedRunResults;
 import javafx.scene.control.Accordion;
 
 public class Report extends Accordion {
@@ -9,7 +10,7 @@ public class Report extends Accordion {
 //		this.setExpandedPane(protocol);
 	}
 
-	public void addSubReport(RunResults values) {
+	public void addSubReport(HeedRunResults values) {
 		this.getPanes().add(new SubReport(values));
 	}
 

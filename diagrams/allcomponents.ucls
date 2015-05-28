@@ -1,61 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.1.8" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
   associations="true" dependencies="false" nesting-relationships="true">  
-  <class id="1" language="java" name="it.unicam.sensorsimulator.StartEnvironment" project="SensorSimulator" 
-    file="/SensorSimulator/src/main/java/it/unicam/sensorsimulator/StartEnvironment.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="442" y="143"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <interface id="2" language="java" name="it.unicam.sensorsimulator.interfaces.SimulationEnvironmentServices" 
-    project="SensorSimulator" 
-    file="/SensorSimulator/src/main/java/it/unicam/sensorsimulator/interfaces/SimulationEnvironmentServices.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1052" y="397"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </interface>  
-  <interface id="3" language="java" name="it.unicam.sensorsimulator.interfaces.GeneralAgentInterface" 
-    project="SensorSimulator" 
-    file="/SensorSimulator/src/main/java/it/unicam/sensorsimulator/interfaces/GeneralAgentInterface.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="206" width="185" x="1409" y="410"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </interface>  
-  <interface id="4" language="java" name="it.unicam.sensorsimulator.interfaces.PluginInterface" 
-    project="SensorSimulator" 
-    file="/SensorSimulator/src/main/java/it/unicam/sensorsimulator/interfaces/PluginInterface.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="260" width="449" x="1987" y="410"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </interface>  
-  <interface id="5" language="java" name="it.unicam.sensorsimulator.interfaces.SimulationRunInterface" 
-    project="SensorSimulator" 
-    file="/SensorSimulator/src/main/java/it/unicam/sensorsimulator/interfaces/SimulationRunInterface.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2064" y="458"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </interface>  
-  <interface id="6" language="java" name="it.unicam.sensorsimulator.interfaces.LogFileWriterInterface" 
+  <interface id="1" language="java" name="it.unicam.sensorsimulator.interfaces.LogFileWriterInterface" 
     project="SensorSimulator" 
     file="/SensorSimulator/src/main/java/it/unicam/sensorsimulator/interfaces/LogFileWriterInterface.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -66,7 +12,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </interface>  
-  <enumeration id="7" language="java" name="it.unicam.sensorsimulator.interfaces.LogFileWriterInterface.LogLevels" 
+  <enumeration id="2" language="java" name="it.unicam.sensorsimulator.interfaces.LogFileWriterInterface.LogLevels" 
     project="SensorSimulator" 
     file="/SensorSimulator/src/main/java/it/unicam/sensorsimulator/interfaces/LogFileWriterInterface.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -77,7 +23,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </enumeration>  
-  <interface id="8" language="java" name="it.unicam.sensorsimulator.interfaces.SimulationCoordinatorAgentInterface" 
+  <interface id="3" language="java" name="it.unicam.sensorsimulator.interfaces.SimulationCoordinatorAgentInterface" 
     project="SensorSimulator" 
     file="/SensorSimulator/src/main/java/it/unicam/sensorsimulator/interfaces/SimulationCoordinatorAgentInterface.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -88,7 +34,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </interface>  
-  <class id="9" language="java" name="it.unicam.sensorsimulator.logging.LogFileHandler" project="SensorSimulator" 
+  <class id="4" language="java" name="it.unicam.sensorsimulator.logging.LogFileHandler" project="SensorSimulator" 
     file="/SensorSimulator/src/main/java/it/unicam/sensorsimulator/logging/LogFileHandler.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1117" y="1011"/>    
@@ -98,7 +44,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <interface id="10" language="java" name="it.unicam.sensorsimulator.masengine.MultiAgentEngineControllerInterface" 
+  <interface id="5" language="java" name="it.unicam.sensorsimulator.masengine.MultiAgentEngineControllerInterface" 
     project="SensorSimulator" 
     file="/SensorSimulator/src/main/java/it/unicam/sensorsimulator/masengine/MultiAgentEngineControllerInterface.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -109,7 +55,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </interface>  
-  <class id="11" language="java" name="it.unicam.sensorsimulator.masengine.jade.JadeEngineController" 
+  <class id="6" language="java" name="it.unicam.sensorsimulator.masengine.jade.JadeEngineController" 
     project="SensorSimulator" 
     file="/SensorSimulator/src/main/java/it/unicam/sensorsimulator/masengine/jade/JadeEngineController.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -120,7 +66,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <enumeration id="12" language="java" name="it.unicam.sensorsimulator.masengine.jade.tools.JadePlatformAgents" 
+  <enumeration id="7" language="java" name="it.unicam.sensorsimulator.masengine.jade.tools.JadePlatformAgents" 
     project="SensorSimulator" 
     file="/SensorSimulator/src/main/java/it/unicam/sensorsimulator/masengine/jade/tools/JadePlatformAgents.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -131,7 +77,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </enumeration>  
-  <class id="13" language="java" name="it.unicam.sensorsimulator.plugin.PluginHandler" project="SensorSimulator" 
+  <class id="8" language="java" name="it.unicam.sensorsimulator.plugin.PluginHandler" project="SensorSimulator" 
     file="/SensorSimulator/src/main/java/it/unicam/sensorsimulator/plugin/PluginHandler.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1179" y="56"/>    
@@ -141,7 +87,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="14" language="java" name="it.unicam.sensorsimulator.plugin.PluginTools" project="SensorSimulator" 
+  <class id="9" language="java" name="it.unicam.sensorsimulator.plugin.PluginTools" project="SensorSimulator" 
     file="/SensorSimulator/src/main/java/it/unicam/sensorsimulator/plugin/PluginTools.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1123" y="692"/>    
@@ -151,7 +97,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="15" language="java" name="it.unicam.sensorsimulator.simulationcontroller.SimulationController" 
+  <class id="10" language="java" name="it.unicam.sensorsimulator.simulationcontroller.SimulationController" 
     project="SensorSimulator" 
     file="/SensorSimulator/src/main/java/it/unicam/sensorsimulator/simulationcontroller/SimulationController.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -162,7 +108,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="16" language="java" name="it.unicam.sensorsimulator.simulationcontroller.xml.SerializationTools" 
+  <class id="11" language="java" name="it.unicam.sensorsimulator.simulationcontroller.xml.SerializationTools" 
     project="SensorSimulator" 
     file="/SensorSimulator/src/main/java/it/unicam/sensorsimulator/simulationcontroller/xml/SerializationTools.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -173,7 +119,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="17" language="java" name="it.unicam.sensorsimulator.ui.ApplicationFrame" project="SensorSimulator" 
+  <class id="12" language="java" name="it.unicam.sensorsimulator.ui.ApplicationFrame" project="SensorSimulator" 
     file="/SensorSimulator/src/main/java/it/unicam/sensorsimulator/ui/ApplicationFrame.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="884" y="124"/>    
@@ -183,7 +129,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <enumeration id="18" language="java" name="it.unicam.sensorsimulator.ui.SimulationEnvironmentMode" 
+  <enumeration id="13" language="java" name="it.unicam.sensorsimulator.ui.SimulationEnvironmentMode" 
     project="SensorSimulator" 
     file="/SensorSimulator/src/main/java/it/unicam/sensorsimulator/ui/SimulationEnvironmentMode.java" binary="false" 
     corner="BOTTOM_RIGHT">    
@@ -194,7 +140,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </enumeration>  
-  <class id="19" language="java" name="it.unicam.sensorsimulator.ui.agent.GUIAgent" project="SensorSimulator" 
+  <class id="14" language="java" name="it.unicam.sensorsimulator.ui.agent.GUIAgent" project="SensorSimulator" 
     file="/SensorSimulator/src/main/java/it/unicam/sensorsimulator/ui/agent/GUIAgent.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="566" width="368" x="2528" y="945"/>    
@@ -204,7 +150,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="20" language="java" name="it.unicam.sensorsimulator.ui.agent.InnerCircle" project="SensorSimulator" 
+  <class id="15" language="java" name="it.unicam.sensorsimulator.ui.agent.InnerCircle" project="SensorSimulator" 
     file="/SensorSimulator/src/main/java/it/unicam/sensorsimulator/ui/agent/InnerCircle.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="98" width="167" x="2277" y="1467"/>    
@@ -214,7 +160,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <enumeration id="21" language="java" name="it.unicam.sensorsimulator.ui.dialogs.DialogMessages" 
+  <enumeration id="16" language="java" name="it.unicam.sensorsimulator.ui.dialogs.DialogMessages" 
     project="SensorSimulator" 
     file="/SensorSimulator/src/main/java/it/unicam/sensorsimulator/ui/dialogs/DialogMessages.java" binary="false" 
     corner="BOTTOM_RIGHT">    
@@ -225,7 +171,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </enumeration>  
-  <class id="22" language="java" name="it.unicam.sensorsimulator.ui.dialogs.GeneralDialogHandler" 
+  <class id="17" language="java" name="it.unicam.sensorsimulator.ui.dialogs.GeneralDialogHandler" 
     project="SensorSimulator" 
     file="/SensorSimulator/src/main/java/it/unicam/sensorsimulator/ui/dialogs/GeneralDialogHandler.java" binary="false" 
     corner="BOTTOM_RIGHT">    
@@ -236,17 +182,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="23" language="java" name="it.unicam.sensorsimulator.ui.panels.DrawPanel" project="SensorSimulator" 
-    file="/SensorSimulator/src/main/java/it/unicam/sensorsimulator/ui/panels/DrawPanel.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2314" y="119"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <enumeration id="24" language="java" name="it.unicam.sensorsimulator.ui.ressources.PropertyValues" 
+  <enumeration id="18" language="java" name="it.unicam.sensorsimulator.ui.ressources.PropertyValues" 
     project="SensorSimulator" 
     file="/SensorSimulator/src/main/java/it/unicam/sensorsimulator/ui/ressources/PropertyValues.java" binary="false" 
     corner="BOTTOM_RIGHT">    
@@ -257,18 +193,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </enumeration>  
-  <class id="25" language="java" name="it.unicam.sensorsimulator.ui.ressources.SimulationRessourcesAndProperties" 
-    project="SensorSimulator" 
-    file="/SensorSimulator/src/main/java/it/unicam/sensorsimulator/ui/ressources/SimulationRessourcesAndProperties.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="440" width="288" x="1452" y="660"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="26" language="java" name="it.unicam.sensorsimulator.ui.startdialog.PluginInterfaceCell" 
+  <class id="19" language="java" name="it.unicam.sensorsimulator.ui.startdialog.PluginInterfaceCell" 
     project="SensorSimulator" 
     file="/SensorSimulator/src/main/java/it/unicam/sensorsimulator/ui/startdialog/PluginInterfaceCell.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -279,7 +204,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="27" language="java" name="it.unicam.sensorsimulator.ui.startdialog.SimulationStartDiolg" 
+  <class id="20" language="java" name="it.unicam.sensorsimulator.ui.startdialog.SimulationStartDiolg" 
     project="SensorSimulator" 
     file="/SensorSimulator/src/main/java/it/unicam/sensorsimulator/ui/startdialog/SimulationStartDiolg.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -290,312 +215,220 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="28" language="java" name="it.unicam.sensorsimulator.ui.tabmenu.tabs.DrawTab" project="SensorSimulator" 
-    file="/SensorSimulator/src/main/java/it/unicam/sensorsimulator/ui/tabmenu/tabs/DrawTab.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="206" width="250" x="1295" y="869"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="29" language="java" name="it.unicam.sensorsimulator.ui.tabmenu.tabs.ReportingTab" project="SensorSimulator" 
-    file="/SensorSimulator/src/main/java/it/unicam/sensorsimulator/ui/tabmenu/tabs/ReportingTab.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="98" width="205" x="1454" y="1123"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <enumeration id="30" language="java" name="it.unicam.sensorsimulator.ui.tabmenu.tabs.TabButtons" 
-    project="SensorSimulator" 
-    file="/SensorSimulator/src/main/java/it/unicam/sensorsimulator/ui/tabmenu/tabs/TabButtons.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="314" width="268" x="1846" y="699"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </enumeration>  
-  <association id="31">    
-    <bendpoint x="737" y="238"/>    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="32" name="startEnvironment">        
-        <position height="18" width="100" x="547" y="164"/>      
+  <nesting id="21">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="2"/>  
+  </nesting>  
+  <association id="22">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="23" name="applicationFrame">        
+        <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="33" minimum="0" maximum="1"/>    
+      <multiplicity id="24" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
+    <end type="TARGET" refId="12" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="34">    
-    <end type="SOURCE" refId="19" navigable="false">      
-      <attribute id="35" name="log"/>      
-      <multiplicity id="36" minimum="0" maximum="1"/>    
+  <association id="25">    
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="26" name="pluginHandler">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="27" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
+    <end type="TARGET" refId="8" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="37">    
-    <end type="SOURCE" refId="28" navigable="false">      
-      <attribute id="38" name="log"/>      
-      <multiplicity id="39" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="40">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="41" name="ressources"/>      
-      <multiplicity id="42" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="25" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="43">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="44" name="pluginHandler"/>      
-      <multiplicity id="45" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="13" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="46">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="47" name="log"/>      
-      <multiplicity id="48" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="49">    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="50" name="log"/>      
-      <multiplicity id="51" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="52">    
-    <end type="SOURCE" refId="11" navigable="false">      
-      <attribute id="53" name="currentRunFile"/>      
-      <multiplicity id="54" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="55">    
-    <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="56" name="INSTANCE"/>      
-      <multiplicity id="57" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="58">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="59" name="log"/>      
-      <multiplicity id="60" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="61">    
-    <end type="SOURCE" refId="11" navigable="false">      
-      <attribute id="62" name="simulationController"/>      
-      <multiplicity id="63" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="15" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="64">    
-    <end type="SOURCE" refId="27" navigable="false">      
-      <attribute id="65" name="pluginHandler"/>      
-      <multiplicity id="66" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="13" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="67">    
-    <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="6"/>  
-  </realization>  
-  <association id="68">    
-    <end type="SOURCE" refId="27" navigable="false">      
-      <attribute id="69" name="applicationFrame"/>      
-      <multiplicity id="70" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="17" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="71">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="72" name="generalDialogHandler"/>      
-      <multiplicity id="73" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="22" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="74">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="75" name="generalDialogHandler"/>      
-      <multiplicity id="76" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="22" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="77">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="78" name="applicationFrame"/>      
-      <multiplicity id="79" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="17" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="80">    
-    <bendpoint x="412" y="280"/>    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="81" name="startEnvironment"/>      
-      <multiplicity id="82" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="83">    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="84" name="masController"/>      
-      <multiplicity id="85" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="10" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="86">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="87" name="simulationRun"/>      
-      <multiplicity id="88" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="89">    
-    <bendpoint x="262" y="269"/>    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="90" name="simulationController"/>      
-      <multiplicity id="91" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="15" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="92">    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="10"/>  
-  </realization>  
-  <association id="93">    
-    <end type="SOURCE" refId="28" navigable="false">      
-      <attribute id="94" name="applicationFrame"/>      
-      <multiplicity id="95" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="17" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="96">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="97" name="applicationFrame"/>      
-      <multiplicity id="98" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="17" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="99">    
-    <end type="SOURCE" refId="19" navigable="false">      
-      <attribute id="100" name="applicationFrame"/>      
-      <multiplicity id="101" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="17" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="102">    
-    <end type="SOURCE" refId="23" navigable="false">      
-      <attribute id="103" name="applicationFrame"/>      
-      <multiplicity id="104" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="17" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="105">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="106" name="pluginList"/>      
-      <multiplicity id="107" minimum="0" maximum="2147483647"/>    
+  <association id="28">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="29" name="INSTANCE">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="30" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="108">    
-    <end type="SOURCE" refId="13"/>    
-    <end type="TARGET" refId="2"/>  
-  </realization>  
-  <association id="109">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="110" name="startDialogHandler"/>      
-      <multiplicity id="111" minimum="0" maximum="1"/>    
+  <association id="31">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="32" name="log">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="33" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="27" navigable="true"/>    
+    <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="112">    
-    <end type="SOURCE" refId="27" navigable="false">      
-      <attribute id="113" name="drawPanel"/>      
-      <multiplicity id="114" minimum="0" maximum="1"/>    
+  <association id="34">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="35" name="log">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="36" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="23" navigable="true"/>    
+    <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <nesting id="115">    
+  <realization id="37">    
     <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="7"/>  
-  </nesting>  
-  <association id="116">    
-    <end type="SOURCE" refId="19" navigable="false">      
-      <attribute id="117" name="innerCircle"/>      
-      <multiplicity id="118" minimum="0" maximum="1"/>    
+    <end type="TARGET" refId="5"/>  
+  </realization>  
+  <association id="38">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="39" name="innerCircle">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="40" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="41">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="1"/>  
+  </realization>  
+  <association id="42">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="43" name="pluginHandler">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="44" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="45">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="46" name="log">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="47" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="48">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="49" name="log">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="50" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="51">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="52" name="generalDialogHandler">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="53" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="17" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="54">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="55" name="log">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="56" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="57">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="58" name="generalDialogHandler">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="59" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="17" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="60">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="61" name="startDialogHandler">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="62" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="20" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="119">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="120" name="currentPlugin"/>      
-      <multiplicity id="121" minimum="0" maximum="1"/>    
+  <association id="63">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="64" name="mode">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="65" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
+    <end type="TARGET" refId="13" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="122">    
-    <end type="SOURCE" refId="14" navigable="false">      
-      <attribute id="123" name="log"/>      
-      <multiplicity id="124" minimum="0" maximum="1"/>    
+  <association id="66">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="67" name="simulationController">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="68" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
+    <end type="TARGET" refId="10" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="125">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="126" name="mode"/>      
-      <multiplicity id="127" minimum="0" maximum="1"/>    
+  <association id="69">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="70" name="masController">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="71" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="18" navigable="true"/>    
+    <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="128">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="129" name="drawPanel"/>      
-      <multiplicity id="130" minimum="0" maximum="1"/>    
+  <association id="72">    
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="73" name="applicationFrame">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="74" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="23" navigable="true"/>    
+    <end type="TARGET" refId="12" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

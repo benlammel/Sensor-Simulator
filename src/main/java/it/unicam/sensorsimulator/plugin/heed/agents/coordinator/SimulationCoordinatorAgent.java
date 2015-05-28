@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import javafx.application.Platform;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
@@ -13,15 +14,16 @@ import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
 import it.unicam.sensorsimulator.interfaces.GeneralAgentInterface;
 import it.unicam.sensorsimulator.interfaces.LogFileWriterInterface;
+import it.unicam.sensorsimulator.interfaces.SimulationControlInterface;
 import it.unicam.sensorsimulator.interfaces.SimulationCoordinatorAgentInterface;
 import it.unicam.sensorsimulator.interfaces.LogFileWriterInterface.LogLevels;
 import it.unicam.sensorsimulator.plugin.heed.agents.GeneralAgent;
 import it.unicam.sensorsimulator.plugin.heed.agents.coordinator.behaviours.ReceiveMeasurementResults;
 import it.unicam.sensorsimulator.plugin.heed.messages.MessageTypes;
 import it.unicam.sensorsimulator.plugin.heed.messages.MessageTypes.MessageHandling;
-import it.unicam.sensorsimulator.plugin.heed.reporting.AgentStatistic;
-import it.unicam.sensorsimulator.plugin.heed.reporting.ReportingModule;
-import it.unicam.sensorsimulator.plugin.heed.reporting.RunResults;
+import it.unicam.sensorsimulator.plugin.heed.reporting.report.AgentStatistic;
+import it.unicam.sensorsimulator.plugin.heed.reporting.report.HeedReport;
+import it.unicam.sensorsimulator.plugin.heed.reporting.report.HeedRunResults;
 import it.unicam.sensorsimulator.plugin.heed.simulation.SimulationRunFile;
 
 public class SimulationCoordinatorAgent extends Agent implements SimulationCoordinatorAgentInterface {
@@ -32,17 +34,22 @@ public class SimulationCoordinatorAgent extends Agent implements SimulationCoord
 	private HashMap<Integer, GeneralAgentInterface> agentNetworkList;
 	private HashMap<String, Integer> sentMessageCounter;
 	private HashMap<String, Integer> receivedMessageCounter;
-	private ReportingModule reportingHandler;
+	private SimulationControlInterface simulationController;
 	
 	private int run = 0;
-	private RunResults runResults;
-	private HashMap<Integer, RunResults> runResultList;
+	private HeedRunResults runResults;
+	private HeedReport heedReport;
 	
 	protected void setup(){
-		runResultList = new HashMap<Integer, RunResults>();
-		runResults = new RunResults(run);
+		heedReport = new HeedReport();
+		runResults = new HeedRunResults(run);
 
 		initAndSetArguments();
+		Platform.runLater(new Runnable() { 
+            public void run() {
+            	simulationController.startSimulation();
+            }
+        });
 		try {
 			generateNetworkList();
 			loadAgents();
@@ -121,7 +128,7 @@ public class SimulationCoordinatorAgent extends Agent implements SimulationCoord
 		Object[] args = getArguments();
 		log = (LogFileWriterInterface) args[0];
         simRunFile = (SimulationRunFile) args[1];
-        reportingHandler = (ReportingModule) args[2];
+        simulationController = (SimulationControlInterface) args[2];
 	}
 
 	public void sendMessage(ACLMessage message) {
@@ -163,10 +170,6 @@ public class SimulationCoordinatorAgent extends Agent implements SimulationCoord
 		log.logAgentMessageReceived(this.getAID().getLocalName(), message.getConversationId(), message.getSender().getLocalName());
 	}
 
-	public ReportingModule getReportingHandler() {
-		return reportingHandler;
-	}
-
 	public int convertAIDToInteger(AID aid) {
 		return Integer.parseInt(aid.getLocalName());
 	}
@@ -175,8 +178,6 @@ public class SimulationCoordinatorAgent extends Agent implements SimulationCoord
 		return agentList;
 	}
 
-	
-	
 	public void addStatistics(int agentID, AgentStatistic statisticFile) {
 		runResults.addAgentStatistics(agentID, statisticFile);
 	}
@@ -192,7 +193,7 @@ public class SimulationCoordinatorAgent extends Agent implements SimulationCoord
 		runResults.addProtocolMeasurement(clusterHead, clusterMembers);		
 	}
 
-	public RunResults getRunResults() {
+	public HeedRunResults getRunResults() {
 		return runResults;
 	}
 
@@ -207,12 +208,17 @@ public class SimulationCoordinatorAgent extends Agent implements SimulationCoord
 	public void initiateNewRunOrEnd() {
 		runResults.addCoordinatorStatistics(new AgentStatistic(sentMessageCounter, receivedMessageCounter));
 		if(run==simRunFile.getNumberOfRuns()){
-			getReportingHandler().addRunResults(runResultList);
+//			reportingHandler.addAndCreateReport(runResultList);
+			Platform.runLater(new Runnable() { 
+	            public void run() {
+	            	simulationController.addAndCreateReport(heedReport);
+	            }
+	        });
 			this.doDelete();
 		}else{
 			run++;
-			runResultList.put(runResults.getRunID(), runResults);
-			runResults = new RunResults(run);
+			heedReport.addRun(runResults);
+			runResults = new HeedRunResults(run);
 			resetStatistics();
 			try {
 				loadAgents();

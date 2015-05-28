@@ -1,12 +1,12 @@
 package it.unicam.sensorsimulator.plugin;
 
+import it.unicam.sensorsimulator.interfaces.AbstractReportPane;
 import it.unicam.sensorsimulator.interfaces.GeneralAgentInterface;
 import it.unicam.sensorsimulator.interfaces.LogFileWriterInterface;
 import it.unicam.sensorsimulator.interfaces.PluginInterface;
 import it.unicam.sensorsimulator.interfaces.SimulationEnvironmentServices;
 import it.unicam.sensorsimulator.interfaces.SimulationRunInterface;
 import it.unicam.sensorsimulator.logging.LogFileHandler;
-import it.unicam.sensorsimulator.plugin.basestation.BaseStationPlugin;
 import it.unicam.sensorsimulator.plugin.heed.HeedPlugin;
 import it.unicam.sensorsimulator.plugin.heedv2.Heedv2Plugin;
 import it.unicam.sensorsimulator.ui.ApplicationFrame;
@@ -106,7 +106,7 @@ public class PluginHandler implements SimulationEnvironmentServices {
 		return currentPlugin.getSimulationCoordinatorAgent();
 	}
 
-	public Parent getReportingPane() {
+	public Class<?> getReportingPane() {
 		return currentPlugin.getReportingPane();
 	}
 }

@@ -10,7 +10,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import it.unicam.sensorsimulator.interfaces.GeneralAgentInterface;
 import it.unicam.sensorsimulator.interfaces.SimulationRunInterface;
-import it.unicam.sensorsimulator.plugin.heed.agents.AgentConfiguration;
 import it.unicam.sensorsimulator.plugin.heedv2.agent.config.HeedAgentConfiguration;
 
 @XmlRootElement

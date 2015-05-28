@@ -1,7 +1,7 @@
 package it.unicam.sensorsimulator.plugin.heed.reporting.graphic;
 
 import it.unicam.sensorsimulator.plugin.heed.reporting.ClusterPicture;
-import it.unicam.sensorsimulator.plugin.heed.reporting.ProtocolSnapshot;
+import it.unicam.sensorsimulator.plugin.heed.reporting.report.ProtocolSnapshot;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

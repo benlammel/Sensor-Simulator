@@ -1,4 +1,4 @@
-package it.unicam.sensorsimulator.plugin.heed.reporting;
+package it.unicam.sensorsimulator.plugin.heed.reporting.report;
 
 import java.io.Serializable;
 import java.util.HashMap;

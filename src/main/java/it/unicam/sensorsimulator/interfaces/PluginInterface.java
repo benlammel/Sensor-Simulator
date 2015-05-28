@@ -22,8 +22,10 @@ public interface PluginInterface {
 	
 	public Class<?> getSimulationCoordinatorAgent();
 
-	public Parent getReportingPane();
+//	public AbstractReportPane getReportingPane();
+	public Class<?> getReportingPane();
+
 	
-	public Object getReportingHandler();
+	public Class<?> getReportClass();
  
 }

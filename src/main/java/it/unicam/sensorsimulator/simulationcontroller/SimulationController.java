@@ -1,9 +1,9 @@
 package it.unicam.sensorsimulator.simulationcontroller;
 
-import javafx.scene.Parent;
-import jade.wrapper.StaleProxyException;
 import it.unicam.sensorsimulator.StartEnvironment;
 import it.unicam.sensorsimulator.interfaces.LogFileWriterInterface;
+import it.unicam.sensorsimulator.interfaces.ReportInterface;
+import it.unicam.sensorsimulator.interfaces.SimulationControlInterface;
 import it.unicam.sensorsimulator.interfaces.SimulationRunInterface;
 import it.unicam.sensorsimulator.logging.LogFileHandler;
 import it.unicam.sensorsimulator.masengine.MultiAgentEngineControllerInterface;
@@ -12,7 +12,7 @@ import it.unicam.sensorsimulator.persistence.Folder;
 import it.unicam.sensorsimulator.simulationcontroller.xml.SerializationTools;
 import it.unicam.sensorsimulator.ui.SimulationEnvironmentMode;
 
-public class SimulationController {
+public class SimulationController implements SimulationControlInterface {
 	
 	private StartEnvironment startEnvironment;
 	private MultiAgentEngineControllerInterface masController;
@@ -34,10 +34,6 @@ public class SimulationController {
 		masController.performSimulation(simulationRunFile);
 	}
 
-//	public void setSimulationEnvironmentMode(SimulationEnvironmentMode value, StaleProxyException e) {
-//		startEnvironment.getApplicationFrame().setSimulationEnvironmentMode(value, e);
-//	}
-
 	public void setSimulationEnvironmentMode(
 			SimulationEnvironmentMode value) {
 		startEnvironment.getApplicationFrame().setSimulationEnvironmentMode(value);
@@ -46,13 +42,25 @@ public class SimulationController {
 	public Class<?> getCoordinatorAgentClass() {
 		return startEnvironment.getApplicationFrame().getPluginHandler().getSimulationCoordinatorAgent();
 	}
-	
-	public Parent getReportingPane() {
-		return startEnvironment.getApplicationFrame().getPluginHandler().getReportingPane();
-	}
 
 	public void abortOngoingSimulation() {
 		masController.abortOngoingSimulation();
+		startEnvironment.getApplicationFrame().setSimulationEnvironmentMode(SimulationEnvironmentMode.SIMULATION_CANCELED);
+	}
+	
+	public StartEnvironment getStartEnvironment(){
+		return startEnvironment;
+	}
+
+	@Override
+	public void startSimulation() {
+		startEnvironment.getApplicationFrame().setSimulationEnvironmentMode(SimulationEnvironmentMode.SIMULATION_IN_PROGRESS);
+	}
+
+	@Override
+	public void addAndCreateReport(ReportInterface report) {
+		startEnvironment.getApplicationFrame().setSimulationEnvironmentMode(SimulationEnvironmentMode.SIMULATION_COMPLETED);
+		startEnvironment.getApplicationFrame().addAndCreateReport(report);
 	}
 
 }

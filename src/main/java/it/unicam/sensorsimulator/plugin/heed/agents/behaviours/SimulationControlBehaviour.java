@@ -1,10 +1,11 @@
 package it.unicam.sensorsimulator.plugin.heed.agents.behaviours;
 
 import java.io.IOException;
+
 import it.unicam.sensorsimulator.plugin.heed.agents.GeneralAgent;
 import it.unicam.sensorsimulator.plugin.heed.messages.MessageTypes;
 import it.unicam.sensorsimulator.plugin.heed.messages.MessageTypes.MessageHandling;
-import it.unicam.sensorsimulator.plugin.heed.reporting.AgentStatistic;
+import it.unicam.sensorsimulator.plugin.heed.reporting.report.AgentStatistic;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 

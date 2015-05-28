@@ -3,6 +3,7 @@ package it.unicam.sensorsimulator.plugin.heed.reporting;
 import java.util.HashMap;
 
 import it.unicam.sensorsimulator.plugin.heed.reporting.graphic.NetworkGraphic;
+import it.unicam.sensorsimulator.plugin.heed.reporting.report.HeedRunResults;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.SnapshotParameters;
@@ -18,7 +19,7 @@ import javafx.scene.layout.VBox;
 public class SubReport extends TitledPane {
 	
 	private VBox subReportGraphic;
-	private RunResults runResults;
+	private HeedRunResults runResults;
 	
 	private final int pictureWidth = 600;
 	private final int pictureHeight = 400;
@@ -29,7 +30,7 @@ public class SubReport extends TitledPane {
 	private ScrollPane scoller;
 //	private HashMap<Integer, WritableImage> evolutionPictures2;
 
-	public SubReport(RunResults runResults) {
+	public SubReport(HeedRunResults runResults) {
 		this.runResults = runResults;
 		this.setText("Run No: " +runResults.getRunID());
 		scoller = new ScrollPane();

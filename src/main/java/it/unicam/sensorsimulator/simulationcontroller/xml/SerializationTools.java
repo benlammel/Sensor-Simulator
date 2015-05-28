@@ -7,6 +7,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import it.unicam.sensorsimulator.interfaces.ReportInterface;
 import it.unicam.sensorsimulator.interfaces.SimulationRunInterface;
 import it.unicam.sensorsimulator.logging.LogFileHandler;
 
@@ -48,5 +49,14 @@ public class SerializationTools {
 		log.trace(SerializationTools.class,
 				"opened file: " + file.getAbsolutePath());
 		return simulationRun;
+	}
+
+	public static ReportInterface loadXMLReportFile(File file, Class<?> parseClass) throws JAXBException {
+		LogFileHandler log = LogFileHandler.getInstance();
+		JAXBContext jaxbContext = JAXBContext.newInstance(parseClass);
+		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+		ReportInterface reportFile = (ReportInterface) jaxbUnmarshaller.unmarshal(file);
+		log.trace(SerializationTools.class,	"opened file: " + file.getAbsolutePath());
+		return reportFile;
 	}
 }

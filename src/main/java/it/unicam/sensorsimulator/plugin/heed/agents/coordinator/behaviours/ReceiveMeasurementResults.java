@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import it.unicam.sensorsimulator.plugin.heed.agents.coordinator.SimulationCoordinatorAgent;
 import it.unicam.sensorsimulator.plugin.heed.messages.MessageTypes;
 import it.unicam.sensorsimulator.plugin.heed.messages.MessageTypes.MessageHandling;
-import it.unicam.sensorsimulator.plugin.heed.reporting.AgentStatistic;
+import it.unicam.sensorsimulator.plugin.heed.reporting.report.AgentStatistic;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;

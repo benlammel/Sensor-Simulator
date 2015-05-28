@@ -31,8 +31,6 @@ public class JadeEngineController implements
 	private AgentController rmaController;
 	private AgentController inspectorController;
 	
-	private SimulationRunInterface currentRunFile;
-	
 	public JadeEngineController(SimulationController simulationController) {
 		this.simulationController = simulationController;
 		mainContainer = getJadeRunTime().createMainContainer(
@@ -62,11 +60,10 @@ public class JadeEngineController implements
 	}
 
 	private void setupCoordinatorAgentAndRun(SimulationRunInterface simulationRun) throws StaleProxyException {
-		currentRunFile = simulationRun;
 		Object[] args = new Object[3];
 		args[0] = LogFileHandler.getInstance();
 		args[1] = simulationRun;
-		args[2] = simulationController.getReportingPane();
+		args[2] = simulationController;
 			
 		simulationCoordinatorAgent = agentContainer.createNewAgent("SimulationCoordinator", loadCoordinatorClass().getCanonicalName(), args);
 		agentRunController.add(simulationCoordinatorAgent);
@@ -100,7 +97,6 @@ public class JadeEngineController implements
 			rmaController = agentContainer.createNewAgent(JadePlatformAgents.RMA.getName(),
 					rma.class.getCanonicalName(), null);
 			rmaController.start();
-			
 		}
 	}
 

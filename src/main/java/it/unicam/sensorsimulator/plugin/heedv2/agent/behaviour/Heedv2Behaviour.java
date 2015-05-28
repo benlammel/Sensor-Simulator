@@ -10,9 +10,26 @@ public class Heedv2Behaviour extends Behaviour {
 	
 	private Heedv2Agent agent;
 
+	private float chProb;
+	private float chPrev;
+	private boolean isFinalCH;
+	
+	private static final float C_PROB = 0.10f; // 10 %
+	private static final float P_MIN = 1e-4f; // inversely proportional to E_MAX
+	private static final int E_MAX = 100; // maximum battery level
+
 	public Heedv2Behaviour(Heedv2Agent heedv2Agent) {
 		this.agent = heedv2Agent;
 		System.out.println("Agent started");
+		initialize();
+	}
+
+	private void initialize() {
+		
+		chProb = Math.max((C_PROB * E_MAX) / E_MAX, P_MIN);
+		chPrev = 0.0f;
+		isFinalCH = false;
+		
 	}
 
 	@Override
@@ -27,6 +44,9 @@ public class Heedv2Behaviour extends Behaviour {
 				break;
 			}
 		}
+		
+		
+		
 	}
 
 	@Override

@@ -92,7 +92,8 @@ public class Modeller extends BorderPane {
 			break;
 		case STOPSIMULATION:
 			break;
-		default:
+		case REPORT:
+//			applicationFrame.createReportViewerWindow();
 			break;
 		}
 	}

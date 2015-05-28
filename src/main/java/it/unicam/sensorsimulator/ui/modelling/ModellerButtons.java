@@ -12,6 +12,7 @@ public enum ModellerButtons {
 	SAVEFILE("", "save scenario", new Glyph("FontAwesome", FontAwesome.Glyph.SAVE)),
 	CLEARPANEL("", "clear panel", new Glyph("FontAwesome", FontAwesome.Glyph.TRASH_ALT)),
 	ADDAGENT("", "add agent", new Glyph("FontAwesome", FontAwesome.Glyph.CIRCLE_ALT)),
+	REPORT("", "open report viewer", new Glyph("FontAwesome", FontAwesome.Glyph.BAR_CHART_ALT)),
 	RANDOMAGENTGENERATION("", "generate random agents", new Glyph("FontAwesome", FontAwesome.Glyph.RANDOM));
 	
 	private String buttonText;

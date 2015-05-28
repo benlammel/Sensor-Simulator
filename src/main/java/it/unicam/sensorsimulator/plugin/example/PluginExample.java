@@ -12,11 +12,9 @@ public class PluginExample implements PluginInterface {
 	
 	private ExampleSettingsDialog settingsDialog;
 	private SimulationEnvironmentServices environmentServices;
-	private ExampleReportingModule reportingModule;
 	
 	public PluginExample() {
 		settingsDialog = new ExampleSettingsDialog(this);
-		reportingModule = new ExampleReportingModule(this);
 	}
 
 	@Override
@@ -66,13 +64,18 @@ public class PluginExample implements PluginInterface {
 	}
 
 	@Override
-	public Parent getReportingPane() {
-		return reportingModule;
+	public Class<?> getReportingPane() {
+		return ExampleReportingModule.class;
 	}
+	
+//	public AbstractReportPane getReportingPane() {
+//		return new ExampleReportingModule();
+//	}
 
 	@Override
-	public Object getReportingHandler() {
-		return reportingModule;
+	public Class<?> getReportClass() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -1,5 +1,7 @@
 package it.unicam.sensorsimulator.plugin.heedv2.reporting;
 
-public class RunReport {
+import it.unicam.sensorsimulator.interfaces.ReportInterface;
+
+public class RunReport implements ReportInterface {
 
 }

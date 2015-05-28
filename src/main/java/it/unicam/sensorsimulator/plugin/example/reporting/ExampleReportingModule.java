@@ -1,14 +1,20 @@
 package it.unicam.sensorsimulator.plugin.example.reporting;
 
 import javafx.scene.layout.BorderPane;
+import it.unicam.sensorsimulator.interfaces.AbstractReportPane;
+import it.unicam.sensorsimulator.interfaces.ReportInterface;
 import it.unicam.sensorsimulator.plugin.example.PluginExample;
 
-public class ExampleReportingModule extends BorderPane {
+public class ExampleReportingModule extends AbstractReportPane {
 	
-	private PluginExample pluginExample;
+	public ExampleReportingModule() {
+		// TODO Auto-generated constructor stub
+	}
 
-	public ExampleReportingModule(PluginExample pluginExample) {
-		this.pluginExample = pluginExample;
+	@Override
+	public void addReport(ReportInterface report) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

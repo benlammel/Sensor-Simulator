@@ -1,9 +1,9 @@
-package it.unicam.sensorsimulator.plugin.heed.reporting;
+package it.unicam.sensorsimulator.plugin.heed.reporting.report;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class RunResults {
+public class HeedRunResults {
 	
 	private HashMap<Integer, AgentStatistic> agentStatistics;
 	private ArrayList<Integer> clusterHeadList;
@@ -12,13 +12,13 @@ public class RunResults {
 	private int protocolCounter = 0;
 	private HashMap<Integer, ProtocolSnapshot> networkEvolution;
 	
-	public RunResults(){
+	public HeedRunResults(){
 		agentStatistics = new HashMap<Integer, AgentStatistic>();
 		clusterHeadList = new ArrayList<Integer>();
 		networkEvolution = new HashMap<Integer, ProtocolSnapshot>();
 	}
 	
-	public RunResults(int runID){
+	public HeedRunResults(int runID){
 		this();
 		setRunID(runID);
 	}
