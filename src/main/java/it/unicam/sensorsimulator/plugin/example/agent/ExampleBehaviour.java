@@ -2,7 +2,6 @@ package it.unicam.sensorsimulator.plugin.example.agent;
 
 import java.io.IOException;
 import java.util.Random;
-
 import it.unicam.sensorsimulator.plugin.example.messages.MessageTypes;
 import it.unicam.sensorsimulator.plugin.example.reporting.report.ExampleAgentStatistics;
 import jade.core.AID;

@@ -8,6 +8,9 @@ public class MessageCounter implements Serializable {
 	private int counter;
 	private String idString;
 
+	public MessageCounter(){
+	}
+	
 	public MessageCounter(String key, int value) {
 		setMessageIDString(key);
 		setMessageCounter(value);

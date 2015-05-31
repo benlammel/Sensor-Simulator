@@ -141,7 +141,7 @@ public class ExampleSimulationCoordinatorAgent extends AbstractSimulationCoordin
 	}
 
 	public void finalizeRun() {
-		runReport.setCoordinatorStatsitics(new ExampleAgentStatistics(sentMessageCounter, receivedMessageCounter));
+		runReport.setCoordinatorStatsitics(new ExampleAgentStatistics(0, sentMessageCounter, receivedMessageCounter));
 		report.addRun(runReport);
 		if(runCounter==simulationRunFile.getNumberOfRuns()){
 			transferReport();
@@ -156,6 +156,7 @@ public class ExampleSimulationCoordinatorAgent extends AbstractSimulationCoordin
 			//start
 			try {
 				loadAndStartAgents();
+				broadcastStartTrigger();
 			} catch (StaleProxyException e) {
 				e.printStackTrace();
 			}

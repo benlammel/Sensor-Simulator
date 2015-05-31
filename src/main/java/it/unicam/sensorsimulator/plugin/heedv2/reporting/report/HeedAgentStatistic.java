@@ -9,41 +9,46 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 
 public class HeedAgentStatistic implements Serializable {
 
+	private int agentID;
 	private ArrayList<MessageCounter> sentCounter;
 	private ArrayList<MessageCounter> receivedCounter;
-	private int agentID;
-
-	public HeedAgentStatistic(int agentID, HashMap<String, Integer> sentMessageCounter,
-			HashMap<String, Integer> receivedMessageCounter) {
-		this(agentID);
-		
-		for(Entry<String, Integer> sent : sentMessageCounter.entrySet()){
-			sentCounter.add(new MessageCounter(sent.getKey(), sent.getValue()));
-		}
-		
-		for(Entry<String, Integer> received : receivedMessageCounter.entrySet()){
-			receivedCounter.add(new MessageCounter(received.getKey(), received.getValue()));
-		}
-	}
-	
-	public HeedAgentStatistic(HashMap<String, Integer> sentMessageCounter,
-			HashMap<String, Integer> receivedMessageCounter) {
-		this();
-		
-		for(Entry<String, Integer> sent : sentMessageCounter.entrySet()){
-			sentCounter.add(new MessageCounter(sent.getKey(), sent.getValue()));
-		}
-		
-		for(Entry<String, Integer> received : receivedMessageCounter.entrySet()){
-			receivedCounter.add(new MessageCounter(received.getKey(), received.getValue()));
-		}
-	}
 
 	public HeedAgentStatistic() {
 		sentCounter = new ArrayList<MessageCounter>();
 		receivedCounter = new ArrayList<MessageCounter>();
 	}
-	
+
+	public HeedAgentStatistic(int agentID,
+			HashMap<String, Integer> sentMessageCounter,
+			HashMap<String, Integer> receivedMessageCounter) {
+		this(agentID);
+
+		for (Entry<String, Integer> sent : sentMessageCounter.entrySet()) {
+			sentCounter.add(new MessageCounter(sent.getKey(), sent.getValue()));
+		}
+
+		for (Entry<String, Integer> received : receivedMessageCounter
+				.entrySet()) {
+			receivedCounter.add(new MessageCounter(received.getKey(), received
+					.getValue()));
+		}
+	}
+
+	public HeedAgentStatistic(HashMap<String, Integer> sentMessageCounter,
+			HashMap<String, Integer> receivedMessageCounter) {
+		this();
+
+		for (Entry<String, Integer> sent : sentMessageCounter.entrySet()) {
+			sentCounter.add(new MessageCounter(sent.getKey(), sent.getValue()));
+		}
+
+		for (Entry<String, Integer> received : receivedMessageCounter
+				.entrySet()) {
+			receivedCounter.add(new MessageCounter(received.getKey(), received
+					.getValue()));
+		}
+	}
+
 	public HeedAgentStatistic(int agentID) {
 		this();
 		setAgentID(agentID);
@@ -52,7 +57,7 @@ public class HeedAgentStatistic implements Serializable {
 	private void setAgentID(int agentID) {
 		this.agentID = agentID;
 	}
-	
+
 	@XmlAttribute
 	private int getAgentID() {
 		return agentID;

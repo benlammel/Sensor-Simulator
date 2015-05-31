@@ -1,18 +1,14 @@
 package it.unicam.sensorsimulator.plugin.example.reporting.gui;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
-
 import it.unicam.sensorsimulator.plugin.example.reporting.report.ExampleAgentStatistics;
 import it.unicam.sensorsimulator.plugin.example.reporting.report.ExampleRunReport;
-import it.unicam.sensorsimulator.plugin.heedv2.reporting.report.MessageCounter;
-import javafx.scene.Node;
+import it.unicam.sensorsimulator.plugin.example.reporting.report.MessageCounter;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Tab;
 
 public class ExampleRunTab extends Tab {
@@ -148,5 +144,4 @@ public class ExampleRunTab extends Tab {
 			}
 		}
 	}
-
 }

@@ -2,7 +2,6 @@ package it.unicam.sensorsimulator.plugin.example.agent;
 
 import java.util.HashMap;
 import java.util.Iterator;
-
 import it.unicam.sensorsimulator.interfaces.LogFileWriterInterface;
 import it.unicam.sensorsimulator.plugin.example.agent.config.ExampleAgentConfiguration;
 import jade.core.AID;

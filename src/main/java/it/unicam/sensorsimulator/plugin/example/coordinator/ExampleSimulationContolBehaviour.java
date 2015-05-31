@@ -45,6 +45,8 @@ public class ExampleSimulationContolBehaviour extends Behaviour {
 	private void checkForTemination() {
 		if(measurementResponses==coordinator.getListOfAgents().size()){
 			coordinator.finalizeRun();
+			measurementResponses = 0;
+			responses = 0;
 		}
 	}
 

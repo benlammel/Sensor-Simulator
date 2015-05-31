@@ -6,7 +6,6 @@ import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 
 public enum ReportButtons {
-	LOADFILE("", "load report from file", new Glyph("FontAwesome", FontAwesome.Glyph.FOLDER_OPEN_ALT)),
 	SAVEFILE("", "save report", new Glyph("FontAwesome", FontAwesome.Glyph.SAVE));
 	
 	private String buttonText;

@@ -3,11 +3,15 @@ package it.unicam.sensorsimulator.ui.modelling;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Optional;
+
 import javax.xml.bind.JAXBException;
+
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import it.unicam.sensorsimulator.interfaces.GeneralAgentInterface;
+import it.unicam.sensorsimulator.interfaces.PluginInterface;
 import it.unicam.sensorsimulator.logging.LogFileHandler;
 import it.unicam.sensorsimulator.plugin.PluginHandler;
 import it.unicam.sensorsimulator.simulationcontroller.xml.SerializationTools;
@@ -93,9 +97,18 @@ public class Modeller extends BorderPane {
 		case STOPSIMULATION:
 			break;
 		case REPORT:
-//			applicationFrame.createReportViewerWindow();
+			loadReport();
 			break;
 		}
+	}
+
+	private void loadReport() {
+		Dialog dialog = applicationFrame.getGeneralDialogHandler().createPluginSelectionDialog();		
+		Optional<PluginInterface> result = dialog.showAndWait();
+
+		PluginInterface plugin = result.get();
+		fileChooser.setTitle("Load Report File");
+		applicationFrame.showReportFromFile(fileChooser.showOpenDialog(applicationFrame.getMainScene()), plugin);
 	}
 
 	private void showStartDialog() {

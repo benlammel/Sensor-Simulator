@@ -1,15 +1,21 @@
 package it.unicam.sensorsimulator.ui;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import javax.xml.bind.JAXBException;
+
 import it.unicam.sensorsimulator.StartEnvironment;
 import it.unicam.sensorsimulator.interfaces.AbstractReportPane;
+import it.unicam.sensorsimulator.interfaces.PluginInterface;
 import it.unicam.sensorsimulator.interfaces.ReportInterface;
 import it.unicam.sensorsimulator.interfaces.SimulationRunInterface;
 import it.unicam.sensorsimulator.logging.LogFileHandler;
 import it.unicam.sensorsimulator.plugin.PluginHandler;
 import it.unicam.sensorsimulator.simulationcontroller.SimulationController;
+import it.unicam.sensorsimulator.simulationcontroller.xml.SerializationTools;
 import it.unicam.sensorsimulator.ui.dialogs.GeneralDialogHandler;
 import it.unicam.sensorsimulator.ui.modelling.Modeller;
 import it.unicam.sensorsimulator.ui.reporting.ReportViewer;
@@ -118,21 +124,6 @@ public class ApplicationFrame extends BorderPane {
 		return startDialogHandler;
 	}
 
-//	public ReportViewer createReportViewerWindow() {
-//		if(reportViewers==null){
-//			this.reportViewers = new ArrayList<ReportViewer>();
-//			System.out.println("reportViewers created " +reportViewers.size());
-//		}
-//		ReportViewer stage = new ReportViewer(this);
-//		stage.setTitle(getRessourcesAndProperties().getReportingViewerHeader());
-//		stage.centerOnScreen();
-//		stage.setWidth(400);
-//		stage.setHeight(500);
-//		reportViewers.add(stage);
-//        stage.show();
-//        return stage;
-//	}
-
 	public void closeSubStages() {
 		if(reportViewers != null && !reportViewers.isEmpty()){
 			for(Stage stage : reportViewers){
@@ -144,6 +135,20 @@ public class ApplicationFrame extends BorderPane {
 
 	public void closeSubStage(ReportViewer reportViewer) {
 		reportViewers.remove(reportViewer);
+	}
+	
+	private void addAndCreateReport(Class<?> reportingPane,
+			ReportInterface report) {
+		AbstractReportPane pane = null;
+		try {
+			pane = (AbstractReportPane) reportingPane.newInstance();
+			pane.setReport(report);
+			createReportViewer(pane);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void addAndCreateReport(ReportInterface report) {
@@ -157,10 +162,6 @@ public class ApplicationFrame extends BorderPane {
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
-		
-//		ReportViewer stage = createReportViewerWindow();
-//		stage.setPlugin(getPluginHandler().getCurrentPlugin());
-//		stage.addReport(report);
 	}
 
 	private void createReportViewer(AbstractReportPane reportPane) {
@@ -175,6 +176,15 @@ public class ApplicationFrame extends BorderPane {
 		stage.setHeight(reportPane.getWindowHeight());
 		reportViewers.add(stage);
         stage.show();
-		
+	}
+	
+	public void showReportFromFile(File file, PluginInterface plugin) {
+		if (file != null) {
+			try {
+				addAndCreateReport(plugin.getReportingPane(), SerializationTools.loadXMLReportFile(file, plugin.getReportClass()));
+			} catch (JAXBException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

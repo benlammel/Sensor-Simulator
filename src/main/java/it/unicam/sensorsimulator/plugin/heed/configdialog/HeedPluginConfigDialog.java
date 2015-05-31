@@ -1,7 +1,6 @@
 package it.unicam.sensorsimulator.plugin.heed.configdialog;
 
 import java.util.ArrayList;
-
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import it.unicam.sensorsimulator.interfaces.GeneralAgentInterface;

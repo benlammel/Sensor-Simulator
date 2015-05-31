@@ -9,9 +9,9 @@ import it.unicam.sensorsimulator.interfaces.SimulationEnvironmentServices;
 import it.unicam.sensorsimulator.interfaces.SimulationRunInterface;
 import it.unicam.sensorsimulator.plugin.example.agent.config.ExampleAgentConfiguration;
 import it.unicam.sensorsimulator.plugin.example.coordinator.ExampleSimulationCoordinatorAgent;
+import it.unicam.sensorsimulator.plugin.example.reporting.ExamplePluginReportingModule;
 import it.unicam.sensorsimulator.plugin.example.reporting.report.ExampleReport;
 import it.unicam.sensorsimulator.plugin.example.setting.ExampleSettingsDialog;
-import it.unicam.sensorsimulator.plugin.report.ExamplePluginReportingModule;
 
 public class ExamplePlugin implements PluginInterface {
 	

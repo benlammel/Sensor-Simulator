@@ -1,32 +1,38 @@
 package it.unicam.sensorsimulator.plugin.example.reporting.report;
 
+import java.io.Serializable;
 import javax.xml.bind.annotation.XmlAttribute;
 
-public class MessageCounter {
+public class MessageCounter implements Serializable {
 	
 	private int counter;
 	private String idString;
+	
+	public MessageCounter(){
+		setMessageCounter(0);
+		setMessageIDString("message");
+	}
 
 	public MessageCounter(String key, int value) {
 		setMessageIDString(key);
 		setMessageCounter(value);
 	}
 
-	private void setMessageCounter(int value) {
+	public void setMessageCounter(int value) {
 		this.counter = value;
 	}
 	
 	@XmlAttribute
-	private int getMessageCounter() {
+	public int getMessageCounter() {
 		return counter;
 	}
 
-	private void setMessageIDString(String key) {
+	public void setMessageIDString(String key) {
 		this.idString = key;
 	}
 	
 	@XmlAttribute
-	private String getMessageIDString() {
+	public String getMessageIDString() {
 		return idString;
 	}
 }

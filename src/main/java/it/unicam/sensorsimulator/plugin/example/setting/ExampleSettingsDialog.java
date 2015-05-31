@@ -62,11 +62,11 @@ public class ExampleSettingsDialog extends GridPane {
 	}
 
 	public SimulationRunInterface generateAndReturnSimulationRunFileInDialog() {
-		getCurrentRunFile().setNumberOfRuns(getNumberOfRuns());
+		getCurrentRunFile().setNumberOfRuns((int) sliderNoOfRuns.getValue());
 		getCurrentRunFile().setStartInspectorAgent(ckInspector.isSelected());
 		getCurrentRunFile().setStartMASObservationUI(ckMASObservation.isSelected());
 		getCurrentRunFile().setStartSnifferAgent(ckSniffer.isSelected());
-
+		
 		loadAgents();
 		
 		return simulationRunFile;

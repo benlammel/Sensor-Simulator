@@ -1,4 +1,4 @@
-package it.unicam.sensorsimulator.plugin.report;
+package it.unicam.sensorsimulator.plugin.example.reporting;
 
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
@@ -53,5 +53,4 @@ public class ExamplePluginReportingModule extends AbstractReportPane {
 	public int getWindowHeight() {
 		return 600;
 	}
-
 }

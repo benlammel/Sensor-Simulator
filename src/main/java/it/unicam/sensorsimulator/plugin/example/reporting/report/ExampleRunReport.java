@@ -1,7 +1,6 @@
 package it.unicam.sensorsimulator.plugin.example.reporting.report;
 
 import java.util.ArrayList;
-
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 

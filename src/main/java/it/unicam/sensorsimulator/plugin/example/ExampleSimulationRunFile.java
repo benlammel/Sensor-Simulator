@@ -7,11 +7,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-
 import it.unicam.sensorsimulator.interfaces.GeneralAgentInterface;
 import it.unicam.sensorsimulator.interfaces.SimulationRunInterface;
 import it.unicam.sensorsimulator.plugin.example.agent.config.ExampleAgentConfiguration;
-import it.unicam.sensorsimulator.plugin.heedv2.agent.config.HeedAgentConfiguration;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
@@ -32,6 +30,7 @@ public class ExampleSimulationRunFile implements SimulationRunInterface {
 		this.setNumberOfRuns(1);
 	}
 
+	@XmlElement
 	@Override
 	public boolean getStartMASObservationUI() {
 		return startMASObservationUI;
@@ -42,6 +41,7 @@ public class ExampleSimulationRunFile implements SimulationRunInterface {
 		this.startMASObservationUI = value;
 	}
 	
+	@XmlElement
 	@Override
 	public boolean getStartSnifferAgent() {
 		return startSnifferAgent;
@@ -52,6 +52,7 @@ public class ExampleSimulationRunFile implements SimulationRunInterface {
 		this.startSnifferAgent = value;
 	}
 	
+	@XmlElement
 	@Override
 	public boolean getStartInspectorAgent() {
 		return startInspectorAgent;
@@ -62,6 +63,7 @@ public class ExampleSimulationRunFile implements SimulationRunInterface {
 		this.startInspectorAgent = value;
 	}
 
+	@XmlElement
 	@Override
 	public int getNumberOfRuns() {
 		return numberOfRuns;
