@@ -1,10 +1,9 @@
-package it.unicam.sensorsimulator.plugin.heedv2.reporting.report;
+package it.unicam.sensorsimulator.plugin.example.reporting.report;
 
-import java.io.Serializable;
 import javax.xml.bind.annotation.XmlAttribute;
 
-public class MessageCounter implements Serializable {
-
+public class MessageCounter {
+	
 	private int counter;
 	private String idString;
 
@@ -13,22 +12,21 @@ public class MessageCounter implements Serializable {
 		setMessageCounter(value);
 	}
 
-	public void setMessageCounter(int value) {
+	private void setMessageCounter(int value) {
 		this.counter = value;
 	}
 	
 	@XmlAttribute
-	public int getMessageCounter() {
+	private int getMessageCounter() {
 		return counter;
 	}
 
-	public void setMessageIDString(String key) {
+	private void setMessageIDString(String key) {
 		this.idString = key;
 	}
 	
 	@XmlAttribute
-	public String getMessageIDString() {
+	private String getMessageIDString() {
 		return idString;
 	}
-
 }

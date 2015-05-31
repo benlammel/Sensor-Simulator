@@ -1,30 +1,35 @@
 package it.unicam.sensorsimulator.plugin.example;
 
+import java.util.ArrayList;
+
 import javafx.scene.Parent;
+import it.unicam.sensorsimulator.interfaces.GeneralAgentInterface;
 import it.unicam.sensorsimulator.interfaces.PluginInterface;
 import it.unicam.sensorsimulator.interfaces.SimulationEnvironmentServices;
 import it.unicam.sensorsimulator.interfaces.SimulationRunInterface;
-import it.unicam.sensorsimulator.plugin.example.coordinatoragent.ExampleSimulationCoordinatorAgent;
-import it.unicam.sensorsimulator.plugin.example.dialog.ExampleSettingsDialog;
-import it.unicam.sensorsimulator.plugin.example.reporting.ExampleReportingModule;
+import it.unicam.sensorsimulator.plugin.example.agent.config.ExampleAgentConfiguration;
+import it.unicam.sensorsimulator.plugin.example.coordinator.ExampleSimulationCoordinatorAgent;
+import it.unicam.sensorsimulator.plugin.example.reporting.report.ExampleReport;
+import it.unicam.sensorsimulator.plugin.example.setting.ExampleSettingsDialog;
+import it.unicam.sensorsimulator.plugin.report.ExamplePluginReportingModule;
 
-public class PluginExample implements PluginInterface {
+public class ExamplePlugin implements PluginInterface {
 	
 	private ExampleSettingsDialog settingsDialog;
 	private SimulationEnvironmentServices environmentServices;
 	
-	public PluginExample() {
+	public ExamplePlugin() {
 		settingsDialog = new ExampleSettingsDialog(this);
 	}
 
 	@Override
 	public String getPluginName() {
-		return "Example Plugin";
+		return "Example";
 	}
 
 	@Override
 	public String getPluginVersion() {
-		return "v. 0.1";
+		return "v1";
 	}
 
 	@Override
@@ -65,17 +70,21 @@ public class PluginExample implements PluginInterface {
 
 	@Override
 	public Class<?> getReportingPane() {
-		return ExampleReportingModule.class;
+		return ExamplePluginReportingModule.class;
 	}
 	
-//	public AbstractReportPane getReportingPane() {
-//		return new ExampleReportingModule();
-//	}
-
 	@Override
 	public Class<?> getReportClass() {
-		// TODO Auto-generated method stub
-		return null;
+		return ExampleReport.class;
 	}
 
+	public ArrayList<ExampleAgentConfiguration> getAgentList() {
+		ArrayList<ExampleAgentConfiguration> array = new ArrayList<ExampleAgentConfiguration>();
+		
+		for(GeneralAgentInterface agent : environmentServices.getAgentList()){
+			array.add(new ExampleAgentConfiguration(agent.getAgentID(), agent.getAgentRadius(), agent.getLocationX(), agent.getLocationY()));
+		}
+		
+		return array;
+	}
 }

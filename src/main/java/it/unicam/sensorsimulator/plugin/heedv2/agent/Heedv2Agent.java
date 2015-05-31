@@ -13,6 +13,7 @@ import it.unicam.sensorsimulator.plugin.heedv2.agent.config.HeedAgentConfigurati
 import it.unicam.sensorsimulator.plugin.heedv2.messages.MessageTypes.MessageHandling;
 import jade.core.AID;
 import jade.core.Agent;
+import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 
 public class Heedv2Agent extends Agent {
@@ -32,16 +33,11 @@ public class Heedv2Agent extends Agent {
 		initAndSetArguments();
 		log.logAgentAction(LogLevels.INFO, getAID().getLocalName()
 				+ " is up and waits");
-//		addBehaviour(new Heedv2Behaviour(this));
 		addBehaviour(new SimulationControlBehaviour(this));
 	}
 
 	private void initVarsAndDS() {
 		mySuccessorsList = new ArrayList<Integer>();
-	}
-	
-	public void startHeedBehaviour(){
-		addBehaviour(new Heedv2Behaviour(this, generateTickPeriod()));
 	}
 
 	private void initAndSetArguments() {
@@ -56,8 +52,14 @@ public class Heedv2Agent extends Agent {
 		StringBuilder builder = new StringBuilder();
 		builder.append(";agentID;");
 		builder.append(getAgentConfiguration().getAgentID());
-		builder.append(";neighborList;");
 		
+		builder.append(";getQueueSize;");
+		builder.append(getQueueSize());
+		
+		builder.append(";getCurQueueSize;");
+		builder.append(getCurQueueSize());
+		
+		builder.append(";neighborList;");
 		for(int n :neighborList.keySet()){
 			builder.append(n);
 			builder.append("-");
@@ -192,4 +194,10 @@ public class Heedv2Agent extends Agent {
 	public HashMap<String, Integer> getReceivedMessageCounter() {
 		return receivedMessageCounter;
 	}
+
+//	public void startHeed() {
+//		Behaviour a = new Heedv2Behaviour(this);
+//		addBehaviour(a);
+//		removeBehaviour(a);
+//	}
 }

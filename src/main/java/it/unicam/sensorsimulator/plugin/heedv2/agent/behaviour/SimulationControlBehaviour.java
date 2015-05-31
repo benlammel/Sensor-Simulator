@@ -19,18 +19,18 @@ public class SimulationControlBehaviour extends Behaviour {
 
 	@Override
 	public void action() {
+		track("ssssssss");
 		ACLMessage msg = heedv2Agent.receive();
 		if (msg != null) {
 			switch (msg.getConversationId()) {
 			case MessageTypes.SIMULATION_CONTROLS_START_INIZIALIZATION:
 				heedv2Agent.receiveMessageCounter(msg, MessageHandling.INCREASE);
 				heedv2Agent.setCoordinatorAgentAID(msg.getSender());
-				heedv2Agent.startHeedBehaviour();
+				heedv2Agent.addBehaviour(new Heedv2Behaviour(heedv2Agent));
 				break;
 			case MessageTypes.SIMULATION_CONTROLS_TERMINATION_REQUEST:
 				heedv2Agent.receiveMessageCounter(msg, MessageHandling.INCREASE);
-				prepareAndSendStatistics();
-				terminate();
+				prepareAndSendStatisticsAndTerminate();
 				break;
 			default:
 				heedv2Agent.putBack(msg);
@@ -39,12 +39,16 @@ public class SimulationControlBehaviour extends Behaviour {
 		}
 	}
 	
+	private void track(String string) {
+		heedv2Agent.track(string);
+	}
+
 	private void terminate() {
 		heedv2Agent.track("termination");
 		heedv2Agent.doDelete();
 	}
 
-	private void prepareAndSendStatistics(){
+	private void prepareAndSendStatisticsAndTerminate(){
 		ACLMessage message = new ACLMessage(ACLMessage.INFORM);
 		message.setConversationId(MessageTypes.MEASUREMENT_AGENT_STATISTICS);
 		try {
@@ -54,6 +58,7 @@ public class SimulationControlBehaviour extends Behaviour {
 		}
 		message.addReceiver(heedv2Agent.getSimulationCoordinatorAID());
 		heedv2Agent.sendMessage(message);
+		terminate();
 	}
 
 	@Override

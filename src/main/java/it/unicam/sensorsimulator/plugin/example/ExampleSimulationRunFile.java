@@ -2,67 +2,83 @@ package it.unicam.sensorsimulator.plugin.example;
 
 import java.util.ArrayList;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import it.unicam.sensorsimulator.interfaces.GeneralAgentInterface;
 import it.unicam.sensorsimulator.interfaces.SimulationRunInterface;
+import it.unicam.sensorsimulator.plugin.example.agent.config.ExampleAgentConfiguration;
+import it.unicam.sensorsimulator.plugin.heedv2.agent.config.HeedAgentConfiguration;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
 public class ExampleSimulationRunFile implements SimulationRunInterface {
 
-	public ExampleSimulationRunFile() {
-		// TODO Auto-generated constructor stub
+	private boolean startMASObservationUI;
+	private boolean startSnifferAgent;
+	private boolean startInspectorAgent;
+	private int numberOfRuns;
+	
+	@XmlElementWrapper(name = "agentlist")
+	@XmlElement(name = "agent", type=ExampleAgentConfiguration.class)
+	private ArrayList<ExampleAgentConfiguration> agentList;
+	
+	
+	public ExampleSimulationRunFile(){
+		this.agentList = new ArrayList<ExampleAgentConfiguration>();
+		this.setNumberOfRuns(1);
 	}
 
 	@Override
 	public boolean getStartMASObservationUI() {
-		// TODO Auto-generated method stub
-		return false;
+		return startMASObservationUI;
 	}
 
 	@Override
 	public void setStartMASObservationUI(boolean value) {
-		// TODO Auto-generated method stub
-		
+		this.startMASObservationUI = value;
 	}
-
+	
 	@Override
 	public boolean getStartSnifferAgent() {
-		// TODO Auto-generated method stub
-		return false;
+		return startSnifferAgent;
 	}
 
 	@Override
 	public void setStartSnifferAgent(boolean value) {
-		// TODO Auto-generated method stub
-		
+		this.startSnifferAgent = value;
 	}
-
+	
 	@Override
 	public boolean getStartInspectorAgent() {
-		// TODO Auto-generated method stub
-		return false;
+		return startInspectorAgent;
 	}
 
 	@Override
 	public void setStartInspectorAgent(boolean value) {
-		// TODO Auto-generated method stub
-		
+		this.startInspectorAgent = value;
 	}
 
 	@Override
 	public int getNumberOfRuns() {
-		// TODO Auto-generated method stub
-		return 0;
+		return numberOfRuns;
 	}
 
 	@Override
 	public void setNumberOfRuns(int value) {
-		// TODO Auto-generated method stub
-		
+		this.numberOfRuns = value;
 	}
-
+	
 	@Override
 	public ArrayList<? extends GeneralAgentInterface> getAgentList() {
-		// TODO Auto-generated method stub
-		return null;
+		return agentList;
+	}
+
+	public void addAgent(ExampleAgentConfiguration agent) {
+		agentList.add(agent);
 	}
 
 }

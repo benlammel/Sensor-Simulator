@@ -12,11 +12,10 @@ import it.unicam.sensorsimulator.plugin.heedv2.messages.MessageTypes;
 import it.unicam.sensorsimulator.plugin.heedv2.messages.MessageTypes.MessageHandling;
 import jade.core.AID;
 import jade.core.behaviours.Behaviour;
-import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 
-public class Heedv2Behaviour extends TickerBehaviour {
+public class Heedv2Behaviour extends Behaviour {
 	
 	private Heedv2Agent agent;
 	private HashMap<Integer, Heedv2Message> tentativeClusterHeadList;
@@ -29,12 +28,10 @@ public class Heedv2Behaviour extends TickerBehaviour {
 	private static final int E_MAX = 100;
 	private float CH_PROB;
 	private float CH_PREVIOUS;
-	private boolean done = false;
-	
+	private boolean heedDone = false;
 
-	public Heedv2Behaviour(Heedv2Agent heedv2Agent, long period) {
-		super(heedv2Agent, period);
-		this.agent = heedv2Agent;
+	public Heedv2Behaviour(Heedv2Agent agent) {
+		this.agent = agent;
 		System.out.println("Agent started");
 		tentativeClusterHeadList = new HashMap<Integer, Heedv2Message>();
 		finalClusterHeadList = new HashMap<Integer, Heedv2Message>();
@@ -49,8 +46,7 @@ public class Heedv2Behaviour extends TickerBehaviour {
 	}
 
 	@Override
-//	public void action() {
-	public void onTick() {
+	public void action() {
 		ACLMessage msg = agent.receive();
 		
 		if (msg != null) {
@@ -68,8 +64,6 @@ public class Heedv2Behaviour extends TickerBehaviour {
 				break;
 			}
 		}
-		
-		track("//////////////////////////////////////////////");
 		
 		if(CH_PREVIOUS!=1){
 			heedRepeatPart();
@@ -93,32 +87,24 @@ public class Heedv2Behaviour extends TickerBehaviour {
 	}
 
 	private void heedFinalize() {
-		track("111111111111111111111 heedFinalize");
+		track("heedFinalize");
 		if(!IS_FINAL_CH){
-			track("2222222222222222222 heedFinalize");
 			if(!finalClusterHeadList.isEmpty()){
-				track("33333333333333333333 heedFinalize");
 				int myClusterHead = getCheapestFinalClusterHead();
 				sendJoinMessage(myClusterHead);
 			}else{
 				if(!IS_FINAL_CH){
-					track("44444444444444444444444444 heedFinalize");
 					broadcastClusterHeadMsg(MessageTypes.HEED_FINAL_CLUSTERHEAD);
 					setFinalCH(true);
 				}
 			}
 		}else{
-			track("5555555555555555555555555555555 heedFinalize");
 			if(!IS_FINAL_CH){
-				track("66666666666666666666666666666 heedFinalize");
 				broadcastClusterHeadMsg(MessageTypes.HEED_FINAL_CLUSTERHEAD);
 				setFinalCH(true);
 			}
 		}
-		track("77777777777777777777777777777 heedFinalize");
-		done = true;
-//		track("heedFinalize");
-//		agent.removeBehaviour(this);
+		heedDone = true;
 	}
 
 	private void heedRepeatPart() {
@@ -248,6 +234,8 @@ public class Heedv2Behaviour extends TickerBehaviour {
 		builder.append(P_MIN);
 		builder.append(";E_MAX;");
 		builder.append(E_MAX);
+		builder.append(";heedDone;");
+		builder.append(heedDone);
 		builder.append(";tentativeClusterHeadList;");
 		builder.append(tentativeClusterHeadList.keySet());
 		builder.append(";finalClusterHeadList;");
@@ -255,15 +243,13 @@ public class Heedv2Behaviour extends TickerBehaviour {
 		agent.track(builder.toString());
 	}
 
-//	@Override
-//	public boolean done() {
-//		if(done){
-//			track("############################################ heedFinalize");
-//			return true;
-//		}else{
-//			return false;
-//		}
-//		track("heedFinalize");
-//		agent.removeBehaviour(this);
-//	}
+	@Override
+	public boolean done() {
+		if(heedDone){
+			track("FINISH HEED BEHAVIOUR");
+			return true;
+		}else{
+			return false;
+		}
+	}
 }

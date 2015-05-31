@@ -4,18 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
-
 import javafx.application.Platform;
 import jade.core.AID;
-import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
+import it.unicam.sensorsimulator.interfaces.AbstractSimulationCoordinatorAgent;
 import it.unicam.sensorsimulator.interfaces.GeneralAgentInterface;
 import it.unicam.sensorsimulator.interfaces.LogFileWriterInterface;
 import it.unicam.sensorsimulator.interfaces.SimulationControlInterface;
-import it.unicam.sensorsimulator.interfaces.SimulationCoordinatorAgentInterface;
 import it.unicam.sensorsimulator.interfaces.LogFileWriterInterface.LogLevels;
 import it.unicam.sensorsimulator.plugin.heed.agents.GeneralAgent;
 import it.unicam.sensorsimulator.plugin.heed.agents.coordinator.behaviours.ReceiveMeasurementResults;
@@ -26,7 +24,7 @@ import it.unicam.sensorsimulator.plugin.heed.reporting.report.HeedReport;
 import it.unicam.sensorsimulator.plugin.heed.reporting.report.HeedRunResults;
 import it.unicam.sensorsimulator.plugin.heed.simulation.SimulationRunFile;
 
-public class SimulationCoordinatorAgent extends Agent implements SimulationCoordinatorAgentInterface {
+public class SimulationCoordinatorAgent extends AbstractSimulationCoordinatorAgent {
 	
 	private SimulationRunFile simRunFile;
 	private LogFileWriterInterface log;
