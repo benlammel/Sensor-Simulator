@@ -7,6 +7,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import it.unicam.sensorsimulator.interfaces.AbstractReportPane;
 import it.unicam.sensorsimulator.interfaces.ReportInterface;
 import it.unicam.sensorsimulator.interfaces.SimulationRunInterface;
 import it.unicam.sensorsimulator.logging.LogFileHandler;
@@ -59,4 +60,25 @@ public class SerializationTools {
 		log.trace(SerializationTools.class,	"opened file: " + file.getAbsolutePath());
 		return reportFile;
 	}
+
+	public static void saveToXML(File file, ReportInterface report) {
+		LogFileHandler log = LogFileHandler.getInstance();
+		try {
+
+			JAXBContext jaxbContext = JAXBContext.newInstance(report.getClass());
+			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+			// output pretty printed
+			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+			jaxbMarshaller.marshal(report, file);
+			jaxbMarshaller.marshal(report, System.out);
+			log.trace(SerializationTools.class,
+					"File saved to: " + file.getAbsolutePath());
+		} catch (JAXBException e) {
+			log.catching(e);
+		}
+		
+	}
+
 }

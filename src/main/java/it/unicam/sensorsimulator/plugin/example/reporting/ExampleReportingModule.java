@@ -12,9 +12,27 @@ public class ExampleReportingModule extends AbstractReportPane {
 	}
 
 	@Override
-	public void addReport(ReportInterface report) {
+	public void setReport(ReportInterface report) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public int getWindowWidth() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getWindowHeight() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public ReportInterface getReport() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

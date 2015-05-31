@@ -3,12 +3,8 @@ package it.unicam.sensorsimulator.ui;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-
-import org.controlsfx.dialog.ProgressDialog;
-
 import it.unicam.sensorsimulator.StartEnvironment;
 import it.unicam.sensorsimulator.interfaces.AbstractReportPane;
-import it.unicam.sensorsimulator.interfaces.PluginInterface;
 import it.unicam.sensorsimulator.interfaces.ReportInterface;
 import it.unicam.sensorsimulator.interfaces.SimulationRunInterface;
 import it.unicam.sensorsimulator.logging.LogFileHandler;
@@ -80,8 +76,6 @@ public class ApplicationFrame extends BorderPane {
 		}else{
 			simulationProgressDialog.close();
 		}
-		
-		
 	}
 
 	public SimulationResourcesAndProperties getRessourcesAndProperties() {
@@ -156,7 +150,7 @@ public class ApplicationFrame extends BorderPane {
 		AbstractReportPane pane = null;
 		try {
 			pane = (AbstractReportPane) pluginHandler.getCurrentPlugin().getReportingPane().newInstance();
-			pane.addReport(report);
+			pane.setReport(report);
 			createReportViewer(pane);
 		} catch (InstantiationException e) {
 			e.printStackTrace();
@@ -177,8 +171,8 @@ public class ApplicationFrame extends BorderPane {
 		ReportViewer stage = new ReportViewer(this, reportPane);
 		stage.setTitle(getRessourcesAndProperties().getReportingViewerHeader());
 		stage.centerOnScreen();
-		stage.setWidth(400);
-		stage.setHeight(500);
+		stage.setWidth(reportPane.getWindowWidth());
+		stage.setHeight(reportPane.getWindowHeight());
 		reportViewers.add(stage);
         stage.show();
 		

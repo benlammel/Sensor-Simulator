@@ -1,7 +1,6 @@
 package it.unicam.sensorsimulator.plugin.heed;
 
 import javafx.scene.Parent;
-import it.unicam.sensorsimulator.interfaces.AbstractReportPane;
 import it.unicam.sensorsimulator.interfaces.PluginInterface;
 import it.unicam.sensorsimulator.interfaces.SimulationEnvironmentServices;
 import it.unicam.sensorsimulator.interfaces.SimulationRunInterface;
@@ -74,10 +73,6 @@ public class HeedPlugin implements PluginInterface {
 	public Class<?> getReportingPane() {
 		return ReportingModule.class;
 	}
-	
-//	public Class<?> getReportingPane() {
-//		return ReportingModule.class;
-//	}
 
 	@Override
 	public Class<?> getReportClass() {

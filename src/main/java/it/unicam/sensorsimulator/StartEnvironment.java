@@ -6,7 +6,6 @@ import it.unicam.sensorsimulator.simulationcontroller.SimulationController;
 import it.unicam.sensorsimulator.ui.ApplicationFrame;
 import it.unicam.sensorsimulator.ui.ressources.SimulationResourcesAndProperties;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;

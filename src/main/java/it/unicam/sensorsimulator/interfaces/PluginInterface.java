@@ -24,7 +24,6 @@ public interface PluginInterface {
 
 //	public AbstractReportPane getReportingPane();
 	public Class<?> getReportingPane();
-
 	
 	public Class<?> getReportClass();
  

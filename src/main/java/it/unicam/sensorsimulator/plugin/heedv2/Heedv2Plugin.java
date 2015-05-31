@@ -10,7 +10,7 @@ import it.unicam.sensorsimulator.interfaces.SimulationRunInterface;
 import it.unicam.sensorsimulator.plugin.heedv2.agent.config.HeedAgentConfiguration;
 import it.unicam.sensorsimulator.plugin.heedv2.coordinator.Heedv2SimulationCoordinatorAgent;
 import it.unicam.sensorsimulator.plugin.heedv2.reporting.Heedv2PluginReportingModule;
-import it.unicam.sensorsimulator.plugin.heedv2.reporting.RunReport;
+import it.unicam.sensorsimulator.plugin.heedv2.reporting.report.Heedv2Report;
 import it.unicam.sensorsimulator.plugin.heedv2.settingsdialog.Heedv2SettingsDialog;
 
 public class Heedv2Plugin implements PluginInterface {
@@ -72,6 +72,11 @@ public class Heedv2Plugin implements PluginInterface {
 	public Class<?> getReportingPane() {
 		return Heedv2PluginReportingModule.class;
 	}
+	
+	@Override
+	public Class<?> getReportClass() {
+		return Heedv2Report.class;
+	}
 
 	public ArrayList<HeedAgentConfiguration> getAgentList() {
 		ArrayList<HeedAgentConfiguration> array = new ArrayList<HeedAgentConfiguration>();
@@ -81,10 +86,5 @@ public class Heedv2Plugin implements PluginInterface {
 		}
 		
 		return array;
-	}
-
-	@Override
-	public Class<?> getReportClass() {
-		return RunReport.class;
 	}
 }

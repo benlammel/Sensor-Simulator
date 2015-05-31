@@ -27,11 +27,15 @@ public class ReportViewer extends Stage {
 	
 	private FileChooser fileChooser;
 	private PluginInterface plugin;
+	private AbstractReportPane reportPane;
 
 	public ReportViewer(ApplicationFrame applicationFrame, AbstractReportPane reportPane) {
 		this.applicationFrame = applicationFrame;
+		this.reportPane = reportPane;
 		this.reportViewer = this;
 		this.setOnCloseRequest(onCloseRequest);
+		
+		initFileChooser();
 		
 		layout = new BorderPane();
 		layout.setTop(new ReportToolbar(this));
@@ -53,10 +57,20 @@ public class ReportViewer extends Stage {
 			selectPluginDialog();
 			break;
 		case SAVEFILE:
+			saveToFile();
 			break;
 		default:
 			break;
 		}
+	}
+	
+	private void initFileChooser() {
+		fileChooser = new FileChooser();
+	}
+
+	private void saveToFile() {
+		fileChooser.setTitle("Save Report to File");
+		SerializationTools.saveToXML(fileChooser.showSaveDialog(this), reportPane.getReport());
 	}
 
 	private void selectPluginDialog() {

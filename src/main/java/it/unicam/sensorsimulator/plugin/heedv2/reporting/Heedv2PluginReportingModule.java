@@ -1,14 +1,33 @@
 package it.unicam.sensorsimulator.plugin.heedv2.reporting;
 
-import javafx.scene.layout.BorderPane;
-import it.unicam.sensorsimulator.plugin.heedv2.Heedv2Plugin;
+import it.unicam.sensorsimulator.interfaces.AbstractReportPane;
+import it.unicam.sensorsimulator.interfaces.ReportInterface;
+import it.unicam.sensorsimulator.plugin.heedv2.reporting.report.Heedv2Report;
 
-public class Heedv2PluginReportingModule extends BorderPane {
-	
-	private Heedv2Plugin heedv2Plugin;
+public class Heedv2PluginReportingModule extends AbstractReportPane {
 
-	public Heedv2PluginReportingModule(Heedv2Plugin heedv2Plugin) {
-		this.heedv2Plugin = heedv2Plugin;
+	private Heedv2Report report;
+
+	@Override
+	public void setReport(ReportInterface report) {
+		this.report = (Heedv2Report) report;
 	}
+	
+	@Override
+	public ReportInterface getReport() {
+		return report;
+	}
+
+	@Override
+	public int getWindowWidth() {
+		return 800;
+	}
+
+	@Override
+	public int getWindowHeight() {
+		return 600;
+	}
+
+	
 
 }
