@@ -2,7 +2,6 @@ package it.unicam.sensorsimulator.plugin.heedv2.agent.behaviour;
 
 import it.unicam.sensorsimulator.plugin.heedv2.agent.Heedv2Agent;
 import it.unicam.sensorsimulator.plugin.heedv2.messages.MessageTypes;
-import it.unicam.sensorsimulator.plugin.heedv2.messages.MessageTypes.MessageHandling;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 
@@ -21,7 +20,7 @@ public class HeedClusterHeadBehaviour extends Behaviour {
 		if (msg != null) {
 			switch (msg.getConversationId()) {
 			case MessageTypes.HEED_JOIN_CLUSTER:
-				agent.receiveMessageCounter(msg, MessageHandling.INCREASE);
+				agent.receiveMessageCounter(msg);
 				joinClusterMsgHandler(agent.convertAIDToInteger(msg.getSender()));
 				break;
 			default:

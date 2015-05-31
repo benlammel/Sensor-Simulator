@@ -3,7 +3,6 @@ package it.unicam.sensorsimulator.plugin.heedv2.coordinator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
-
 import javafx.application.Platform;
 import it.unicam.sensorsimulator.interfaces.GeneralAgentInterface;
 import it.unicam.sensorsimulator.interfaces.LogFileWriterInterface;
@@ -14,7 +13,6 @@ import it.unicam.sensorsimulator.plugin.heedv2.agent.Heedv2Agent;
 import it.unicam.sensorsimulator.plugin.heedv2.agent.config.HeedAgentConfiguration;
 import it.unicam.sensorsimulator.plugin.heedv2.coordinator.behaviour.SimulationContolBehaviour;
 import it.unicam.sensorsimulator.plugin.heedv2.messages.MessageTypes;
-import it.unicam.sensorsimulator.plugin.heedv2.messages.MessageTypes.MessageHandling;
 import it.unicam.sensorsimulator.plugin.heedv2.reporting.report.HeedAgentStatistic;
 import it.unicam.sensorsimulator.plugin.heedv2.reporting.report.Heedv2Report;
 import it.unicam.sensorsimulator.plugin.heedv2.reporting.report.Heedv2RunReport;
@@ -159,22 +157,18 @@ public class Heedv2SimulationCoordinatorAgent extends Agent {
 		log.logAgentMessageSent(this.getAID().getLocalName(), message.getConversationId(), receivers);
 	}
 
-	public void receiveMessageCounter(ACLMessage message, MessageHandling handling) {
+	public void receiveMessageCounter(ACLMessage message) {
 		if(receivedMessageCounter==null){
 			receivedMessageCounter = new HashMap<String, Integer>();
 		}
 		
-		if(!receivedMessageCounter.containsKey(message.getConversationId()) && handling.equals(MessageHandling.INCREASE)){
+		if(!receivedMessageCounter.containsKey(message.getConversationId())){
 			receivedMessageCounter.put(message.getConversationId(), 1);
-		}else if(receivedMessageCounter.containsKey(message.getConversationId()) && handling.equals(MessageHandling.INCREASE)){
+		}else if(receivedMessageCounter.containsKey(message.getConversationId())){
 			int counter = receivedMessageCounter.get(message.getConversationId());
-			receivedMessageCounter.put(message.getConversationId(), counter++ );
-		}else if(receivedMessageCounter.containsKey(message.getConversationId()) && handling.equals(MessageHandling.DECREASE)){
-			int counter = receivedMessageCounter.get(message.getConversationId());
-			receivedMessageCounter.put(message.getConversationId(), counter-- );
-		}else if(!receivedMessageCounter.containsKey(message.getConversationId()) && handling.equals(MessageHandling.DECREASE)){
-			receivedMessageCounter.put(message.getConversationId(), 0);
+			receivedMessageCounter.put(message.getConversationId(), ++counter );
 		}
+
 		log.logAgentMessageReceived(this.getAID().getLocalName(), message.getConversationId(), message.getSender().getLocalName());
 	}
 

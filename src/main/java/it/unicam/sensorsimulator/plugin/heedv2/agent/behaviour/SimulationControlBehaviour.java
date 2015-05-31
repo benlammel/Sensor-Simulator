@@ -1,10 +1,8 @@
 package it.unicam.sensorsimulator.plugin.heedv2.agent.behaviour;
 
 import java.io.IOException;
-
 import it.unicam.sensorsimulator.plugin.heedv2.agent.Heedv2Agent;
 import it.unicam.sensorsimulator.plugin.heedv2.messages.MessageTypes;
-import it.unicam.sensorsimulator.plugin.heedv2.messages.MessageTypes.MessageHandling;
 import it.unicam.sensorsimulator.plugin.heedv2.reporting.report.HeedAgentStatistic;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
@@ -12,6 +10,7 @@ import jade.lang.acl.ACLMessage;
 public class SimulationControlBehaviour extends Behaviour {
 
 	private Heedv2Agent heedv2Agent;
+	private boolean terminationMessageReceived = false;
 
 	public SimulationControlBehaviour(Heedv2Agent heedv2Agent) {
 		this.heedv2Agent = heedv2Agent;
@@ -24,18 +23,22 @@ public class SimulationControlBehaviour extends Behaviour {
 		if (msg != null) {
 			switch (msg.getConversationId()) {
 			case MessageTypes.SIMULATION_CONTROLS_START_INIZIALIZATION:
-				heedv2Agent.receiveMessageCounter(msg, MessageHandling.INCREASE);
+				heedv2Agent.receiveMessageCounter(msg);
 				heedv2Agent.setCoordinatorAgentAID(msg.getSender());
 				heedv2Agent.addBehaviour(new Heedv2Behaviour(heedv2Agent));
 				break;
 			case MessageTypes.SIMULATION_CONTROLS_TERMINATION_REQUEST:
-				heedv2Agent.receiveMessageCounter(msg, MessageHandling.INCREASE);
-				prepareAndSendStatisticsAndTerminate();
+				heedv2Agent.receiveMessageCounter(msg);
+				terminationMessageReceived  = true;
 				break;
 			default:
 				heedv2Agent.putBack(msg);
 				break;
 			}
+		}
+		
+		if(terminationMessageReceived && heedv2Agent.getCurQueueSize()==0){
+			prepareAndSendStatisticsAndTerminate();
 		}
 	}
 	

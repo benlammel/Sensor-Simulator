@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import it.unicam.sensorsimulator.plugin.heedv2.coordinator.Heedv2SimulationCoordinatorAgent;
 import it.unicam.sensorsimulator.plugin.heedv2.messages.MessageTypes;
-import it.unicam.sensorsimulator.plugin.heedv2.messages.MessageTypes.MessageHandling;
 import it.unicam.sensorsimulator.plugin.heedv2.reporting.report.HeedAgentStatistic;
 import jade.core.AID;
 import jade.core.behaviours.Behaviour;
@@ -34,17 +33,17 @@ public class SimulationContolBehaviour extends Behaviour {
 		if (msg != null) {
 			switch (msg.getConversationId()) {
 			case MessageTypes.SIMULATION_CONTROLS_BECAME_CLUSTER_HEAD:
-				coordinator.receiveMessageCounter(msg, MessageHandling.INCREASE);
+				coordinator.receiveMessageCounter(msg);
 				clusterHeadHandler(msg);
 //				checkForSendingTerminationMessage();
 				break;
 			case MessageTypes.SIMULATION_CONTROLS_JOINED_CLUSTER:
-				coordinator.receiveMessageCounter(msg, MessageHandling.INCREASE);
+				coordinator.receiveMessageCounter(msg);
 				joinedClusterHandler(msg);
 //				checkForSendingTerminationMessage();
 				break;
 			case MessageTypes.MEASUREMENT_AGENT_STATISTICS:
-				coordinator.receiveMessageCounter(msg, MessageHandling.INCREASE);
+				coordinator.receiveMessageCounter(msg);
 				receivedStatisticCounter++;
 				processAgentStatistics(msg);
 				checkForSimulationEnd();

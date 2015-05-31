@@ -3,17 +3,12 @@ package it.unicam.sensorsimulator.plugin.heedv2.agent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Random;
-
 import it.unicam.sensorsimulator.interfaces.LogFileWriterInterface;
 import it.unicam.sensorsimulator.interfaces.LogFileWriterInterface.LogLevels;
-import it.unicam.sensorsimulator.plugin.heedv2.agent.behaviour.Heedv2Behaviour;
 import it.unicam.sensorsimulator.plugin.heedv2.agent.behaviour.SimulationControlBehaviour;
 import it.unicam.sensorsimulator.plugin.heedv2.agent.config.HeedAgentConfiguration;
-import it.unicam.sensorsimulator.plugin.heedv2.messages.MessageTypes.MessageHandling;
 import jade.core.AID;
 import jade.core.Agent;
-import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 
 public class Heedv2Agent extends Agent {
@@ -80,22 +75,18 @@ public class Heedv2Agent extends Agent {
 		log.logAgentAction(LogLevels.INFO, builder.toString());
 	}
 
-	public void receiveMessageCounter(ACLMessage message, MessageHandling handling) {
+	public void receiveMessageCounter(ACLMessage message) {
 		if(receivedMessageCounter==null){
 			receivedMessageCounter = new HashMap<String, Integer>();
 		}
 		
-		if(!receivedMessageCounter.containsKey(message.getConversationId()) && handling.equals(MessageHandling.INCREASE)){
+		if(!receivedMessageCounter.containsKey(message.getConversationId())){
 			receivedMessageCounter.put(message.getConversationId(), 1);
-		}else if(receivedMessageCounter.containsKey(message.getConversationId()) && handling.equals(MessageHandling.INCREASE)){
+		}else if(receivedMessageCounter.containsKey(message.getConversationId())){
 			int counter = receivedMessageCounter.get(message.getConversationId());
-			receivedMessageCounter.put(message.getConversationId(), counter++ );
-		}else if(receivedMessageCounter.containsKey(message.getConversationId()) && handling.equals(MessageHandling.DECREASE)){
-			int counter = receivedMessageCounter.get(message.getConversationId());
-			receivedMessageCounter.put(message.getConversationId(), counter-- );
-		}else if(!receivedMessageCounter.containsKey(message.getConversationId()) && handling.equals(MessageHandling.DECREASE)){
-			receivedMessageCounter.put(message.getConversationId(), 0);
+			receivedMessageCounter.put(message.getConversationId(), ++counter );
 		}
+
 		log.logAgentMessageReceived(this.getAID().getLocalName(), message.getConversationId(), message.getSender().getLocalName());
 	}
 	
@@ -108,7 +99,7 @@ public class Heedv2Agent extends Agent {
 			sentMessageCounter.put(message.getConversationId(), 1);
 		}else{
 			int counter = sentMessageCounter.get(message.getConversationId());
-			sentMessageCounter.put(message.getConversationId(), counter++ );
+			sentMessageCounter.put(message.getConversationId(), ++counter );
 		}
 		super.send(message);
 		String receivers = "";
@@ -147,14 +138,6 @@ public class Heedv2Agent extends Agent {
 		return 1;
 	}
 
-	public long generateTickPeriod() {
-		Random r = new Random();
-		int Low = 300;
-		int High = 500;
-		int R = r.nextInt(High-Low) + Low;
-		return R;
-	}
-
 	public void addToMyCluster(int agentID) {
 		mySuccessorsList.add(agentID);
 	}
@@ -180,7 +163,6 @@ public class Heedv2Agent extends Agent {
 		message.setConversationId(conversationID);
 		message.addReceiver(coordinatorAID);
 		sendMessage(message);
-		
 	}
 
 	public AID getSimulationCoordinatorAID() {
@@ -194,10 +176,4 @@ public class Heedv2Agent extends Agent {
 	public HashMap<String, Integer> getReceivedMessageCounter() {
 		return receivedMessageCounter;
 	}
-
-//	public void startHeed() {
-//		Behaviour a = new Heedv2Behaviour(this);
-//		addBehaviour(a);
-//		removeBehaviour(a);
-//	}
 }

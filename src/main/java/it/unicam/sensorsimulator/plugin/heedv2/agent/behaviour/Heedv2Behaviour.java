@@ -4,12 +4,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Map.Entry;
-
 import it.unicam.sensorsimulator.plugin.heedv2.agent.Heedv2Agent;
 import it.unicam.sensorsimulator.plugin.heedv2.agent.config.HeedAgentConfiguration;
 import it.unicam.sensorsimulator.plugin.heedv2.messages.Heedv2Message;
 import it.unicam.sensorsimulator.plugin.heedv2.messages.MessageTypes;
-import it.unicam.sensorsimulator.plugin.heedv2.messages.MessageTypes.MessageHandling;
 import jade.core.AID;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
@@ -52,11 +50,11 @@ public class Heedv2Behaviour extends Behaviour {
 		if (msg != null) {
 			switch (msg.getConversationId()) {
 			case MessageTypes.HEED_FINAL_CLUSTERHEAD:
-				agent.receiveMessageCounter(msg, MessageHandling.INCREASE);
+				agent.receiveMessageCounter(msg);
 				finalClusterHeadMsgHandling(msg);
 				break;
 			case MessageTypes.HEED_TENTATIVE_CLUSTERHEAD:
-				agent.receiveMessageCounter(msg, MessageHandling.INCREASE);
+				agent.receiveMessageCounter(msg);
 				tentativeClusterHeadMsgHandling(msg);
 				break;
 			default:
