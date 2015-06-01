@@ -31,11 +31,11 @@ public class Heedv2SimulationCoordinatorAgent extends Agent {
 	private LogFileWriterInterface log;
 	private Heedv2SimulationRunFile simulationRunFile;
 	private SimulationControlInterface simulationController;
-	private HashMap<Integer, AgentController> agentList;
+//	private HashMap<Integer, AgentController> agentList;
 	private HashMap<String, Integer> sentMessageCounter;
 	private HashMap<String, Integer> receivedMessageCounter;
 	private HashMap<Integer, HeedAgentConfiguration> agentNetworkList;
-
+	
 	protected void setup() {
 		report = new Heedv2Report();
 		simulationRun = 1;
@@ -44,8 +44,7 @@ public class Heedv2SimulationCoordinatorAgent extends Agent {
 		initAndSetArguments();
 		startSimulation();
 		try {
-			loadAgents();
-			startAgents();
+			loadAndStartAgents();
 			addBehaviour(new SimulationContolBehaviour(this));
 			sendInizializationTrigger();
 		} catch (StaleProxyException e) {
@@ -62,10 +61,10 @@ public class Heedv2SimulationCoordinatorAgent extends Agent {
 	}
 
 	private void sendInizializationTrigger() {
-		for(Entry<Integer, AgentController> agent : agentList.entrySet()){
+		for(GeneralAgentInterface agent : simulationRunFile.getAgentList()){
 			ACLMessage message = new ACLMessage(ACLMessage.INFORM);
 			message.setConversationId(MessageTypes.SIMULATION_CONTROLS_START_INIZIALIZATION);
-			message.addReceiver(convertAgentIDToAID(agent.getKey()));
+			message.addReceiver(convertAgentIDToAID(agent.getAgentID()));
 			sendMessage(message);
 		}
 	}
@@ -74,9 +73,9 @@ public class Heedv2SimulationCoordinatorAgent extends Agent {
 		return new AID(Integer.toString(agentID), AID.ISLOCALNAME);
 	}
 
-	private void loadAgents() throws StaleProxyException {
-		agentList = new HashMap<Integer, AgentController>();
+	private void loadAndStartAgents() throws StaleProxyException {
 		AgentContainer container = getContainerController();
+//		agentList = new HashMap<Integer, AgentController>();
 
 		for (GeneralAgentInterface agent : simulationRunFile.getAgentList()) {
 
@@ -86,10 +85,8 @@ public class Heedv2SimulationCoordinatorAgent extends Agent {
 			args[1] = agent;
 			args[2] = generateNeighborList(agent.getAgentID());
 
-			agentList.put(
-					agent.getAgentID(),
-					container.createNewAgent(name,
-							Heedv2Agent.class.getCanonicalName(), args));
+			container.createNewAgent(name,
+							Heedv2Agent.class.getCanonicalName(), args).start();
 			log.logCoordinatorAction(LogLevels.INFO,
 					"Agent " + agent.getAgentID() + " has been created");
 		}
@@ -111,13 +108,6 @@ public class Heedv2SimulationCoordinatorAgent extends Agent {
 		return (Math.abs(r1 - r2) <= Math.sqrt(Math.pow((x1 - x2), 2)
 				+ Math.pow((y1 - y2), 2)))
 				&& (Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2)) <= (r1 + r2));
-	}
-
-	private void startAgents() throws StaleProxyException {
-		for(Entry<Integer, AgentController> agent : agentList.entrySet()){
-			agent.getValue().start();
-			log.logCoordinatorAction(LogLevels.INFO, "Agent " +agent.getKey() + " was started");
-		}
 	}
 
 	private void initAndSetArguments() {
@@ -203,8 +193,7 @@ public class Heedv2SimulationCoordinatorAgent extends Agent {
 		sentMessageCounter.clear();
 		runReport = new Heedv2RunReport(simulationRun);
 		try {
-			loadAgents();
-			startAgents();
+			loadAndStartAgents();
 			sendInizializationTrigger();
 		} catch (StaleProxyException e) {
 			e.printStackTrace();

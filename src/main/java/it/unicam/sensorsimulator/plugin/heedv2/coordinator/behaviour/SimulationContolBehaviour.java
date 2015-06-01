@@ -84,19 +84,8 @@ public class SimulationContolBehaviour extends Behaviour {
 		track("checkForSendingTerminationMessage");
 		if(clusterHeadList.size()==coordinator.getAgentList().size() || coordinator.getAgentList().size()==successorList.size()+clusterHeadList.size()){
 			//all agents have become cluster heads
-			
 			createAndSendBroadcastMessage(MessageTypes.SIMULATION_CONTROLS_TERMINATION_REQUEST);
-			
-//			for(int agent : clusterHeadList){
-//				sendMessage(coordinator.convertIntegerToAID(agent), MessageTypes.SIMULATION_CONTROLS_TERMINATION_REQUEST);
-//			}
 		}
-//		else if(){
-//			//check if successor have sent statistics and terminated AND if all cluster if all agents have contacted the coordinator yet
-//			for(int agent : clusterHeadList){
-//				sendMessage(coordinator.convertIntegerToAID(agent), MessageTypes.SIMULATION_CONTROLS_TERMINATION_REQUEST);
-//			}
-//		}
 	}
 
 	private void checkForSimulationEnd() {
@@ -111,6 +100,9 @@ public class SimulationContolBehaviour extends Behaviour {
 				coordinator.doDelete();
 			}else{
 				coordinator.addOwnStatisticsAndFinalizeRun();
+				receivedStatisticCounter = 0;
+				clusterHeadList.clear();
+				successorList.clear();
 				coordinator.restartSimulation();
 			}
 		}
