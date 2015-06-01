@@ -10,7 +10,6 @@ import jade.lang.acl.ACLMessage;
 public class SimulationControlBehaviour extends Behaviour {
 
 	private Heedv2Agent heedv2Agent;
-	private boolean terminationMessageReceived = false;
 
 	public SimulationControlBehaviour(Heedv2Agent heedv2Agent) {
 		this.heedv2Agent = heedv2Agent;
@@ -18,30 +17,13 @@ public class SimulationControlBehaviour extends Behaviour {
 
 	@Override
 	public void action() {
-		track("ssssssss");
-		ACLMessage msg = heedv2Agent.receive();
-		if (msg != null) {
-			switch (msg.getConversationId()) {
-			case MessageTypes.SIMULATION_CONTROLS_START_INIZIALIZATION:
-				heedv2Agent.receiveMessageCounter(msg);
-				heedv2Agent.setCoordinatorAgentAID(msg.getSender());
-				heedv2Agent.addBehaviour(new Heedv2Behaviour(heedv2Agent));
-				break;
-			case MessageTypes.SIMULATION_CONTROLS_TERMINATION_REQUEST:
-				heedv2Agent.receiveMessageCounter(msg);
-				terminationMessageReceived  = true;
-				break;
-			default:
-				heedv2Agent.putBack(msg);
-				break;
-			}
-		}
+		track("SimulationControlBehaviour");
 		
-		if(terminationMessageReceived && heedv2Agent.getCurQueueSize()==0){
+		if (heedv2Agent.getTerminationRequest() && heedv2Agent.getCurQueueSize() == 0) {
 			prepareAndSendStatisticsAndTerminate();
 		}
 	}
-	
+
 	private void track(String string) {
 		heedv2Agent.track(string);
 	}
@@ -51,11 +33,14 @@ public class SimulationControlBehaviour extends Behaviour {
 		heedv2Agent.doDelete();
 	}
 
-	private void prepareAndSendStatisticsAndTerminate(){
+	private void prepareAndSendStatisticsAndTerminate() {
 		ACLMessage message = new ACLMessage(ACLMessage.INFORM);
 		message.setConversationId(MessageTypes.MEASUREMENT_AGENT_STATISTICS);
 		try {
-			message.setContentObject(new HeedAgentStatistic(heedv2Agent.getAgentConfiguration().getAgentID(), heedv2Agent.getSentMessageCounter(), heedv2Agent.getReceivedMessageCounter()));
+			message.setContentObject(new HeedAgentStatistic(heedv2Agent
+					.getAgentConfiguration().getAgentID(), heedv2Agent
+					.getSentMessageCounter(), heedv2Agent
+					.getReceivedMessageCounter()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
