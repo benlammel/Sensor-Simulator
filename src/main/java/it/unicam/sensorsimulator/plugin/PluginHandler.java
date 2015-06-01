@@ -13,12 +13,9 @@ import it.unicam.sensorsimulator.ui.ApplicationFrame;
 import it.unicam.sensorsimulator.ui.dialogs.DialogMessages;
 import it.unicam.sensorsimulator.ui.dialogs.GeneralDialogHandler;
 import it.unicam.sensorsimulator.ui.startdialog.SimulationStartDiolg;
-
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javafx.scene.Parent;
 
 public class PluginHandler implements SimulationEnvironmentServices {
 	

@@ -18,15 +18,15 @@ public class Heedv2RunReport {
 	
 	public Heedv2RunReport(int simulationRun) {
 		this();
-		setRunNo(simulationRun);
+		setRunNumber(simulationRun);
 	}
 
-	private void setRunNo(int simulationRun) {
+	public void setRunNumber(int simulationRun) {
 		this.runNo = simulationRun;
 	}
 	
 	@XmlAttribute
-	private int getRunNo() {
+	public int getRunNumber() {
 		return runNo;
 	}
 	

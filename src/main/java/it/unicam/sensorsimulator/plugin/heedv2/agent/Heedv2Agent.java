@@ -43,6 +43,8 @@ public class Heedv2Agent extends Agent {
 	}
 
 	private void initVarsAndDS() {
+		sentMessageCounter = new HashMap<String, Integer>();
+		receivedMessageCounter = new HashMap<String, Integer>();
 		mySuccessorsList = new ArrayList<Integer>();
 		tentativeClusterHeadList = new HashMap<Integer, Heedv2Message>();
 		finalClusterHeadList = new HashMap<Integer, Heedv2Message>();
@@ -95,10 +97,6 @@ public class Heedv2Agent extends Agent {
 	}
 
 	public void receiveMessageCounter(ACLMessage message) {
-		if(receivedMessageCounter==null){
-			receivedMessageCounter = new HashMap<String, Integer>();
-		}
-		
 		if(!receivedMessageCounter.containsKey(message.getConversationId())){
 			receivedMessageCounter.put(message.getConversationId(), 1);
 		}else if(receivedMessageCounter.containsKey(message.getConversationId())){
@@ -110,10 +108,6 @@ public class Heedv2Agent extends Agent {
 	}
 	
 	public void sendMessage(ACLMessage message) {
-		if(sentMessageCounter==null){
-			sentMessageCounter = new HashMap<String, Integer>();
-		}
-		
 		if(!sentMessageCounter.containsKey(message.getConversationId())){
 			sentMessageCounter.put(message.getConversationId(), 1);
 		}else{

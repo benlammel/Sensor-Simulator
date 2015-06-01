@@ -39,6 +39,7 @@ public class SimulationCoordinatorAgent extends AbstractSimulationCoordinatorAge
 	private HeedReport heedReport;
 	
 	protected void setup(){
+		run++;
 		heedReport = new HeedReport();
 		runResults = new HeedRunResults(run);
 

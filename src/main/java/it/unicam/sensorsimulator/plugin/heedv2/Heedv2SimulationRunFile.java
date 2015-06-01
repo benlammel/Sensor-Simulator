@@ -30,6 +30,7 @@ public class Heedv2SimulationRunFile implements SimulationRunInterface {
 		this.setNumberOfRuns(1);
 	}
 	
+	@XmlElement
 	@Override
 	public boolean getStartMASObservationUI() {
 		return startMASObservationUI;
@@ -40,6 +41,7 @@ public class Heedv2SimulationRunFile implements SimulationRunInterface {
 		this.startMASObservationUI = value;
 	}
 
+	@XmlElement
 	@Override
 	public boolean getStartSnifferAgent() {
 		return startSnifferAgent;
@@ -50,6 +52,7 @@ public class Heedv2SimulationRunFile implements SimulationRunInterface {
 		this.startSnifferAgent = value;
 	}
 
+	@XmlElement
 	@Override
 	public boolean getStartInspectorAgent() {
 		return startInspectorAgent;
@@ -60,6 +63,7 @@ public class Heedv2SimulationRunFile implements SimulationRunInterface {
 		this.startInspectorAgent = value;
 	}
 
+	@XmlElement
 	@Override
 	public int getNumberOfRuns() {
 		return numberOfRuns;

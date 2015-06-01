@@ -124,6 +124,7 @@ public class Heedv2SimulationCoordinatorAgent extends Agent {
 		Object[] args = getArguments();
 		log = (LogFileWriterInterface) args[0];
 		simulationRunFile = (Heedv2SimulationRunFile) args[1];
+		report.setSimulationRunFile(simulationRunFile);
 		simulationController = (SimulationControlInterface) args[2];
 		createAgentNetworkList();
 	}
@@ -211,9 +212,8 @@ public class Heedv2SimulationCoordinatorAgent extends Agent {
 	}
 
 	public void addOwnStatisticsAndFinalizeRun() {
-		runReport.setCoordinatorStatistic(new HeedAgentStatistic(sentMessageCounter, receivedMessageCounter));
+		runReport.setCoordinatorStatistic(new HeedAgentStatistic(0, sentMessageCounter, receivedMessageCounter));
 		report.addRun(runReport);
-		track("addOwnStatisticsAndFinalizeRun");
 	}
 
 	public void addOwnStatisticsAndTransferReport() {

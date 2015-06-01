@@ -49,13 +49,12 @@ public class SimulationContolBehaviour extends Behaviour {
 	}
 
 	private void processAgentStatistics(ACLMessage msg) {
+		track("processAgentStatistics");
 		try {
 			coordinator.addToReport(parseAgentStatisticsMessage(msg.getContentObject()));
 		} catch (UnreadableException e) {
 			e.printStackTrace();
-			coordinator.addToReport(new HeedAgentStatistic(coordinator.convertAIDToInteger(msg.getSender())));
 		}
-		track("processAgentStatistics");
 	}
 
 	private void track(String string) {
