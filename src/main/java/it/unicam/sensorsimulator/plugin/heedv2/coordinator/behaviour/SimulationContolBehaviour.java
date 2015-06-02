@@ -2,6 +2,7 @@ package it.unicam.sensorsimulator.plugin.heedv2.coordinator.behaviour;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+
 import it.unicam.sensorsimulator.plugin.heedv2.coordinator.Heedv2SimulationCoordinatorAgent;
 import it.unicam.sensorsimulator.plugin.heedv2.messages.Heedv2ClusterMeasureMessage;
 import it.unicam.sensorsimulator.plugin.heedv2.messages.MessageTypes;
@@ -92,14 +93,15 @@ public class SimulationContolBehaviour extends Behaviour {
 		track("checkForSimulationEnd");
 		if(receivedStatisticCounter==coordinator.getAgentList().size()){
 			//received all agents statistics
-			
+			coordinator.setStopTime(System.currentTimeMillis());
+			coordinator.addNodesLists(clusterHeadList, successorList);
+			coordinator.addOwnStatisticsAndAddToReport();
 			if(coordinator.getNoOfSimulationRuns()==coordinator.getSimulationRunCounter()){
 				//all runs have been performed
-				coordinator.addOwnStatisticsAndTransferReport();
+				coordinator.transferReport();
 				track("coordinator terminates");
 				coordinator.doDelete();
 			}else{
-				coordinator.addOwnStatisticsAndFinalizeRun();
 				receivedStatisticCounter = 0;
 				clusterHeadList.clear();
 				successorList.clear();

@@ -1,14 +1,21 @@
 package it.unicam.sensorsimulator.plugin.heedv2.reporting.gui;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
 
+import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import it.unicam.sensorsimulator.plugin.heedv2.reporting.report.HeedAgentStatistic;
 import it.unicam.sensorsimulator.plugin.heedv2.reporting.report.Heedv2RunReport;
@@ -63,9 +70,11 @@ public class Heedv2RunReportItem extends ScrollPane {
 		this();
 		this.heedv2guiReport = heedv2guiReport;
 		
+		layout.getChildren().add(createTimeMeasurement(run.getStartTime(), run.getStopTime()));
+		
 		retrieveAgentData(run);
 		
-		createOverlayNetworkGraphic();
+		createOverlayNetworkGraphic(run.getClusterHeadList(), run.getSuccessorList());
 		
 		createAgentReceivedChart();
 		createAgentSentChart();
@@ -78,6 +87,31 @@ public class Heedv2RunReportItem extends ScrollPane {
 		layout.getChildren().add(agentBarChart);
 		layout.getChildren().add(coordinatorBarChart);
 		this.setContent(layout);
+	}
+
+	private GridPane createTimeMeasurement(long start, long stop) {
+		GridPane details = new GridPane();
+		
+		details.setHgap(10);
+		details.setVgap(10);
+		details.setPadding(new Insets(20, 150, 10, 10));
+
+		details.add(new Label("start (HH:mm:ss:SSS):"), 0, 0);
+		details.add(new Label(new SimpleDateFormat("HH:mm:ss:SSS").format(new Date(start))), 1, 0);
+		
+		details.add(new Label("end (HH:mm:ss:SSS):"), 0, 1);
+		details.add(new Label(new SimpleDateFormat("HH:mm:ss:SSS").format(new Date(stop))), 1, 1);
+		
+		String duration = String.format("%d min, %d sec, %d ms", 
+			    TimeUnit.MILLISECONDS.toMinutes(stop-start),
+			    TimeUnit.MILLISECONDS.toSeconds(stop-start) - 
+			    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(stop-start)),
+			    (stop-start)%1000);
+		
+		details.add(new Label("duration:"), 0, 2);
+		details.add(new Label(duration), 1, 2);
+
+		return details;
 	}
 
 	private void retrieveAgentData(Heedv2RunReport run) {
@@ -120,8 +154,8 @@ public class Heedv2RunReportItem extends ScrollPane {
 		}
 	}
 
-	private void createOverlayNetworkGraphic() {
-		layout.getChildren().add(new OverlayNWGraphic(networkPicture, heedv2guiReport.getWindowWidth(), heedv2guiReport.getWindowHeight()));
+	private void createOverlayNetworkGraphic(ArrayList<Integer> clusterHeadList, ArrayList<Integer> successorList) {
+		layout.getChildren().add(new OverlayNWGraphic(clusterHeadList, successorList, networkPicture, heedv2guiReport.getWindowWidth(), heedv2guiReport.getWindowHeight()));
 	}
 
 	private void createAgentSentChart() {

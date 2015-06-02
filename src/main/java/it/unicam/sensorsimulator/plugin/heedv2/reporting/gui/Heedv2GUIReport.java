@@ -20,7 +20,6 @@ public class Heedv2GUIReport extends TabPane {
 
 	public void addObjectives(Heedv2SimulationRunFile simulationRunFile) {
 		getTabs().add(new Heedv2ObjectivesTab(simulationRunFile));
-		
 	}
 
 	public int getWindowWidth() {

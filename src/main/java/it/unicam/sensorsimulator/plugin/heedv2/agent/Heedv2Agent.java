@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Random;
 
 import it.unicam.sensorsimulator.interfaces.LogFileWriterInterface;
 import it.unicam.sensorsimulator.interfaces.LogFileWriterInterface.LogLevels;
@@ -33,6 +34,7 @@ public class Heedv2Agent extends Agent {
 	private boolean isClusterHead = false;
 	private int clusterHeadID = -1;
 	private boolean terminationRequest = false;
+	private double myCost;
 
 	protected void setup() {
 		initVarsAndDS();
@@ -49,6 +51,7 @@ public class Heedv2Agent extends Agent {
 		mySuccessorsList = new ArrayList<Integer>();
 		tentativeClusterHeadList = new HashMap<Integer, Heedv2Message>();
 		finalClusterHeadList = new HashMap<Integer, Heedv2Message>();
+		myCost = new Random().nextDouble();
 	}
 
 	private void initAndSetArguments() {
@@ -66,6 +69,9 @@ public class Heedv2Agent extends Agent {
 		
 		builder.append(";getQueueSize;");
 		builder.append(getQueueSize());
+		
+		builder.append(";myCost;");
+		builder.append(myCost);
 		
 		builder.append(";getCurQueueSize;");
 		builder.append(getCurQueueSize());
@@ -140,8 +146,8 @@ public class Heedv2Agent extends Agent {
 		return Integer.parseInt(aid.getLocalName());
 	}
 
-	public int getCosts(int agentID) {
-		return 1;
+	public double getCosts(int agentID) {
+		return myCost;
 	}
 
 	public void addToMyCluster(int agentID) {

@@ -1,8 +1,10 @@
 package it.unicam.sensorsimulator.plugin.heedv2.coordinator;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
+
 import javafx.application.Platform;
 import it.unicam.sensorsimulator.interfaces.GeneralAgentInterface;
 import it.unicam.sensorsimulator.interfaces.LogFileWriterInterface;
@@ -59,6 +61,7 @@ public class Heedv2SimulationCoordinatorAgent extends Agent {
 	}
 
 	private void sendInizializationTrigger() {
+		runReport.setStartTime(System.currentTimeMillis());
 		for(GeneralAgentInterface agent : simulationRunFile.getAgentList()){
 			ACLMessage message = new ACLMessage(ACLMessage.INFORM);
 			message.setConversationId(MessageTypes.SIMULATION_CONTROLS_START_INIZIALIZATION);
@@ -197,13 +200,12 @@ public class Heedv2SimulationCoordinatorAgent extends Agent {
 		}
 	}
 
-	public void addOwnStatisticsAndFinalizeRun() {
+	public void addOwnStatisticsAndAddToReport() {
 		runReport.setCoordinatorStatistic(new HeedAgentStatistic(0, sentMessageCounter, receivedMessageCounter));
 		report.addRun(runReport);
 	}
 
-	public void addOwnStatisticsAndTransferReport() {
-		addOwnStatisticsAndFinalizeRun();
+	public void transferReport() {
 		Platform.runLater(new Runnable() { 
             public void run() {
             	simulationController.addAndCreateReport(report);
@@ -222,5 +224,15 @@ public class Heedv2SimulationCoordinatorAgent extends Agent {
 		builder.append(string);
 		
 		log.logCoordinatorAction(LogLevels.INFO, builder.toString());
+	}
+
+	public void addNodesLists(ArrayList<Integer> clusterHeadList,
+			ArrayList<Integer> successorList) {
+		runReport.setClusterHeadList(clusterHeadList);
+		runReport.setSuccessorList(successorList);
+	}
+
+	public void setStopTime(long timeMillis) {
+		runReport.setStopTime(timeMillis);
 	}
 }

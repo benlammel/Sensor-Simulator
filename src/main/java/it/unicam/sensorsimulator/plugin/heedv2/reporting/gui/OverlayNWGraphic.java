@@ -31,18 +31,17 @@ public class OverlayNWGraphic extends SwingNode {
 	
 	private Graph<Integer, String> g;
 	private Layout<Integer, String> layout;
-	private HashMap<Integer, ArrayList<Integer>> networkPicture;
+	private HashMap<Integer, ArrayList<Integer>> clustersPicture;
 	
 	public OverlayNWGraphic(){
 		g = new DirectedSparseMultigraph<Integer, String>();
-		networkPicture = new HashMap<Integer, ArrayList<Integer>>();
 	}
 
-	public OverlayNWGraphic(HashMap<Integer, ArrayList<Integer>> networkPicture, int width, int height) {
+	public OverlayNWGraphic(ArrayList<Integer> clusterHeadList, ArrayList<Integer> successorList, HashMap<Integer, ArrayList<Integer>> networkPicture, int width, int height) {
 		this();
-		this.networkPicture = networkPicture;
+		this.clustersPicture = networkPicture;
 		
-		generateVertexts(generateListOfNodes());
+		generateVertexts(generateListOfNodes(clusterHeadList, successorList));
 		generateEdges();
 		
 		Dimension preferredSize = new Dimension(width-30, 400);
@@ -58,7 +57,7 @@ public class OverlayNWGraphic extends SwingNode {
 		
 		Transformer<Integer, Paint> vertexPaint = new Transformer<Integer, Paint>() {
 			public Paint transform(Integer i) {
-				if(networkPicture.keySet().contains(i)){
+				if(clusterHeadList.contains(i)){
 					return Color.LIGHT_GRAY;
 				}else{
 					return Color.GREEN;
@@ -79,7 +78,7 @@ public class OverlayNWGraphic extends SwingNode {
 	}
 
 	private void generateEdges() {
-		for(Entry<Integer, ArrayList<Integer>> cluster : networkPicture.entrySet()){
+		for(Entry<Integer, ArrayList<Integer>> cluster : clustersPicture.entrySet()){
 			for(int successor : cluster.getValue()){
 				g.addEdge(Integer.toString(cluster.getKey()) + "-"+ Integer.toString(successor), successor, cluster.getKey(), EdgeType.DIRECTED);
 				System.out.println("\t:" +cluster.getKey() +"-" +successor);
@@ -94,16 +93,12 @@ public class OverlayNWGraphic extends SwingNode {
 		}
 	}
 
-	private ArrayList<Integer> generateListOfNodes() {
+	private ArrayList<Integer> generateListOfNodes(ArrayList<Integer> clusterHeadList, ArrayList<Integer> successorList) {
 		ArrayList<Integer> nodeList = new ArrayList<Integer>();
-		nodeList.addAll(networkPicture.keySet());
-		for(Entry<Integer, ArrayList<Integer>> cluster : networkPicture.entrySet()){
-			for(int successor : cluster.getValue()){
-				if(!nodeList.contains(successor)){
-					nodeList.add(successor);
-				}
-			}
-		}
+		
+		nodeList.addAll(clusterHeadList);
+		nodeList.addAll(successorList);
+		
 		Collections.sort(nodeList);
 		System.out.println(nodeList);
 		return nodeList;
