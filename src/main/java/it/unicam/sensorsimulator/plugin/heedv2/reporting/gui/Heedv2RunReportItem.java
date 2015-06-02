@@ -2,6 +2,7 @@ package it.unicam.sensorsimulator.plugin.heedv2.reporting.gui;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -75,6 +76,7 @@ public class Heedv2RunReportItem extends ScrollPane {
 		retrieveAgentData(run);
 		
 		createOverlayNetworkGraphic(run.getClusterHeadList(), run.getSuccessorList());
+		layout.getChildren().add(createTextListing(run.getClusterHeadList()));
 		
 		createAgentReceivedChart();
 		createAgentSentChart();
@@ -87,6 +89,36 @@ public class Heedv2RunReportItem extends ScrollPane {
 		layout.getChildren().add(agentBarChart);
 		layout.getChildren().add(coordinatorBarChart);
 		this.setContent(layout);
+	}
+
+	private GridPane createTextListing(ArrayList<Integer> clusterHeads) {
+		GridPane details = new GridPane();
+		
+		details.setHgap(10);
+		details.setVgap(10);
+		details.setPadding(new Insets(20, 150, 10, 10));
+
+		details.add(new Label("Clusters:"), 0, 0);
+		
+		Collections.sort(clusterHeads);
+		
+		int row = 1;
+		int col = 0;
+		for(Integer cluster : clusterHeads){
+			
+			if(networkPicture.containsKey(cluster)){
+				details.add(new Label("ID " +cluster +" :: " +networkPicture.get(cluster)), col++, row);
+			}else{
+				details.add(new Label("ID " +cluster +" :: no successors"), col++, row);
+			}
+			
+			if(col==3){
+				row++;
+				col = 0;
+			}
+		}
+		
+		return details;
 	}
 
 	private GridPane createTimeMeasurement(long start, long stop) {

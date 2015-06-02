@@ -137,7 +137,7 @@ public class Heedv2SimulationCoordinatorAgent extends Agent {
 			sentMessageCounter.put(message.getConversationId(), 1);
 		}else{
 			int counter = sentMessageCounter.get(message.getConversationId());
-			sentMessageCounter.put(message.getConversationId(), counter++ );
+			sentMessageCounter.put(message.getConversationId(), ++counter );
 		}
 		super.send(message);
 		String receivers = "";
