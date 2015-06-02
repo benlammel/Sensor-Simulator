@@ -1,16 +1,13 @@
 package it.unicam.sensorsimulator.plugin.heedv2.agent;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
-
 import it.unicam.sensorsimulator.interfaces.LogFileWriterInterface;
 import it.unicam.sensorsimulator.interfaces.LogFileWriterInterface.LogLevels;
 import it.unicam.sensorsimulator.plugin.heedv2.agent.behaviour.SimulationControlBehaviour;
 import it.unicam.sensorsimulator.plugin.heedv2.agent.config.HeedAgentConfiguration;
-import it.unicam.sensorsimulator.plugin.heedv2.messages.Heedv2ClusterMeasureMessage;
 import it.unicam.sensorsimulator.plugin.heedv2.messages.Heedv2Message;
 import it.unicam.sensorsimulator.plugin.heedv2.messages.MessageTypes;
 import jade.core.AID;
@@ -59,7 +56,7 @@ public class Heedv2Agent extends Agent {
 		log = (LogFileWriterInterface) args[0];
 		config = (HeedAgentConfiguration) args[1];
 		neighborList = (HashMap<Integer, HeedAgentConfiguration>) args[2];
-		track("initAndSetArguments");
+//		track("initAndSetArguments");
 	}
 
 	public void track(String string) {
@@ -146,13 +143,12 @@ public class Heedv2Agent extends Agent {
 		return Integer.parseInt(aid.getLocalName());
 	}
 
-	public double getCosts(int agentID) {
+	public double getCosts() {
 		return myCost;
 	}
 
 	public void addToMyCluster(int agentID) {
 		mySuccessorsList.add(agentID);
-		notifyCoordinator(MessageTypes.SIMULATION_CONTROLS_JOINED_CLUSTER);
 	}
 
 	public void setMyClusterHead(int myClusterHead) {
@@ -170,17 +166,6 @@ public class Heedv2Agent extends Agent {
 	public void notifyCoordinator(String conversationID) {
 		ACLMessage message = new ACLMessage(ACLMessage.INFORM);
 		message.setConversationId(conversationID);
-		
-		switch(conversationID){
-		case MessageTypes.HEED_JOIN_CLUSTER:
-			try {
-				message.setContentObject(new Heedv2ClusterMeasureMessage(getAgentConfiguration().getAgentID(), mySuccessorsList));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			break;
-			default: break;
-		}
 		message.addReceiver(coordinatorAID);
 		sendMessage(message);
 	}
@@ -199,10 +184,12 @@ public class Heedv2Agent extends Agent {
 
 	public void addToTentativeCHList(int agentID, Heedv2Message message) {
 		tentativeClusterHeadList.put(agentID, message);
+		track("addToTentativeCHList");
 	}
 
 	public void addToFinalCHList(int agentID, Heedv2Message message) {
 		finalClusterHeadList.put(agentID, message);
+		track("addToFinalCHList");
 	}
 
 	public HashMap<Integer, Heedv2Message> getFinalClusterHeadList() {
@@ -234,5 +221,9 @@ public class Heedv2Agent extends Agent {
 
 	public ArrayList<Integer> getMySuccessorList() {
 		return mySuccessorsList;
+	}
+
+	public int getHeedRunPeriod() {
+		return new Random().nextInt(400-100) + 100;
 	}
 }

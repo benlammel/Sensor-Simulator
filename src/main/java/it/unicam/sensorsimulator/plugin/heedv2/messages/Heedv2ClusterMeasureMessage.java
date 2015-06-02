@@ -1,5 +1,5 @@
 package it.unicam.sensorsimulator.plugin.heedv2.messages;
-
+/*
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -9,6 +9,7 @@ public class Heedv2ClusterMeasureMessage implements Serializable {
 	private ArrayList<Integer> successorsList;
 
 	public Heedv2ClusterMeasureMessage(int agentID, ArrayList<Integer> mySuccessorsList) {
+		System.out.println("Heed message " +agentID +" :: " +mySuccessorsList);
 		this.agentID = agentID;
 		this.successorsList = mySuccessorsList;
 	}
@@ -20,4 +21,4 @@ public class Heedv2ClusterMeasureMessage implements Serializable {
 	public void setSuccessorList(ArrayList<Integer> successorsList) {
 		this.successorsList = successorsList;
 	}
-}
+}*/

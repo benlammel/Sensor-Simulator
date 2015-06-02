@@ -43,6 +43,7 @@ public class OverlayNWGraphic extends SwingNode {
 		
 		generateVertexts(generateListOfNodes(clusterHeadList, successorList));
 		generateEdges();
+		connectClusterHeads(clusterHeadList);
 		
 		Dimension preferredSize = new Dimension(width-30, 400);
 		
@@ -75,6 +76,18 @@ public class OverlayNWGraphic extends SwingNode {
 		vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller());
 		vv.getRenderer().getVertexLabelRenderer().setPosition(Position.CNTR);
 		this.setContent(vv);
+	}
+
+	private void connectClusterHeads(ArrayList<Integer> clusterHeadList) {
+		for(int i=0; i<clusterHeadList.size(); i++){
+			if(i==clusterHeadList.size()-1){
+				g.addEdge("CHC" +Integer.toString(clusterHeadList.get(i)) + "-"+ Integer.toString(clusterHeadList.get(0)), clusterHeadList.get(i), clusterHeadList.get(0), EdgeType.DIRECTED);
+//				System.out.println(i +"::_0" +"__" +clusterHeadList.size() +"**" +clusterHeadList);
+			}else{
+//				System.out.println(i +"::" +(i+1) +"__" +clusterHeadList.get(i) +"--" +clusterHeadList.get(i+1) +"**" +clusterHeadList);
+				g.addEdge("CHC" +Integer.toString(clusterHeadList.get(i)) + "-"+ Integer.toString(clusterHeadList.get(i+1)), clusterHeadList.get(i), clusterHeadList.get(i+1), EdgeType.DIRECTED);
+			}
+		}
 	}
 
 	private void generateEdges() {

@@ -17,7 +17,7 @@ public class SimulationControlBehaviour extends Behaviour {
 
 	@Override
 	public void action() {
-		track("SimulationControlBehaviour");
+//		track("SimulationControlBehaviour");
 		
 		if (heedv2Agent.getTerminationRequest() && heedv2Agent.getCurQueueSize() == 0) {
 			prepareAndSendStatisticsAndTerminate();

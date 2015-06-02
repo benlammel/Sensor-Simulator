@@ -9,10 +9,10 @@ import it.unicam.sensorsimulator.plugin.heedv2.agent.config.HeedAgentConfigurati
 import it.unicam.sensorsimulator.plugin.heedv2.messages.Heedv2Message;
 import it.unicam.sensorsimulator.plugin.heedv2.messages.MessageTypes;
 import jade.core.AID;
-import jade.core.behaviours.Behaviour;
+import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
 
-public class Heedv2Behaviour extends Behaviour {
+public class Heedv2Behaviour extends TickerBehaviour {
 
 	private Heedv2Agent agent;
 	private static final float C_PROB = 0.10f;
@@ -22,25 +22,27 @@ public class Heedv2Behaviour extends Behaviour {
 	private float CH_PREVIOUS;
 	private boolean tentative = false;
 
-	public Heedv2Behaviour(Heedv2Agent agent) {
+	public Heedv2Behaviour(Heedv2Agent agent, int period) {
+		super(agent, period);
 		this.agent = agent;
 		System.out.println("Agent started");
 		initialize();
 	}
 
 	private void initialize() {
+		broadcastHeedMsg(MessageTypes.HEED_COST_BROADCAST);
 		CH_PROB = Math.max((C_PROB * E_MAX) / E_MAX, P_MIN);
 		CH_PREVIOUS = 0.0f;
-		track("initialize");
+//		track("initialize");
 	}
 
 	@Override
-	public void action() {
+	public void onTick() {
 		if (CH_PREVIOUS <= 1) {
 			heedRepeatPart();
 		}
 
-		if (CH_PREVIOUS == 1) {
+		if (CH_PREVIOUS == 1 && agent.getCurQueueSize()==0) {
 			heedFinalize();
 		}
 	}
@@ -55,47 +57,48 @@ public class Heedv2Behaviour extends Behaviour {
 				agent.setMyClusterHead(myClusterHead);
 				sendJoinMessage(myClusterHead);
 			} else {
-				broadcastClusterHeadMsg(MessageTypes.HEED_FINAL_CLUSTERHEAD);
+				broadcastHeedMsg(MessageTypes.HEED_FINAL_CLUSTERHEAD);
 				agent.isClusterHead(true);
 			}
 		} else {
-			broadcastClusterHeadMsg(MessageTypes.HEED_FINAL_CLUSTERHEAD);
+			broadcastHeedMsg(MessageTypes.HEED_FINAL_CLUSTERHEAD);
 			agent.isClusterHead(true);
 		}
 		agent.removeBehaviour(this);
 	}
 
 	private void heedRepeatPart() {
-		track("heedRepeatPart");
+//		track("heedRepeatPart");
 		Random randomNumber = new Random();
 
-		if (CH_PROB == 1) {
-			broadcastClusterHeadMsg(MessageTypes.HEED_FINAL_CLUSTERHEAD);
-			agent.isClusterHead(true);
-
-		} else if (!agent.getTentativeClusterHeadList().isEmpty()) {
+		
+		if (!agent.getTentativeClusterHeadList().isEmpty()) {
 			int myClusterHead = getCheapestClusterHead(agent
 					.getTentativeClusterHeadList());
 			if (myClusterHead == agent.getAgentConfiguration().getAgentID()) {
 				if (CH_PROB == 1) {
-					broadcastClusterHeadMsg(MessageTypes.HEED_FINAL_CLUSTERHEAD);
+					broadcastHeedMsg(MessageTypes.HEED_FINAL_CLUSTERHEAD);
 					agent.isClusterHead(true);
 				} else {
-					broadcastClusterHeadMsg(MessageTypes.HEED_TENTATIVE_CLUSTERHEAD);
+					broadcastHeedMsg(MessageTypes.HEED_TENTATIVE_CLUSTERHEAD);
 					agent.addToTentativeCHList(agent.getAgentConfiguration()
 							.getAgentID(), new Heedv2Message(0));
 				}
 			}
+		} else if (CH_PROB == 1) {
+			broadcastHeedMsg(MessageTypes.HEED_FINAL_CLUSTERHEAD);
+			agent.isClusterHead(true);
+
 		} else if (randomNumber.nextFloat() <= CH_PROB) {
-			track("random");
-			broadcastClusterHeadMsg(MessageTypes.HEED_TENTATIVE_CLUSTERHEAD);
+//			track("random");
+			broadcastHeedMsg(MessageTypes.HEED_TENTATIVE_CLUSTERHEAD);
 			agent.addToTentativeCHList(agent.getAgentConfiguration()
 					.getAgentID(), new Heedv2Message(0));
 		}
 
 		CH_PREVIOUS = CH_PROB;
 		CH_PROB = Math.min(CH_PROB * 2, 1);
-		track("heedRepeatPart-End");
+//		track("heedRepeatPart-End");
 	}
 
 	private int getCheapestClusterHead(HashMap<Integer, Heedv2Message> hashMap) {
@@ -115,9 +118,10 @@ public class Heedv2Behaviour extends Behaviour {
 		message.setConversationId(MessageTypes.HEED_JOIN_CLUSTER);
 		message.addReceiver(agent.convertIntegerToAID(myClusterHead));
 		agent.sendMessage(message);
+		agent.notifyCoordinator(MessageTypes.SIMULATION_CONTROLS_JOINED_CLUSTER);
 	}
 
-	private void broadcastClusterHeadMsg(String msgType) {
+	private void broadcastHeedMsg(String msgType) {
 		boolean var = false;
 
 		if (msgType.equals(MessageTypes.HEED_FINAL_CLUSTERHEAD)) {
@@ -128,6 +132,8 @@ public class Heedv2Behaviour extends Behaviour {
 			if (!tentative) {
 				var = true;
 			}
+		} else if(msgType.equals(MessageTypes.HEED_COST_BROADCAST)){
+			var = true;
 		}
 
 		if (var) {
@@ -138,13 +144,12 @@ public class Heedv2Behaviour extends Behaviour {
 					sendHeedMessage(
 							agent.convertIntegerToAID(myNeighbor.getKey()),
 							msgType,
-							new Heedv2Message(agent.getCosts(myNeighbor
-									.getKey())));
+							new Heedv2Message(agent.getCosts()));
 				}
 			}
 		}
 	}
-
+	
 	private void sendHeedMessage(AID receiver, String conversationID,
 			Heedv2Message heedv2Message) {
 		ACLMessage message = new ACLMessage(ACLMessage.INFORM);
@@ -175,8 +180,8 @@ public class Heedv2Behaviour extends Behaviour {
 		agent.track(builder.toString());
 	}
 
-	@Override
-	public boolean done() {
-		return false;
-	}
+//	@Override
+//	public boolean done() {
+//		return false;
+//	}
 }

@@ -2,9 +2,7 @@ package it.unicam.sensorsimulator.plugin.heedv2.coordinator.behaviour;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
 import it.unicam.sensorsimulator.plugin.heedv2.coordinator.Heedv2SimulationCoordinatorAgent;
-import it.unicam.sensorsimulator.plugin.heedv2.messages.Heedv2ClusterMeasureMessage;
 import it.unicam.sensorsimulator.plugin.heedv2.messages.MessageTypes;
 import it.unicam.sensorsimulator.plugin.heedv2.reporting.report.HeedAgentStatistic;
 import jade.core.AID;
@@ -111,17 +109,8 @@ public class SimulationContolBehaviour extends Behaviour {
 	}
 
 	private void joinedClusterHandler(ACLMessage msg) {
-		Heedv2ClusterMeasureMessage message = null;
-		try {
-			message = (Heedv2ClusterMeasureMessage) msg.getContentObject();
-		} catch (UnreadableException e) {
-			e.printStackTrace();
-		}
-		
-		for(int node : message.getSuccessorList()){
-			if(!successorList.contains(node)){
-				successorList.add(node);
-			}
+		if(!successorList.contains(coordinator.convertAIDToInteger(msg.getSender()))){
+			successorList.add(coordinator.convertAIDToInteger(msg.getSender()));
 		}
 	}
 
