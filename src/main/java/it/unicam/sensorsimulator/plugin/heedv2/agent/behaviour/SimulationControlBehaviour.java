@@ -40,7 +40,7 @@ public class SimulationControlBehaviour extends Behaviour {
 			message.setContentObject(new HeedAgentStatistic(heedv2Agent
 					.getAgentConfiguration().getAgentID(), heedv2Agent
 					.getSentMessageCounter(), heedv2Agent
-					.getReceivedMessageCounter()));
+					.getReceivedMessageCounter(), heedv2Agent.getMySuccessorList()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

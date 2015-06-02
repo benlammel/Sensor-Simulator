@@ -84,7 +84,6 @@ public class Heedv2Plugin implements PluginInterface {
 		for(GeneralAgentInterface agent : environmentServices.getAgentList()){
 			array.add(new HeedAgentConfiguration(agent.getAgentID(), agent.getAgentRadius(), agent.getLocationX(), agent.getLocationY()));
 		}
-		
 		return array;
 	}
 }

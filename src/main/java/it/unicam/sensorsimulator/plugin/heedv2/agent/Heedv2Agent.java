@@ -4,11 +4,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+
 import it.unicam.sensorsimulator.interfaces.LogFileWriterInterface;
 import it.unicam.sensorsimulator.interfaces.LogFileWriterInterface.LogLevels;
 import it.unicam.sensorsimulator.plugin.heedv2.agent.behaviour.SimulationControlBehaviour;
 import it.unicam.sensorsimulator.plugin.heedv2.agent.config.HeedAgentConfiguration;
-import it.unicam.sensorsimulator.plugin.heedv2.messages.HeedMeasureMessage;
+import it.unicam.sensorsimulator.plugin.heedv2.messages.Heedv2ClusterMeasureMessage;
 import it.unicam.sensorsimulator.plugin.heedv2.messages.Heedv2Message;
 import it.unicam.sensorsimulator.plugin.heedv2.messages.MessageTypes;
 import jade.core.AID;
@@ -167,7 +168,7 @@ public class Heedv2Agent extends Agent {
 		switch(conversationID){
 		case MessageTypes.HEED_JOIN_CLUSTER:
 			try {
-				message.setContentObject(new HeedMeasureMessage(getAgentConfiguration().getAgentID(), mySuccessorsList));
+				message.setContentObject(new Heedv2ClusterMeasureMessage(getAgentConfiguration().getAgentID(), mySuccessorsList));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -223,5 +224,9 @@ public class Heedv2Agent extends Agent {
 
 	public boolean getTerminationRequest() {
 		return terminationRequest;
+	}
+
+	public ArrayList<Integer> getMySuccessorList() {
+		return mySuccessorsList;
 	}
 }

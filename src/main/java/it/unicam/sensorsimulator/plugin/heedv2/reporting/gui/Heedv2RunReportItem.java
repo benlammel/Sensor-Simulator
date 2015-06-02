@@ -1,7 +1,9 @@
 package it.unicam.sensorsimulator.plugin.heedv2.reporting.gui;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
+
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
@@ -27,8 +29,12 @@ public class Heedv2RunReportItem extends ScrollPane {
 	private NumberAxis agentBarChartXAxis;
 	private CategoryAxis coordinatorBarChartYAxis;
 	private NumberAxis coordinatorBarChartXAxis;
+	private Heedv2GUIReport heedv2guiReport;
+	private HashMap<Integer, ArrayList<Integer>> networkPicture;
 
 	public Heedv2RunReportItem() {
+		
+		networkPicture = new HashMap<Integer, ArrayList<Integer>>();
 		
 		receivedStatsisticsOverall = new HashMap<String, Integer>();
 		sentStatsisticsOverall = new HashMap<String, Integer>();
@@ -53,11 +59,14 @@ public class Heedv2RunReportItem extends ScrollPane {
 		coordinatorBarChart.setTitle("Coordinator Message Overview");
 	}
 	
-	public Heedv2RunReportItem(Heedv2RunReport run) {
+	public Heedv2RunReportItem(Heedv2GUIReport heedv2guiReport, Heedv2RunReport run) {
 		this();
+		this.heedv2guiReport = heedv2guiReport;
 		
-		sumAgentOverallReceived(run);
-		sumAgentOverallSent(run);
+		retrieveAgentData(run);
+		
+		createOverlayNetworkGraphic();
+		
 		createAgentReceivedChart();
 		createAgentSentChart();
 		
@@ -69,6 +78,50 @@ public class Heedv2RunReportItem extends ScrollPane {
 		layout.getChildren().add(agentBarChart);
 		layout.getChildren().add(coordinatorBarChart);
 		this.setContent(layout);
+	}
+
+	private void retrieveAgentData(Heedv2RunReport run) {
+		for(HeedAgentStatistic agentStatistics : run.getAgentStatistics()){
+			
+			sumAgentStatisticsSent(agentStatistics.getSentCounter());
+			sumAgentStatisticsReceived(agentStatistics.getReceivedCounter());
+			
+			processSuccessorList(agentStatistics.getAgentID(), agentStatistics.getMySuccessorList());
+		}
+	}
+
+	private void processSuccessorList(int agentID,
+			ArrayList<Integer> mySuccessorList) {
+		if(!mySuccessorList.isEmpty()){
+			networkPicture.put(agentID, mySuccessorList);
+		}
+	}
+
+	private void sumAgentStatisticsReceived(
+			ArrayList<MessageCounter> receivedCounter) {
+		for(MessageCounter receivedStat : receivedCounter){
+			if(receivedStatsisticsOverall.containsKey(receivedStat.getMessageIDString())){
+				int value = receivedStatsisticsOverall.get(receivedStat.getMessageIDString());
+				receivedStatsisticsOverall.put(receivedStat.getMessageIDString(), value +receivedStat.getMessageCounter());
+			}else{
+				receivedStatsisticsOverall.put(receivedStat.getMessageIDString(), receivedStat.getMessageCounter());
+			}
+		}
+	}
+
+	private void sumAgentStatisticsSent(ArrayList<MessageCounter> sentCounter) {
+		for(MessageCounter sentStat : sentCounter){
+			if(sentStatsisticsOverall.containsKey(sentStat.getMessageIDString())){
+				int value = sentStatsisticsOverall.get(sentStat.getMessageIDString());
+				sentStatsisticsOverall.put(sentStat.getMessageIDString(), value + sentStat.getMessageCounter());
+			}else{
+				sentStatsisticsOverall.put(sentStat.getMessageIDString(), sentStat.getMessageCounter());
+			}
+		}
+	}
+
+	private void createOverlayNetworkGraphic() {
+		layout.getChildren().add(new OverlayNWGraphic(networkPicture, heedv2guiReport.getWindowWidth(), heedv2guiReport.getWindowHeight()));
 	}
 
 	private void createAgentSentChart() {
@@ -89,32 +142,6 @@ public class Heedv2RunReportItem extends ScrollPane {
 			series.getData().add(new XYChart.Data(data.getValue(), data.getKey()));
 		}
 		agentBarChart.getData().add(series);
-	}
-
-	private void sumAgentOverallSent(Heedv2RunReport run) {
-		for(HeedAgentStatistic agentStatistics : run.getAgentStatistics()){
-			for(MessageCounter sentStat : agentStatistics.getSentCounter()){
-				if(sentStatsisticsOverall.containsKey(sentStat.getMessageIDString())){
-					int value = sentStatsisticsOverall.get(sentStat.getMessageIDString());
-					sentStatsisticsOverall.put(sentStat.getMessageIDString(), value + sentStat.getMessageCounter());
-				}else{
-					sentStatsisticsOverall.put(sentStat.getMessageIDString(), sentStat.getMessageCounter());
-				}
-			}
-		}
-	}
-
-	private void sumAgentOverallReceived(Heedv2RunReport run) {
-		for(HeedAgentStatistic agentStatistics : run.getAgentStatistics()){
-			for(MessageCounter receivedStat : agentStatistics.getReceivedCounter()){
-				if(receivedStatsisticsOverall.containsKey(receivedStat.getMessageIDString())){
-					int value = receivedStatsisticsOverall.get(receivedStat.getMessageIDString());
-					receivedStatsisticsOverall.put(receivedStat.getMessageIDString(), value +receivedStat.getMessageCounter());
-				}else{
-					receivedStatsisticsOverall.put(receivedStat.getMessageIDString(), receivedStat.getMessageCounter());
-				}
-			}
-		}
 	}
 	
 	private void createCoordinatorSentChart() {

@@ -10,9 +10,9 @@ public class Heedv2ReportReasoningTask extends Task<Heedv2GUIReport> {
 	private Heedv2Report report;
 	private Heedv2GUIReport guiReport;
 
-	public Heedv2ReportReasoningTask(Heedv2Report report) {
+	public Heedv2ReportReasoningTask(Heedv2Report report, int width, int height) {
 		this.report = report;
-		this.guiReport = new Heedv2GUIReport();
+		this.guiReport = new Heedv2GUIReport(width, height);
 	}
 
 	@Override

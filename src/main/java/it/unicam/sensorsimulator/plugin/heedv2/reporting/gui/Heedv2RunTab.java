@@ -11,14 +11,16 @@ public class Heedv2RunTab extends Tab {
 	private Heedv2RunReport run;
 	private BorderPane layout;
 	private ScrollPane sp;
+	private Heedv2GUIReport heedv2guiReport;
 
-	public Heedv2RunTab(Heedv2RunReport run) {
+	public Heedv2RunTab(Heedv2GUIReport heedv2guiReport, Heedv2RunReport run) {
+		this.heedv2guiReport = heedv2guiReport;
 		this.run = run;
 		this.setClosable(false);
 		this.setText("Run #" +run.getRunNumber());
 		
 		layout = new BorderPane();
-		layout.setCenter(new Heedv2RunReportItem(run));
+		layout.setCenter(new Heedv2RunReportItem(heedv2guiReport, run));
 		sp = new ScrollPane();
 		sp.setPrefWidth(800);
 		sp.setContent(layout);

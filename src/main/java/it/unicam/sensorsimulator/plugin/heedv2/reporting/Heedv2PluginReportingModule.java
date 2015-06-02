@@ -21,7 +21,7 @@ public class Heedv2PluginReportingModule extends AbstractReportPane {
 	public void setReport(ReportInterface report) {
 		this.report = (Heedv2Report) report;
 		setCenter(progressBar);
-		reportGenerationTask = new Heedv2ReportReasoningTask(this.report);
+		reportGenerationTask = new Heedv2ReportReasoningTask(this.report, getWindowWidth(), getWindowHeight());
 		generateReport();
 	}
 	

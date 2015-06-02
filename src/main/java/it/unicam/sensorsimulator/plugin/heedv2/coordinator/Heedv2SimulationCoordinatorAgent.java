@@ -20,7 +20,6 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import jade.wrapper.AgentContainer;
-import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
 
 public class Heedv2SimulationCoordinatorAgent extends Agent {
@@ -31,7 +30,6 @@ public class Heedv2SimulationCoordinatorAgent extends Agent {
 	private LogFileWriterInterface log;
 	private Heedv2SimulationRunFile simulationRunFile;
 	private SimulationControlInterface simulationController;
-//	private HashMap<Integer, AgentController> agentList;
 	private HashMap<String, Integer> sentMessageCounter;
 	private HashMap<String, Integer> receivedMessageCounter;
 	private HashMap<Integer, HeedAgentConfiguration> agentNetworkList;
@@ -75,7 +73,6 @@ public class Heedv2SimulationCoordinatorAgent extends Agent {
 
 	private void loadAndStartAgents() throws StaleProxyException {
 		AgentContainer container = getContainerController();
-//		agentList = new HashMap<Integer, AgentController>();
 
 		for (GeneralAgentInterface agent : simulationRunFile.getAgentList()) {
 

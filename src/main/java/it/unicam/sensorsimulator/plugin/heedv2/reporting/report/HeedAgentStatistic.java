@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElementWrapper;
 
@@ -12,12 +13,13 @@ public class HeedAgentStatistic implements Serializable {
 	private int agentID;
 	private ArrayList<MessageCounter> sentCounter;
 	private ArrayList<MessageCounter> receivedCounter;
+	private ArrayList<Integer> mySuccessorList;
 
 	public HeedAgentStatistic() {
 		sentCounter = new ArrayList<MessageCounter>();
 		receivedCounter = new ArrayList<MessageCounter>();
 	}
-
+	
 	public HeedAgentStatistic(int agentID,
 			HashMap<String, Integer> sentMessageCounter,
 			HashMap<String, Integer> receivedMessageCounter) {
@@ -35,12 +37,20 @@ public class HeedAgentStatistic implements Serializable {
 		}
 	}
 
-	private void setAgentID(int agentID) {
+	public HeedAgentStatistic(int agentID,
+			HashMap<String, Integer> sentMessageCounter,
+			HashMap<String, Integer> receivedMessageCounter,
+			ArrayList<Integer> mySuccessorList) {
+		this(agentID, sentMessageCounter, receivedMessageCounter);
+		setMySuccessorList(mySuccessorList);
+	}
+
+	public void setAgentID(int agentID) {
 		this.agentID = agentID;
 	}
 
 	@XmlAttribute
-	private int getAgentID() {
+	public int getAgentID() {
 		return agentID;
 	}
 
@@ -60,5 +70,15 @@ public class HeedAgentStatistic implements Serializable {
 
 	public void setReceivedCounter(ArrayList<MessageCounter> receivedCounter) {
 		this.receivedCounter = receivedCounter;
+	}
+	
+	@XmlElementWrapper(name = "successorList")
+	public ArrayList<Integer> getMySuccessorList() {
+		return mySuccessorList;
+	}
+
+	public void setMySuccessorList(ArrayList<Integer> mySuccessorList) {
+		System.out.println(agentID +"::" +mySuccessorList);
+		this.mySuccessorList = mySuccessorList;
 	}
 }

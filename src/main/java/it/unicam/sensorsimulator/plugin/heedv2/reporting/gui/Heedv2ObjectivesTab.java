@@ -36,7 +36,7 @@ public class Heedv2ObjectivesTab extends Tab {
 		sp.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
 		setContent(sp);
 	}
-	
+
 	private GridPane createDetails() {
 		GridPane details = new GridPane();
 		
