@@ -12,7 +12,7 @@ import it.unicam.sensorsimulator.plugin.heedv2.Heedv2Plugin;
 import it.unicam.sensorsimulator.ui.ApplicationFrame;
 import it.unicam.sensorsimulator.ui.dialogs.DialogMessages;
 import it.unicam.sensorsimulator.ui.dialogs.GeneralDialogHandler;
-import it.unicam.sensorsimulator.ui.startdialog.SimulationStartDiolg;
+import it.unicam.sensorsimulator.ui.startdialog.SimulationStartDialog;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +58,7 @@ public class PluginHandler implements SimulationEnvironmentServices {
 			log.catching(e);
 			generalDialogHandler.showDialog(DialogMessages.PLUGINLOADPROBLEM);
 		}
-		log.debug(SimulationStartDiolg.class, "Number of plugins loaded: " +pluginList.size());
+		log.debug(SimulationStartDialog.class, "Number of plugins loaded: " +pluginList.size());
 	}
 
 	public List<PluginInterface> getPluginList() {

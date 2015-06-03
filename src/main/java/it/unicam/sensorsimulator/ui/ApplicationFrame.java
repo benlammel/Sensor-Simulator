@@ -20,7 +20,7 @@ import it.unicam.sensorsimulator.ui.dialogs.GeneralDialogHandler;
 import it.unicam.sensorsimulator.ui.modelling.Modeller;
 import it.unicam.sensorsimulator.ui.reporting.ReportViewer;
 import it.unicam.sensorsimulator.ui.ressources.SimulationResourcesAndProperties;
-import it.unicam.sensorsimulator.ui.startdialog.SimulationStartDiolg;
+import it.unicam.sensorsimulator.ui.startdialog.SimulationStartDialog;
 import javafx.scene.control.Dialog;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -31,7 +31,7 @@ public class ApplicationFrame extends BorderPane {
 	private StartEnvironment startEnvironment;
 	private Modeller modeller;
 	private SimulationEnvironmentMode mode;
-	private SimulationStartDiolg startDialogHandler;
+	private SimulationStartDialog startDialogHandler;
 	private GeneralDialogHandler generalDialogHandler;
 	private PluginHandler pluginHandler;
 	
@@ -49,7 +49,7 @@ public class ApplicationFrame extends BorderPane {
 		modeller = new Modeller(this);
 		this.setCenter(modeller);
 		
-		startDialogHandler = new SimulationStartDiolg(this, pluginHandler);
+		startDialogHandler = new SimulationStartDialog(this, pluginHandler);
 		setSimulationEnvironmentMode(SimulationEnvironmentMode.MODELLING);
 	}
 
@@ -120,7 +120,7 @@ public class ApplicationFrame extends BorderPane {
 		return startEnvironment.getSimulationController();
 	}
 
-	public SimulationStartDiolg getStartDialogHandler() {
+	public SimulationStartDialog getStartDialogHandler() {
 		return startDialogHandler;
 	}
 
@@ -170,7 +170,7 @@ public class ApplicationFrame extends BorderPane {
 			System.out.println("reportViewers created " +reportViewers.size());
 		}
 		ReportViewer stage = new ReportViewer(this, reportPane);
-		stage.setTitle(getRessourcesAndProperties().getReportingViewerHeader());
+		stage.setTitle(getRessourcesAndProperties().getReportViewerHeader());
 		stage.centerOnScreen();
 		stage.setWidth(reportPane.getWindowWidth());
 		stage.setHeight(reportPane.getWindowHeight());

@@ -158,8 +158,8 @@ public class GeneralDialogHandler {
 
 	public Dialog<SimulationEnvironmentMode> createProgressDialog() {
 		Dialog<SimulationEnvironmentMode> dialogWdw = new Dialog<SimulationEnvironmentMode>();
-		dialogWdw.setTitle("Plugin Selection");
-		dialogWdw.setHeaderText("Select the plugin for the to be opened report");
+		dialogWdw.setTitle("Simulation in Progress");
+		dialogWdw.setHeaderText("Please wait until the simulation has finished.");
 		
 		ButtonType btnCancel = new ButtonType("Abort", ButtonData.CANCEL_CLOSE);
 		dialogWdw.getDialogPane().getButtonTypes().addAll(btnCancel);
@@ -177,12 +177,4 @@ public class GeneralDialogHandler {
 		});
 		return dialogWdw;
 	}
-	
-//	progDiag = new ProgressDialog();
-//	progDiag.setTitle(title);
-//	progDiag.initOwner(getPrimaryStage());
-//	progDiag.setHeaderText(message);
-//	progDiag.initModality(Modality.WINDOW_MODAL);
-//	service.start();
-
 }

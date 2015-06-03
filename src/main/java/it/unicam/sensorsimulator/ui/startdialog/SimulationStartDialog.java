@@ -9,7 +9,7 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.BorderPane;
 
-public class SimulationStartDiolg extends Dialog<ButtonType> {
+public class SimulationStartDialog extends Dialog<ButtonType> {
 
 	private ApplicationFrame applicationFrame;
 	private PluginHandler pluginHandler;
@@ -17,7 +17,7 @@ public class SimulationStartDiolg extends Dialog<ButtonType> {
 	private ButtonType btnAPPLY;
 	private BorderPane pane;
 	
-	public SimulationStartDiolg(ApplicationFrame applicationFrame, PluginHandler pluginHandler) {
+	public SimulationStartDialog(ApplicationFrame applicationFrame, PluginHandler pluginHandler) {
 		this.applicationFrame = applicationFrame;
 		this.pluginHandler = pluginHandler;
 		
