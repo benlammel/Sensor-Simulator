@@ -81,4 +81,7 @@ public class SerializationTools {
 		
 	}
 
+	public static void saveToXML(String pathAndFileName, ReportInterface report) {
+		saveToXML(new File(pathAndFileName), report);
+	}
 }

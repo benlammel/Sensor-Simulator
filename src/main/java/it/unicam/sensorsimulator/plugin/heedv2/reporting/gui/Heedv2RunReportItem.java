@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
@@ -187,7 +188,16 @@ public class Heedv2RunReportItem extends ScrollPane {
 	}
 
 	private void createOverlayNetworkGraphic(ArrayList<Integer> clusterHeadList, ArrayList<Integer> successorList) {
-		layout.getChildren().add(new OverlayNWGraphic(clusterHeadList, successorList, networkPicture, heedv2guiReport.getWindowWidth(), heedv2guiReport.getWindowHeight()));
+//		layout.getChildren().add(new JungOverlayNWGraphic(clusterHeadList, successorList, networkPicture, heedv2guiReport.getWindowWidth(), heedv2guiReport.getWindowHeight()));
+		
+//		Platform.runLater(new Runnable() { 
+//            public void run() {
+//            	layout.getChildren().add(new GraphStreamOverlayNWGraphic(clusterHeadList, successorList, networkPicture, heedv2guiReport.getWindowWidth(), heedv2guiReport.getWindowHeight()));
+//            }
+//        });
+		
+    	layout.getChildren().add(new GraphStreamOverlayNWGraphic(clusterHeadList, successorList, networkPicture, heedv2guiReport.getWindowWidth(), heedv2guiReport.getWindowHeight()));
+
 	}
 
 	private void createAgentSentChart() {

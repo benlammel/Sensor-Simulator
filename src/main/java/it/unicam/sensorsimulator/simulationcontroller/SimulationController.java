@@ -17,6 +17,7 @@ public class SimulationController implements SimulationControlInterface {
 	private StartEnvironment startEnvironment;
 	private MultiAgentEngineControllerInterface masController;
 	private final String CURRENTRUNFILENAME = "currentrun.xml";
+	private final String CURRENTREPORTFILENAME = "currentreport.xml";
 	private LogFileWriterInterface log;
 
 	public SimulationController(StartEnvironment startEnvironment) {
@@ -59,6 +60,7 @@ public class SimulationController implements SimulationControlInterface {
 
 	@Override
 	public void addAndCreateReport(ReportInterface report) {
+		SerializationTools.saveToXML(Folder.TEMPFOLDER.toString()+CURRENTREPORTFILENAME, report);
 		startEnvironment.getApplicationFrame().setSimulationEnvironmentMode(SimulationEnvironmentMode.SIMULATION_COMPLETED);
 		startEnvironment.getApplicationFrame().addAndCreateReport(report);
 	}

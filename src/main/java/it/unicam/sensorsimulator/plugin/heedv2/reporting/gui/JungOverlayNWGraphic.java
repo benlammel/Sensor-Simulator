@@ -27,17 +27,17 @@ import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 import javafx.embed.swing.SwingNode;
 
-public class OverlayNWGraphic extends SwingNode {
+public class JungOverlayNWGraphic extends SwingNode {
 	
 	private Graph<Integer, String> g;
 	private Layout<Integer, String> layout;
 	private HashMap<Integer, ArrayList<Integer>> clustersPicture;
 	
-	public OverlayNWGraphic(){
+	public JungOverlayNWGraphic(){
 		g = new DirectedSparseMultigraph<Integer, String>();
 	}
 
-	public OverlayNWGraphic(ArrayList<Integer> clusterHeadList, ArrayList<Integer> successorList, HashMap<Integer, ArrayList<Integer>> networkPicture, int width, int height) {
+	public JungOverlayNWGraphic(ArrayList<Integer> clusterHeadList, ArrayList<Integer> successorList, HashMap<Integer, ArrayList<Integer>> networkPicture, int width, int height) {
 		this();
 		this.clustersPicture = networkPicture;
 		
