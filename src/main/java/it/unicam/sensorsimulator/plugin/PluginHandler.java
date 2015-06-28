@@ -33,8 +33,8 @@ public class PluginHandler implements SimulationEnvironmentServices {
 
 		//		initPlugins();
 		
-		registerPlugin(new HeedPlugin());
 		registerPlugin(new Heedv2Plugin());
+		registerPlugin(new HeedPlugin());
 		registerPlugin(new ExamplePlugin());
 	}
 	
